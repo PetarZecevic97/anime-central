@@ -1,0 +1,20 @@
+{
+  "name": "anime_central_server",
+  "version": "1.0.0",
+  "description": "Server for application that provides users info about various anime.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/matfpveb/projekti/2019-2020/12-animecentral.git",
+    "directory": "server"
+  },
+  "keywords": [
+    "anime"
+  ],
+  "author": "Aleksandra Ruzic, Petar Zecevic, Nikola Peric",
+  "license": "ISC"
+  
+}
