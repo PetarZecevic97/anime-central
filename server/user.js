@@ -9,7 +9,7 @@ const hashCode = function(s){
     return s.split("").reduce((a,b) => {a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
   }
 
-/***************************MIDDLEWARE: LOGIN AND SIGNUP***************************/
+/*********************************************    MIDDLEWARE: LOGIN AND SIGNUP    *********************************************/
 
 //Checking if username or password is empty
 function isUserPassEmpty(req, res, next){
@@ -48,14 +48,17 @@ let query = db.query(queries.selectUserWithUsernameAndPassword(req.body.username
 // Creating user session
 function saveSession(req, res, next) {
     const username = req.body.username;
-    const password = req.body.username;
+    const password = req.body.password;
+    const loginInfo = username + ' ' + password;
     const timestamp = Date.now();
     const hashedUser = hashCode(username + password + timestamp).toString();
-    client.set(hashedUser, username, (err, reply) => {});
+    client.set(hashedUser, loginInfo, (err, reply) => {});
     client.expireat(hashedUser, parseInt((+new Date)/1000) + 86400);
     res.cookie('loggedInUser', hashedUser);
     res.redirect('/homepage');
 };
+/*********************************************    MIDDLEWARE: LOGIN AND SIGNUP    *********************************************/
+
 
 
 //Creating account
@@ -90,6 +93,5 @@ app.get('/logout', (req, res, next) => {
     })
 })
 
-/***************************MIDDLEWARE: LOGIN AND SIGNUP***************************/
 
 module.exports = app;

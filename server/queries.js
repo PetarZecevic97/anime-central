@@ -1,20 +1,16 @@
 const queries = {
 
-    //Consider that the user wants to know which anime he rated
+    /**************************************     Queries for anime info for both logged and unlogged user    **************************************/
+    //TODO: Consider that the user wants to know which anime he rated
+
+    //Select info about anime with name that contains provided string
     selectAllAnimeLike (startsWith) {
         return `SELECT * FROM Anime WHERE name LIKE '${startsWith}%'`;
     },
+    //Select info about all anime
     selectAllAnime : "SELECT * FROM Anime",
-    selectAllAnimeLike (startsWith) {
-        return `SELECT * FROM Anime WHERE name LIKE '${startsWith}%'`;
-    },
-    selectUserWithUsername (username){
-        return `SELECT * FROM User WHERE username = '${username}'`;
-    },
-    selectUserWithUsernameAndPassword (username, password){
-        return `SELECT * FROM User WHERE username = '${username}' AND password = '${password}'`;
-    },
-    insertUser : 'INSERT INTO User SET ?',
+
+    //Select info about anime with given name
     selectAnimeWithName (name) {
         return  `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score, 
         GROUP_CONCAT(Genre.name SEPARATOR ', ') AS 'Genres', GROUP_CONCAT(Studio.name SEPARATOR ', ') AS 'Studios', 
@@ -26,6 +22,47 @@ const queries = {
         WHERE Anime.name = '${name}' 
         GROUP BY Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score`;
     },
+
+    //Select info about anime with some/all of genres
+    selectAllAnimeWithGenres (genres) {
+        let sql = `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score, COUNT(*) as 'Count'
+                        FROM Anime JOIN AnimeGenre ON Anime.id = AnimeGenre.anime_id 
+                        JOIN Genre ON AnimeGenre.genre_id = Genre.id
+                        WHERE Genre.name = '${genres[0]}'`;
+        for (let i = 0; i < genres.length; i++){
+            sql += ` OR Genre.name = '${genres[i]}'`;
+        }
+        sql += `GROUP BY Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score
+                      HAVING Count > 0
+                      ORDER BY Count DESC
+                      LIMIT 10`;
+        return sql;
+    },
+
+    //Select info about anime with best ratings
+    selectNTopRatedAnime (n) { 
+        return `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score 
+                FROM Anime
+                ORDER BY Anime.total_score
+                LIMIT 10 ${n}`;
+    },
+    /**************************************     Queries for anime info for both logged and unlogged user    **************************************/
+
+
+
+    /*************************************************     Queries needed for log in/sign up    *************************************************/
+    selectUserWithUsername (username){
+        return `SELECT * FROM User WHERE username = '${username}'`;
+    },
+    selectUserWithUsernameAndPassword (username, password){
+        return `SELECT * FROM User WHERE username = '${username}' AND password = '${password}'`;
+    },
+    insertUser : 'INSERT INTO User SET ?',
+    /*************************************************     Queries needed for log in/sign up    *************************************************/
+
+
+
+    /*********************************************     Queries for anime info for specific user    *********************************************/
     selectAllWatchedAnimeByUser (username) {
         return `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score
         FROM Anime WHERE EXISTS (SELECT *
@@ -47,29 +84,11 @@ const queries = {
         FROM Anime JOIN UserScore ON Anime.id = UserScore.anime_id
         WHERE UserScore.user_username = '${username}'
         ORDER BY Anime.total_score DESC`;
-    },
-    //Select name of genres
-    selectAllAnimeWithGenres (genres) {
-        let sql = `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score, COUNT(*) as 'Count'
-                        FROM Anime JOIN AnimeGenre ON Anime.id = AnimeGenre.anime_id 
-                        JOIN Genre ON AnimeGenre.genre_id = Genre.id
-                        WHERE Genre.name = '${genres[0]}'`;
-        for (let i = 0; i < genres.length; i++){
-            sql += ` OR Genre.name = '${genres[i]}'`;
-        }
-        sql += `GROUP BY Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score
-                      HAVING Count > 0
-                      ORDER BY Count DESC
-                      LIMIT 10`;
-        return sql;
-    },
-    selectNTopRatedAnime (n) { 
-        return `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score 
-                FROM Anime
-                ORDER BY Anime.total_score
-                LIMIT 10 ${n}`;
+    }, 
+    insertRating(username, animeName, score){
+        return `INSERT INTO UserScore (user_username, anime_id, score) SELECT '${username}', id, ${score} FROM Anime where name = '${animeName}' LIMIT 1`;
     }
-
+    /*********************************************     Queries for anime info for specific user    *********************************************/
 
 };
 

@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const {client,  db,  express} = require('./global');
 const user = require('./user');
+const user_related = require('./user_related');
 const queries = require('./queries');
 
 
@@ -17,6 +18,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use('/', user);
+app.use('/', user_related);
 
 app.get('/selectallanime', (req, res, next) => {
     let query = db.query(queries.selectAllAnime, (err, results, fields) => {
