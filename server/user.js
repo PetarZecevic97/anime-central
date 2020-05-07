@@ -1,4 +1,5 @@
 const {client,  db,  express} = require('./global');
+const queries = require('./queries');
 
 
 const app = express();
@@ -21,8 +22,7 @@ function isUserPassEmpty(req, res, next){
 
 //Checking if username exists
 function checkUsername(req, res, next){
-let sql = `SELECT * FROM User WHERE username = '${req.body.username}'`;
-let query = db.query(sql, (err, results, fields) => {
+let query = db.query(queries.selectUserWithUsername(req.body.username), (err, results, fields) => {
     if (err) throw err;
     if (results.length == 0){
     req.usernameExists = false;
@@ -35,8 +35,7 @@ let query = db.query(sql, (err, results, fields) => {
 
 //Checking if password is correct for given username
 function checkPassword(req, res, next){
-let sql = `SELECT * FROM User WHERE username = '${req.body.username}' AND password = '${req.body.password}'`;
-let query = db.query(sql, (err, results, fields) => {
+let query = db.query(queries.selectUserWithUsernameAndPassword(req.body.username, req.body.password), (err, results, fields) => {
     if (err) throw err;
     if (results.length == 0){
     res.status(400).send("Username or password is not correct.");
@@ -66,8 +65,7 @@ app.post('/signup', isUserPassEmpty, checkUsername, (req, res, next) => {
         res.status(400).send("Username already exists");
     } else {
         const post = {username:req.body.username, password:req.body.password}
-        const sql = 'INSERT INTO User SET ?';
-        let query = db.query(sql, post, (err, result) => {
+        let query = db.query(queries.insertUser, post, (err, result) => {
         if (err) throw err;
         next();
         });

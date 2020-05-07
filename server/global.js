@@ -5,8 +5,8 @@ const client  = redis.createClient(6379);
 
 const db = mysql.createConnection({
     host: "localhost",
-    user: "root",
-    password: "mysql25",
+    user: "PetarZecevic",
+    password: "mi16169",
     database: "anime_central_db"
   });
 

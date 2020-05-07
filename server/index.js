@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const {client,  db,  express} = require('./global');
 const user = require('./user');
+const queries = require('./queries');
 
 
 const app = express();
@@ -18,8 +19,7 @@ app.use(cookieParser());
 app.use('/', user);
 
 app.get('/selectallanime', (req, res, next) => {
-    let sql = "SELECT * FROM Anime";
-    let query = db.query(sql, (err, results, fields) => {
+    let query = db.query(queries.selectAllAnime, (err, results, fields) => {
       if (err) throw err;
       console.log("selected");
       res.send(results);
@@ -28,8 +28,7 @@ app.get('/selectallanime', (req, res, next) => {
 });
   
 app.get('/selectallanimelike/:startswith', (req, res, next) => {
-    let sql = `SELECT * FROM Anime WHERE name LIKE '${req.params.startswith}%'`;
-    let query = db.query(sql, (err, results, fields) => {
+    let query = db.query(queries.selectAllAnimeLike(req.params.startswith), (err, results, fields) => {
       if (err) throw err;
       console.log("selected");
       res.send(results);
