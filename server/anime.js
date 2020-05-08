@@ -27,14 +27,23 @@ animeRouter.get('/:name', (req, res, next) => {
 
 });
 
-// Get all anime with specified genre: /anime/genre/:name
+// Get all anime with specified genres: /anime/genre/:name
 animeRouter.get('/genre/:name', (req, res, next) => {
     
-    let query = db.query(queries.selectAllAnimeWithGenres(req.params.name), (err, result, fields) => {
+    let genres = req.params.name.split('-');
+    let query = db.query(queries.selectAllAnimeWithGenres(genres), (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });
 
+});
+  
+animeRouter.get('/selectallanimelike/:startswith', (req, res, next) => {
+    let query = db.query(queries.selectAllAnimeLike(req.params.startswith), (err, results, fields) => {
+      if (err) throw err;
+      res.send(results);
+    })
+  
 });
 
 

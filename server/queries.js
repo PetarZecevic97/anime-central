@@ -17,7 +17,7 @@ const queries = {
         return  `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score, 
         GROUP_CONCAT(Genre.name SEPARATOR ', ') AS 'Genres', GROUP_CONCAT(Studio.name SEPARATOR ', ') AS 'Studios', 
         GROUP_CONCAT(Producer.name SEPARATOR ', ') AS 'Producers', GROUP_CONCAT(Licencor.name SEPARATOR ', ') AS 'Licencors', 
-        GROUP_CONCAT(UserComment.comment SEPARATIR '\\n') AS 'Comments'
+        GROUP_CONCAT(UserComment.comment SEPARATOR '\\n') AS 'Comments'
         FROM Anime JOIN AnimeGenre ON Anime.id = AnimeGenre.anime_id JOIN Genre ON AnimeGenre.genre_id = Genre.id 
         JOIN AnimeStudio ON Anime.id = AnimeStudio.anime_id JOIN Studio ON AnimeStudio.studio_id = Studio.id 
         JOIN AnimeProducer ON Anime.id = AnimeProducer.anime_id JOIN Producer ON AnimeProducer.producer_id = Producer.id 
