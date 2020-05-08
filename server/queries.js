@@ -1,3 +1,5 @@
+const {hashCode} = require('./global');
+
 const queries = {
 
     /**************************************     Queries for anime info for both logged and unlogged user    **************************************/
@@ -14,11 +16,13 @@ const queries = {
     selectAnimeWithName (name) {
         return  `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score, 
         GROUP_CONCAT(Genre.name SEPARATOR ', ') AS 'Genres', GROUP_CONCAT(Studio.name SEPARATOR ', ') AS 'Studios', 
-        GROUP_CONCAT(Producer.name SEPARATOR ', ') AS 'Producers', GROUP_CONCAT(Licencor.name SEPARATOR ', ') AS 'Licencors' 
+        GROUP_CONCAT(Producer.name SEPARATOR ', ') AS 'Producers', GROUP_CONCAT(Licencor.name SEPARATOR ', ') AS 'Licencors', 
+        GROUP_CONCAT(UserComment.comment SEPARATIR '\\n') AS 'Comments'
         FROM Anime JOIN AnimeGenre ON Anime.id = AnimeGenre.anime_id JOIN Genre ON AnimeGenre.genre_id = Genre.id 
         JOIN AnimeStudio ON Anime.id = AnimeStudio.anime_id JOIN Studio ON AnimeStudio.studio_id = Studio.id 
         JOIN AnimeProducer ON Anime.id = AnimeProducer.anime_id JOIN Producer ON AnimeProducer.producer_id = Producer.id 
         JOIN AnimeLicencor ON Anime.id = AnimeLicencor.anime_id JOIN Licencor ON AnimeLicencor.licencor_id = Licencor.id 
+        JOIN UserComment ON Anime.id = UserComment.anime_id
         WHERE Anime.name = '${name}' 
         GROUP BY Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score`;
     },
@@ -58,6 +62,15 @@ const queries = {
         return `SELECT * FROM User WHERE username = '${username}' AND password = '${password}'`;
     },
     insertUser : 'INSERT INTO User SET ?',
+
+    updatePassword(username, oldPassword, newPassword) {
+        return `UPDATE User SET password = '${newPassword}' WHERE username = '${username}' AND password = '${oldPassword}'`;
+    },
+    
+    //TODO: Make an unique id for table User in order to enable a change of username
+    //updateUsername(oldUsername,  newUsername, password) {
+    //    return `UPDATE User SET username = '${newUsername}' WHERE username = '${oldUsername}' AND password = '${password}'`;
+    //},
     /*************************************************     Queries needed for log in/sign up    *************************************************/
 
 
@@ -86,7 +99,15 @@ const queries = {
         ORDER BY Anime.total_score DESC`;
     }, 
     insertRating(username, animeName, score){
-        return `INSERT INTO UserScore (user_username, anime_id, score) SELECT '${username}', id, ${score} FROM Anime where name = '${animeName}' LIMIT 1`;
+        return `INSERT INTO UserScore (user_username, anime_id, score)
+                SELECT '${username}', id, ${score} FROM Anime where name = '${animeName}' LIMIT 1`;
+    },
+
+    //Moved the hashedCode func to global in order to use it both here for unique ids and in user. Should ids be auto-generated? 
+    insertComment(username, animeName, comment){
+        const id = hashCode(username + animeName + Date.now());
+        return `INSERT INTO UserComment (id, user_username, anime_id, comment)
+                SELECT ${id}, '${username}', id, '${comment}' FROM Anime where name = '${animeName}' LIMIT 1`;
     }
     /*********************************************     Queries for anime info for specific user    *********************************************/
 

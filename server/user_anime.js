@@ -1,35 +1,8 @@
-const {client,  db,  express} = require('./global');
+const {db,  express} = require('./global');
 const queries = require('./queries');
-
+const {isUserLoggedIn} = require('./user_middleware');
 
 const app = express();
-
-//Checking if user is logged in
-function isUserLoggedIn(req, res, next){
-    const hashedCode = req.cookies.loggedInUser;
-    if (hashedCode){
-        client.get(hashedCode, function (error, result) {
-
-        if (error) throw error;
-
-        if(result === null) {
-
-            console.log("Korisnik nije logovan\n");
-            res.redirect('/login');
-        } else {
-            const usernameAndPassword = result.split(' ');
-            req.user = {'username': usernameAndPassword[0], 'password': usernameAndPassword[1]};
-            next();
-        }
-
-    });
-
-    } else {
-        console.log("Korisnik nije logovan\n");
-        res.redirect('/login');
-    }
-
-}
 
 
 /*********************************************  OUTPUT NOT IMPLEMENTED DUE TO EMPTY DATABASE! TODO: IMPLEMENT!   *********************************************/
@@ -76,5 +49,14 @@ app.post('/ratethisanime', isUserLoggedIn, (req, res, next) => {
 
 });
 
+//User is commenting on an anime with given name
+app.post('/commentonthisanime', isUserLoggedIn, (req, res, next) => {
+
+    let query = db.query(queries.insertComment(req.user.username, req.body.animeName, req.body.comment), (err, result) => {
+        if (err) throw err;
+        res.send("Upit uspeo\n");
+    });
+
+});
 
 module.exports = app;
