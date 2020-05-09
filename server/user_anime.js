@@ -10,7 +10,7 @@ const app = express();
 //Get all anime that user has rated
 app.get('/myratedanime', isUserLoggedIn, (req, res, next) => {
 
-    let query = db.query(queries.selectAllRatdeAnimeByUser(req.user.username), (err, result, fields) => {
+    let query = db.query(queries.selectAllRatedAnimeByUser(req.user.username), (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });

@@ -1,5 +1,3 @@
-const {hashCode} = require('./global');
-
 const queries = {
 
     /**************************************     Queries for anime info for both logged and unlogged user    **************************************/
@@ -112,10 +110,9 @@ const queries = {
     selectUserWithUsernameAndPassword (username, password){
         return `SELECT * FROM User WHERE username = '${username}' AND password = '${password}'`;
     },
-    //TODO: Make the id in the User table auto-generateble so that hashCode doesn't need to be here
+
     insertUser(username, password, email){
-        const id = hashCode(username+password+email+Date.now());
-        return `INSERT INTO User (id, username, password, email) VALUES( '${id}','${username}', '${password}', '${email}')`;
+        return `INSERT INTO User (username, password, email) VALUES('${username}', '${password}', '${email}')`;
     },
 
     updatePassword(username, oldPassword, newPassword) {
@@ -133,35 +130,34 @@ const queries = {
     selectAllWatchedAnimeByUser (username) {
         return `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score
         FROM Anime WHERE EXISTS (SELECT *
-                                 FROM UserWatched
+                                 FROM UserWatched JOIN User ON User.id = UserWatched.user_id
                                  WHERE UserWatched.anime_id = Anime.id
-                                 AND UserWatched.user_username = '${username}')
+                                 AND User.username = '${username}')
         ORDER BY Anime.total_score DESC`;
     }, 
     selectAllWishedAnimeByUser (username) {
         return `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score
         FROM Anime WHERE EXISTS (SELECT *
-                                 FROM UserWish
+                                 FROM UserWish JOIN User ON User.id = UserWish.user_id
                                  WHERE UserWish.anime_id = Anime.id
-                                 AND UserWish.user_username = '${username}')
+                                 AND User.username = '${username}')
         ORDER BY Anime.total_score DESC`;
     }, 
-    selectAllRatdeAnimeByUser (username) {
+    selectAllRatedAnimeByUser (username) {
         return `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score, UserScore.score
         FROM Anime JOIN UserScore ON Anime.id = UserScore.anime_id
-        WHERE UserScore.user_username = '${username}'
+        JOIN User ON User.id = UserScore.user_id
+        WHERE User.username = '${username}'
         ORDER BY Anime.total_score DESC`;
     }, 
     insertRating(username, animeName, score){
-        return `INSERT INTO UserScore (user_username, anime_id, score)
-                SELECT '${username}', id, ${score} FROM Anime where name = '${animeName}' LIMIT 1`;
+        return `INSERT INTO UserScore (user_id, anime_id, score) VALUES 
+        ((SELECT id FROM User WHERE username = '${username}' LIMIT 1), (SELECT id FROM Anime where name = '${animeName}' LIMIT 1), ${score})`;
     },
 
-    //Moved the hashedCode func to global in order to use it both here for unique ids and in user. Should ids be auto-generated? 
     insertComment(username, animeName, comment){
-        const id = hashCode(username + animeName + Date.now());
-        return `INSERT INTO UserComment (id, user_username, anime_id, comment)
-                SELECT ${id}, '${username}', id, '${comment}' FROM Anime where name = '${animeName}' LIMIT 1`;
+        return `INSERT INTO UserComment (user_id, anime_id, comment) VALUES 
+        ((SELECT id FROM User WHERE username = '${username}' LIMIT 1), (SELECT id FROM Anime where name = '${animeName}' LIMIT 1), '${comment}')`;
     }
     /*********************************************     Queries for anime info for specific user    *********************************************/
 
