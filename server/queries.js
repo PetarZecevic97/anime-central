@@ -43,12 +43,60 @@ const queries = {
         return sql;
     },
 
+    //Select info about anime made by some/all producers
+    selectAllAnimeWithProducers (producers) {
+        let sql = `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score, COUNT(*) as 'Count'
+                        FROM Anime JOIN AnimeProducer ON Anime.id = AnimeProducer.anime_id 
+                        JOIN Producer ON AnimeProducer.producer_id = Producer.id
+                        WHERE Producer.name = '${producers[0]}'`;
+        for (let i = 0; i < producers.length; i++){
+            sql += ` OR Producer.name = '${producers[i]}'`;
+        }
+        sql += `GROUP BY Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score
+                      HAVING Count > 0
+                      ORDER BY Count DESC
+                      LIMIT 10`;
+        return sql;
+    },
+
+    //Select info about anime made by some/all studios
+    selectAllAnimeWithStudios (studios) {
+        let sql = `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score, COUNT(*) as 'Count'
+                        FROM Anime JOIN AnimeStudio ON Anime.id = AnimeStudio.anime_id 
+                        JOIN Studio ON AnimeStudio.studio_id = Studio.id
+                        WHERE Studio.name = '${studios[0]}'`;
+        for (let i = 0; i < studios.length; i++){
+            sql += ` OR Studio.name = '${studios[i]}'`;
+        }
+        sql += `GROUP BY Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score
+                      HAVING Count > 0
+                      ORDER BY Count DESC
+                      LIMIT 10`;
+        return sql;
+    },
+
+    //Select info about anime made by some/all licencors
+    selectAllAnimeWithLicencors (licencors) {
+        let sql = `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score, COUNT(*) as 'Count'
+                        FROM Anime JOIN AnimeLicencor ON Anime.id = AnimeLicencor.anime_id 
+                        JOIN Licencor ON AnimeLicencor.licencor_id = Licencor.id
+                        WHERE Licencor.name = '${licencors[0]}'`;
+        for (let i = 0; i < licencors.length; i++){
+            sql += ` OR Licencor.name = '${licencors[i]}'`;
+        }
+        sql += `GROUP BY Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score
+                      HAVING Count > 0
+                      ORDER BY Count DESC
+                      LIMIT 10`;
+        return sql;
+    },
+
     //Select info about anime with best ratings
     selectNTopRatedAnime (n) { 
         return `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, Anime.total_score 
                 FROM Anime
                 ORDER BY Anime.total_score
-                LIMIT 10 ${n}`;
+                LIMIT ${n}`;
     },
     /**************************************     Queries for anime info for both logged and unlogged user    **************************************/
 
@@ -58,19 +106,25 @@ const queries = {
     selectUserWithUsername (username){
         return `SELECT * FROM User WHERE username = '${username}'`;
     },
+    selectUserWithEmail (email){
+        return `SELECT * FROM User WHERE email = '${email}'`;
+    },
     selectUserWithUsernameAndPassword (username, password){
         return `SELECT * FROM User WHERE username = '${username}' AND password = '${password}'`;
     },
-    insertUser : 'INSERT INTO User SET ?',
+    //TODO: Make the id in the User table auto-generateble so that hashCode doesn't need to be here
+    insertUser(username, password, email){
+        const id = hashCode(username+password+email+Date.now());
+        return `INSERT INTO User (id, username, password, email) VALUES( '${id}','${username}', '${password}', '${email}')`;
+    },
 
     updatePassword(username, oldPassword, newPassword) {
         return `UPDATE User SET password = '${newPassword}' WHERE username = '${username}' AND password = '${oldPassword}'`;
     },
     
-    //TODO: Make an unique id for table User in order to enable a change of username
-    //updateUsername(oldUsername,  newUsername, password) {
-    //    return `UPDATE User SET username = '${newUsername}' WHERE username = '${oldUsername}' AND password = '${password}'`;
-    //},
+    updateUsername(oldUsername,  newUsername, password) {
+        return `UPDATE User SET username = '${newUsername}' WHERE username = '${oldUsername}' AND password = '${password}'`;
+    },
     /*************************************************     Queries needed for log in/sign up    *************************************************/
 
 

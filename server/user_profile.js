@@ -15,13 +15,15 @@ function checkIsPasswordEnough(req, res,  next) {
 }
 
 //Creating account
-app.post('/signup', userMiddleware.isUserPassEmpty, userMiddleware.checkUsername, checkIsPasswordEnough, (req, res, next) => {
+app.post('/signup', userMiddleware.isUserPassEmpty, userMiddleware.checkEmail, userMiddleware.checkUsername, checkIsPasswordEnough, (req, res, next) => {
 
     if (req.usernameExists){
         res.status(400).send("Username already exists");
+    } else if (req.emailExists){
+        res.status(400).send("Email already exists");
     } else {
-        const post = {username:req.body.username, password:req.body.password}
-        let query = db.query(queries.insertUser, post, (err, result) => {
+        const {username, password, email} = req.body;
+        let query = db.query(queries.insertUser(username, password, email), (err, result) => {
             if (err) throw err;
             next();
         });
@@ -36,13 +38,14 @@ app.post('/login', userMiddleware.isUserPassEmpty, userMiddleware.checkUsername,
 app.get('/logout', (req, res, next) => {
     const hashedCode = req.cookies.loggedInUser;
     client.del(hashedCode, (err, response) => {
-        res.clearCookie('loggedInUser');
+        if (err) throw err;
         if (response === 1){
             res.send('uspeo');
         } else {
             res.send('nije uspeo');
         }
-    })
+
+    });
 });
 
 //Changing password
@@ -50,22 +53,29 @@ app.post('/changepassword', userMiddleware.isUserLoggedIn, checkIsPasswordEnough
 
     let query = db.query(queries.updatePassword(req.user.username, req.user.password, req.body.password), (err, result) => {
         if (err) throw err;
+        const newUserInfo = req.user.username + ' ' + req.user.email + ' ' + req.body.password;
+        client.set(req.cookies.loggedInUser, newUserInfo, (err, reply) => {});
         res.send("Upit uspeo\n");
     });
 
 });
 
-/* 
-//TODO: Enable changing username by making an unique id in the table User
+//TODO: What if use tries to change username into their own username? Currently it should say "Username already exists"
 //Changing username
-app.post('/changeusername', userMiddleware.isUserLoggedIn, (req, res, next) => {
+app.post('/changeusername', userMiddleware.isUserLoggedIn, userMiddleware.checkUsername, (req, res, next) => {
 
-    let query = db.query(queries.updateUsername(req.user.username, req.body.newUsername, req.user.password), (err, result) => {
-        if (err) throw err;
-        res.send("Upit uspeo\n");
-    });
+    if(req.usernameExists) {
+        res.status(400).send("Username already exists");
+    } else {
+
+        let query = db.query(queries.updateUsername(req.user.username, req.body.username, req.user.password), (err, result) => {
+            if (err) throw err;
+            const newUserInfo = req.body.username + ' ' + req.user.email + ' ' + req.user.password;
+            client.set(req.cookies.loggedInUser, newUserInfo, (err, reply) => {});
+            res.send("Upit uspeo\n");
+        });
+    }
 
 });
-*/
 
 module.exports = app;
