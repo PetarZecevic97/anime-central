@@ -20,7 +20,7 @@ animeRouter.get('/', (req, res, next) => {
 // Get anime with specified name:  /anime/:name  
 animeRouter.get('/:name', (req, res, next) => {
 
-    let query = db.query(queries.selectAnimeWithName(req.params.name), (err, result, fields) => {
+    let query = db.query(queries.selectAnimeWithName(req.query.name), (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });

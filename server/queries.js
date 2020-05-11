@@ -155,6 +155,10 @@ const queries = {
     updateUsername(oldUsername,  newUsername, password) {
         return `UPDATE User SET username = '${newUsername}' WHERE username = '${oldUsername}' AND password = '${password}'`;
     },
+
+    updateEmail(username, password, newEmail){
+        return `UPDATE User SET email = '${newEmail}' WHERE username = '${username}' AND password = '${password}'`;
+    },
     /*************************************************     Queries needed for log in/sign up    *************************************************/
 
 
@@ -190,14 +194,52 @@ const queries = {
     }, 
     insertRating(username, animeName, score){
         return `INSERT INTO UserScore (user_id, anime_id, score) VALUES 
-        ((SELECT id FROM User WHERE username = '${username}' LIMIT 1), (SELECT id FROM Anime where name = '${animeName}' LIMIT 1), ${score})`;
+        ((SELECT id FROM User WHERE username = '${username}' LIMIT 1), (SELECT id FROM Anime where name = "${animeName}" LIMIT 1), ${score})`;
     },
 
     insertComment(username, animeName, comment){
         //const currentDate = Date.now().toString();
         return `INSERT INTO UserComment (user_id, anime_id, comment, date) VALUES 
-        ((SELECT id FROM User WHERE username = '${username}' LIMIT 1), (SELECT id FROM Anime where name = '${animeName}' LIMIT 1), '${comment}', NOW())`;
-    }
+        ((SELECT id FROM User WHERE username = '${username}' LIMIT 1), (SELECT id FROM Anime where name = "${animeName}" LIMIT 1), '${comment}', NOW())`;
+    },
+
+    insertAnimeToWatchedList(username, animeName){
+        return `INSERT INTO UserWatched (user_id, anime_id) VALUES
+        ((SELECT id FROM User WHERE username = '${username}' LIMIT 1), (SELECT id FROM Anime WHERE name = "${animeName}" LIMIT 1))`;
+    },
+
+    insertAnimeToWishList(username, animeName){
+        return `INSERT INTO UserWish (user_id, anime_id) VALUES
+        ((SELECT id FROM User WHERE username = '${username}' LIMIT 1), (SELECT id FROM Anime WHERE name = "${animeName}" LIMIT 1))`;
+    },
+
+    removeAnimeFromWatchedList(username, animeName){
+        return `DELETE FROM UserWatched WHERE 
+                user_id  = (SELECT id FROM User WHERE username = '${username}' LIMIT 1) and
+                anime_id = (SELECT id FROM Anime WHERE name = "${animeName}" LIMIT 1)`;
+    },
+
+    removeAnimeFromWishList(username, animeName){
+        return `DELETE FROM UserWish WHERE 
+                user_id  = (SELECT id FROM User WHERE username = '${username}' LIMIT 1) and
+                anime_id = (SELECT id FROM Anime WHERE name = "${animeName}" LIMIT 1)`;
+    },
+
+
+    editComment(commentId, newComment){
+        return `UPDATE UserComment SET 
+                comment = "${newComment}" WHERE
+                id = ${commentId}`;
+    },
+
+    updateAnimeScore(username, animeName, newScore){
+        return `UPDATE UserScore SET
+        score = ${newScore} WHERE
+        user_id = (SELECT id FROM User WHERE username = '${username}' LIMIT 1) and
+        anime_id = (SELECT id FROM Anime WHERE name = "${animeName}" LIMIT 1)`;
+    },
+
+
     /*********************************************     Queries for anime info for specific user    *********************************************/
 
 };

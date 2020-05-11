@@ -14,6 +14,18 @@ function checkIsPasswordEnough(req, res,  next) {
     }
 }
 
+//Checking if E-mail format is good. Should this be in the middleware file?
+function chechEMailFormat(req, res, next){
+
+    var EmailRegEx = /^([a-z]|[A-Z]|[0-9]|[.!^#&$%\/\\])+?[@]([a-z]|[A-Z])*?[.]([a-z]|[A-Z])+$/;
+    
+    if(EmailRegEx.test(req.body.email)){
+        next();        
+    }else{
+        res.status(400).send("Bad E-mail format");
+    }   
+}
+
 //Creating account
 app.post('/signup', userMiddleware.isUserPassEmpty, userMiddleware.checkEmail, userMiddleware.checkUsername, checkIsPasswordEnough, (req, res, next) => {
 
@@ -59,6 +71,19 @@ app.post('/changepassword', userMiddleware.isUserLoggedIn, checkIsPasswordEnough
     });
 
 });
+
+//Changing E-mail adress
+app.put('/changeemail', chechEMailFormat, userMiddleware.isUserLoggedIn, (req, res, next) => {
+
+    let query = db.query(queries.updateEmail(req.user.username, req.user.password, req.body.email), (err, result) => {
+        if(err) throw err;
+        const newUserInfo = req.user.username + ' ' + req.body.email + ' ' + req.user.password;
+        client.set(req.cookies.loggedInUser, newUserInfo, (err, reply) => {});
+        res.send('Upit uspeo! Email promenjen!\n');
+    });
+
+});
+
 
 //TODO: What if use tries to change username into their own username? Currently it should say "Username already exists"
 //Changing username
