@@ -20,7 +20,7 @@ animeRouter.get('/', (req, res, next) => {
 // Get anime with specified name:  /anime/:name  
 animeRouter.get('/:name', (req, res, next) => {
 
-    let query = db.query(queries.selectAnimeWithName(req.query.name), (err, result, fields) => {
+    let query = db.query(queries.selectAnimeWithName, [req.params.name, req.params.name, req.params.name, req.params.name, req.params.name], (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });
@@ -31,7 +31,7 @@ animeRouter.get('/:name', (req, res, next) => {
 animeRouter.get('/genre/:name', (req, res, next) => {
     
     let genres = req.params.name.split('-');
-    let query = db.query(queries.selectAllAnimeWithGenres(genres), (err, result, fields) => {
+    let query = db.query(queries.selectAllAnimeWithGenres(genres.length), genres, (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });
@@ -42,7 +42,7 @@ animeRouter.get('/genre/:name', (req, res, next) => {
 animeRouter.get('/producer/:name', (req, res, next) => {
     
     let producers = req.params.name.split('-');
-    let query = db.query(queries.selectAllAnimeWithProducers(producers), (err, result, fields) => {
+    let query = db.query(queries.selectAllAnimeWithProducers(producers.length), producers, (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });
@@ -53,7 +53,7 @@ animeRouter.get('/producer/:name', (req, res, next) => {
 animeRouter.get('/studio/:name', (req, res, next) => {
     
     let studios = req.params.name.split('-');
-    let query = db.query(queries.selectAllAnimeWithStudios(studios), (err, result, fields) => {
+    let query = db.query(queries.selectAllAnimeWithStudios(studios.length), studios, (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });
@@ -64,7 +64,7 @@ animeRouter.get('/studio/:name', (req, res, next) => {
 animeRouter.get('/licencor/:name', (req, res, next) => {
     
     let licencors = req.params.name.split('-');
-    let query = db.query(queries.selectAllAnimeWithLicencors(licencors), (err, result, fields) => {
+    let query = db.query(queries.selectAllAnimeWithLicencors(licencors.length), licencor, (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });
@@ -73,7 +73,7 @@ animeRouter.get('/licencor/:name', (req, res, next) => {
   
 //Get all anime which name starts with specified string
 animeRouter.get('/selectallanimelike/:startswith', (req, res, next) => {
-    let query = db.query(queries.selectAllAnimeLike(req.params.startswith), (err, results, fields) => {
+    let query = db.query(queries.selectAllAnimeLike, [req.params.startswith], (err, results, fields) => {
       if (err) throw err;
       res.send(results);
     })
@@ -82,7 +82,7 @@ animeRouter.get('/selectallanimelike/:startswith', (req, res, next) => {
 
 //Get top n anime with best rating
 animeRouter.get('/toplist/:n', (req, res, next) => {
-    db.query(queries.selectNTopRatedAnime(req.params.n), (err, results, fields) => {
+    db.query(queries.selectNTopRatedAnime, [req.params.n], (err, results, fields) => {
         if (err) throw err;
         res.send(results);
     })

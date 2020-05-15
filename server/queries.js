@@ -4,43 +4,40 @@ const queries = {
     //TODO: Consider that the user wants to know which anime he rated
 
     //Select info about anime with name that contains provided string
-    selectAllAnimeLike (startsWith) {
-        return `SELECT * FROM Anime WHERE name LIKE '${startsWith}%'`;
-    },
+    selectAllAnimeLike : `SELECT * FROM Anime WHERE name LIKE ?`,
     //Select info about all anime
     selectAllAnime : "SELECT * FROM Anime",
 
     //Select info about anime with given name
-    selectAnimeWithName (name) {
-        //TODO: more information about comments
-        return `WITH genre_concat AS (
+    selectAnimeWithName : `WITH genre_concat AS (
             SELECT Anime.id AS 'id', GROUP_CONCAT(Genre.name SEPARATOR ', ') AS 'Genres'
             FROM Anime JOIN AnimeGenre ON Anime.id = AnimeGenre.anime_id JOIN Genre ON AnimeGenre.genre_id = Genre.id 
-            WHERE Anime.name = '${name}' 
+            WHERE Anime.name = ?
             GROUP BY Anime.id
         ),
         studio_concat AS (
             SELECT Anime.id AS 'id', GROUP_CONCAT(Studio.name SEPARATOR ', ') AS 'Studios'
             FROM Anime JOIN AnimeStudio ON Anime.id = AnimeStudio.anime_id JOIN Studio ON AnimeStudio.studio_id = Studio.id
-            WHERE Anime.name = '${name}' 
+            WHERE Anime.name = ?
             GROUP BY Anime.id
         ),
         producer_concat AS (
             SELECT Anime.id AS 'id', GROUP_CONCAT(Producer.name SEPARATOR ', ') AS 'Producers'
             FROM Anime JOIN AnimeProducer ON Anime.id = AnimeProducer.anime_id JOIN Producer ON AnimeProducer.producer_id = Producer.id
-            WHERE Anime.name = '${name}' 
+            WHERE Anime.name = ? 
             GROUP BY Anime.id
         ),
         licencor_concat AS (
             SELECT Anime.id AS 'id', GROUP_CONCAT(Licencor.name SEPARATOR ', ') AS 'Licencors'
             FROM Anime JOIN AnimeLicencor ON Anime.id = AnimeLicencor.anime_id JOIN Licencor ON AnimeLicencor.licencor_id = Licencor.id
-            WHERE Anime.name = '${name}' 
+            WHERE Anime.name = ? 
             GROUP BY Anime.id
         ),
         comment_concat AS (
-            SELECT Anime.id AS 'id', GROUP_CONCAT(UserComment.comment SEPARATOR '\\n') AS 'Comments'
+            SELECT Anime.id AS 'id', GROUP_CONCAT(CONCAT(User.username, ': ', UserComment.comment, ': ', UserComment.date, ': ', UserComment.id) SEPARATOR '\\n') AS 'Comments'
             FROM Anime JOIN UserComment ON Anime.id = UserComment.anime_id
-            WHERE Anime.name = '${name}' 
+            JOIN User on UserComment.user_id = User.id
+            WHERE Anime.name = ? 
             GROUP BY Anime.id
         )
         SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score, 
@@ -49,19 +46,18 @@ const queries = {
         JOIN studio_concat ON Anime.id = studio_concat.id
         JOIN producer_concat ON Anime.id = producer_concat.id
         JOIN licencor_concat ON Anime.id = licencor_concat.id
-        JOIN comment_concat ON Anime.id = comment_concat.id
-        JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id`;
-    },
+        LEFT JOIN comment_concat ON Anime.id = comment_concat.id
+        LEFT JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id`,
 
     //Select info about anime with some/all of genres
-    selectAllAnimeWithGenres (genres) {
+    selectAllAnimeWithGenres (numOfGenres) {
         let sql = `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score, COUNT(*) as 'Count'
                         FROM Anime JOIN AnimeGenre ON Anime.id = AnimeGenre.anime_id 
                         JOIN Genre ON AnimeGenre.genre_id = Genre.id
-                        JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
-                        WHERE Genre.name = '${genres[0]}'`;
-        for (let i = 0; i < genres.length; i++){
-            sql += ` OR Genre.name = '${genres[i]}'`;
+                        LEFT JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
+                        WHERE Genre.name = ? `;
+        for (let i = 0; i < numOfGenres-1; i++){
+            sql += ` OR Genre.name = ? `;
         }
         sql += `GROUP BY Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score
                       HAVING Count > 0
@@ -71,14 +67,14 @@ const queries = {
     },
 
     //Select info about anime made by some/all producers
-    selectAllAnimeWithProducers (producers) {
+    selectAllAnimeWithProducers (numOfProducers) {
         let sql = `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score, COUNT(*) as 'Count'
                         FROM Anime JOIN AnimeProducer ON Anime.id = AnimeProducer.anime_id 
                         JOIN Producer ON AnimeProducer.producer_id = Producer.id
-                        JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
-                        WHERE Producer.name = '${producers[0]}'`;
-        for (let i = 0; i < producers.length; i++){
-            sql += ` OR Producer.name = '${producers[i]}'`;
+                        LEFT JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
+                        WHERE Producer.name = ? `;
+        for (let i = 0; i < numOfProducers-1; i++){
+            sql += ` OR Producer.name = ? `;
         }
         sql += `GROUP BY Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score
                       HAVING Count > 0
@@ -88,14 +84,14 @@ const queries = {
     },
 
     //Select info about anime made by some/all studios
-    selectAllAnimeWithStudios (studios) {
+    selectAllAnimeWithStudios (numOfStudios) {
         let sql = `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score, COUNT(*) as 'Count'
                         FROM Anime JOIN AnimeStudio ON Anime.id = AnimeStudio.anime_id 
                         JOIN Studio ON AnimeStudio.studio_id = Studio.id
-                        JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
-                        WHERE Studio.name = '${studios[0]}'`;
-        for (let i = 0; i < studios.length; i++){
-            sql += ` OR Studio.name = '${studios[i]}'`;
+                        LEFT JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
+                        WHERE Studio.name = ? `;
+        for (let i = 0; i < numOfStudios-1; i++){
+            sql += ` OR Studio.name = ? `;
         }
         sql += `GROUP BY Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score
                       HAVING Count > 0
@@ -105,14 +101,14 @@ const queries = {
     },
 
     //Select info about anime made by some/all licencors
-    selectAllAnimeWithLicencors (licencors) {
+    selectAllAnimeWithLicencors (numOfLicencors) {
         let sql = `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score, COUNT(*) as 'Count'
                         FROM Anime JOIN AnimeLicencor ON Anime.id = AnimeLicencor.anime_id 
                         JOIN Licencor ON AnimeLicencor.licencor_id = Licencor.id
-                        JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
-                        WHERE Licencor.name = '${licencors[0]}'`;
-        for (let i = 0; i < licencors.length; i++){
-            sql += ` OR Licencor.name = '${licencors[i]}'`;
+                        LEFT JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
+                        WHERE Licencor.name = ? `;
+        for (let i = 0; i < numOfLicencors-1; i++){
+            sql += ` OR Licencor.name = ? `;
         }
         sql += `GROUP BY Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score
                       HAVING Count > 0
@@ -122,122 +118,94 @@ const queries = {
     },
 
     //Select info about anime with best ratings
-    selectNTopRatedAnime (n) { 
-        return `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score 
+    selectNTopRatedAnime : `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score 
                 FROM Anime
                 JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
                 ORDER BY AnimeTotalScore.total_score
-                LIMIT ${n}`;
-    },
+                LIMIT ?`,
     /**************************************     Queries for anime info for both logged and unlogged user    **************************************/
 
 
 
     /*************************************************     Queries needed for log in/sign up    *************************************************/
-    selectUserWithUsername (username){
-        return `SELECT * FROM User WHERE username = '${username}'`;
-    },
-    selectUserWithEmail (email){
-        return `SELECT * FROM User WHERE email = '${email}'`;
-    },
-    selectUserWithUsernameAndPassword (username, password){
-        return `SELECT * FROM User WHERE username = '${username}' AND password = '${password}'`;
-    },
+    selectUserWithUsername : `SELECT * FROM User WHERE username = ?`,
 
-    insertUser(username, password, email){
-        return `INSERT INTO User (username, password, email) VALUES('${username}', '${password}', '${email}')`;
-    },
+    selectUserWithEmail : `SELECT * FROM User WHERE email = ?`,
 
-    updatePassword(username, oldPassword, newPassword) {
-        return `UPDATE User SET password = '${newPassword}' WHERE username = '${username}' AND password = '${oldPassword}'`;
-    },
+    selectUserWithUsernameAndPassword : `SELECT * FROM User WHERE username = ? AND password = ?`,
+
+    insertUser : `INSERT INTO User (username, password, email) VALUES(?, ?, ?)`,
+
+    updatePassword : `UPDATE User SET password = ? WHERE username = ? AND password = ?`,
     
-    updateUsername(oldUsername,  newUsername, password) {
-        return `UPDATE User SET username = '${newUsername}' WHERE username = '${oldUsername}' AND password = '${password}'`;
-    },
+    updateUsername : `UPDATE User SET username = ? WHERE username = ? AND password = ?`,
 
-    updateEmail(username, password, newEmail){
-        return `UPDATE User SET email = '${newEmail}' WHERE username = '${username}' AND password = '${password}'`;
-    },
+    updateEmail : `UPDATE User SET email = ? WHERE username = ? AND password = ?`,
     /*************************************************     Queries needed for log in/sign up    *************************************************/
 
 
 
     /*********************************************     Queries for anime info for specific user    *********************************************/
-    selectAllWatchedAnimeByUser (username) {
-        return `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score
+    selectAllWatchedAnimeByUser : `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score
         FROM Anime 
-        JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
+        LEFT JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
         WHERE EXISTS (SELECT *
                                  FROM UserWatched JOIN User ON User.id = UserWatched.user_id
                                  WHERE UserWatched.anime_id = Anime.id
-                                 AND User.username = '${username}')
-        ORDER BY AnimeTotalScore.total_score DESC`;
-    }, 
-    selectAllWishedAnimeByUser (username) {
-        return `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score
+                                 AND User.username = ?)
+        ORDER BY AnimeTotalScore.total_score DESC`, 
+
+    selectAllWishedAnimeByUser : `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score
         FROM Anime 
-        JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
+        LEFT JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
         WHERE EXISTS (SELECT *
                                  FROM UserWish JOIN User ON User.id = UserWish.user_id
                                  WHERE UserWish.anime_id = Anime.id
-                                 AND User.username = '${username}')
-        ORDER BY AnimeTotalScore.total_score DESC`;
-    }, 
-    selectAllRatedAnimeByUser (username) {
-        return `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score, UserScore.score
+                                 AND User.username = ?)
+        ORDER BY AnimeTotalScore.total_score DESC`, 
+
+    selectAllRatedAnimeByUser : `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score, UserScore.score
         FROM Anime JOIN UserScore ON Anime.id = UserScore.anime_id
         JOIN User ON User.id = UserScore.user_id
         JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
-        WHERE User.username = '${username}'
-        ORDER BY AnimeTotalScore.total_score DESC`;
-    }, 
-    insertRating(username, animeName, score){
-        return `INSERT INTO UserScore (user_id, anime_id, score) VALUES 
-        ((SELECT id FROM User WHERE username = '${username}' LIMIT 1), (SELECT id FROM Anime where name = "${animeName}" LIMIT 1), ${score})`;
-    },
+        WHERE User.username = ?
+        ORDER BY AnimeTotalScore.total_score DESC`, 
 
-    insertComment(username, animeName, comment){
-        //const currentDate = Date.now().toString();
-        return `INSERT INTO UserComment (user_id, anime_id, comment, date) VALUES 
-        ((SELECT id FROM User WHERE username = '${username}' LIMIT 1), (SELECT id FROM Anime where name = "${animeName}" LIMIT 1), '${comment}', NOW())`;
-    },
+    insertRating : `INSERT INTO UserScore (user_id, anime_id, score) VALUES 
+        ((SELECT id FROM User WHERE username = ? LIMIT 1), (SELECT id FROM Anime where name = ? LIMIT 1), ?)`,
 
-    insertAnimeToWatchedList(username, animeName){
-        return `INSERT INTO UserWatched (user_id, anime_id) VALUES
-        ((SELECT id FROM User WHERE username = '${username}' LIMIT 1), (SELECT id FROM Anime WHERE name = "${animeName}" LIMIT 1))`;
-    },
+    insertComment : `INSERT INTO UserComment (user_id, anime_id, comment, date) VALUES 
+        ((SELECT id FROM User WHERE username = ? LIMIT 1), (SELECT id FROM Anime where name = ? LIMIT 1), ?, NOW())`,
 
-    insertAnimeToWishList(username, animeName){
-        return `INSERT INTO UserWish (user_id, anime_id) VALUES
-        ((SELECT id FROM User WHERE username = '${username}' LIMIT 1), (SELECT id FROM Anime WHERE name = "${animeName}" LIMIT 1))`;
-    },
+    insertAnimeToWatchedList : `INSERT INTO UserWatched (user_id, anime_id) VALUES
+        ((SELECT id FROM User WHERE username = ? LIMIT 1), (SELECT id FROM Anime WHERE name = ? LIMIT 1))`,
 
-    removeAnimeFromWatchedList(username, animeName){
-        return `DELETE FROM UserWatched WHERE 
-                user_id  = (SELECT id FROM User WHERE username = '${username}' LIMIT 1) and
-                anime_id = (SELECT id FROM Anime WHERE name = "${animeName}" LIMIT 1)`;
-    },
+    insertAnimeToWishList : `INSERT INTO UserWish (user_id, anime_id) VALUES
+        ((SELECT id FROM User WHERE username = ? LIMIT 1), (SELECT id FROM Anime WHERE name = ? LIMIT 1))`,
 
-    removeAnimeFromWishList(username, animeName){
-        return `DELETE FROM UserWish WHERE 
-                user_id  = (SELECT id FROM User WHERE username = '${username}' LIMIT 1) and
-                anime_id = (SELECT id FROM Anime WHERE name = "${animeName}" LIMIT 1)`;
-    },
+    removeAnimeFromWatchedList : `DELETE FROM UserWatched WHERE 
+                user_id  = (SELECT id FROM User WHERE username = ? LIMIT 1) and
+                anime_id = (SELECT id FROM Anime WHERE name = ? LIMIT 1)`,
 
+    removeAnimeFromWishList : `DELETE FROM UserWish WHERE 
+                user_id  = (SELECT id FROM User WHERE username = ? LIMIT 1) and
+                anime_id = (SELECT id FROM Anime WHERE name = ? LIMIT 1)`,
 
-    editComment(commentId, newComment){
-        return `UPDATE UserComment SET 
-                comment = "${newComment}" WHERE
-                id = ${commentId}`;
-    },
+    editComment : `UPDATE UserComment SET 
+                comment = ? WHERE
+                id = ?`,
 
-    updateAnimeScore(username, animeName, newScore){
-        return `UPDATE UserScore SET
-        score = ${newScore} WHERE
-        user_id = (SELECT id FROM User WHERE username = '${username}' LIMIT 1) and
-        anime_id = (SELECT id FROM Anime WHERE name = "${animeName}" LIMIT 1)`;
-    },
+    deleteComment : `DELETE FROM UserComment WHERE
+                id = ?`,
+
+    updateAnimeScore : `UPDATE UserScore SET
+        score = ? WHERE
+        user_id = (SELECT id FROM User WHERE username = ? LIMIT 1) and
+        anime_id = (SELECT id FROM Anime WHERE name = ? LIMIT 1)`,
+
+    deleteAnimeScore : `DELETE FROM UserScore WHERE
+        user_id = (SELECT id FROM User WHERE username = ? LIMIT 1) and
+        anime_id = (SELECT id FROM Anime WHERE name = ? LIMIT 1)`,
 
 
     /*********************************************     Queries for anime info for specific user    *********************************************/

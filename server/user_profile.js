@@ -35,7 +35,7 @@ app.post('/signup', userMiddleware.isUserPassEmpty, userMiddleware.checkEmail, u
         res.status(400).send("Email already exists");
     } else {
         const {username, password, email} = req.body;
-        let query = db.query(queries.insertUser(username, password, email), (err, result) => {
+        let query = db.query(queries.insertUser, [username, password, email], (err, result) => {
             if (err) throw err;
             next();
         });
@@ -63,7 +63,7 @@ app.get('/logout', (req, res, next) => {
 //Changing password
 app.post('/changepassword', userMiddleware.isUserLoggedIn, checkIsPasswordEnough, (req, res, next) => {
 
-    let query = db.query(queries.updatePassword(req.user.username, req.user.password, req.body.password), (err, result) => {
+    let query = db.query(queries.updatePassword, [req.user.username, req.user.password, req.body.password], (err, result) => {
         if (err) throw err;
         const newUserInfo = req.user.username + ' ' + req.user.email + ' ' + req.body.password;
         client.set(req.cookies.loggedInUser, newUserInfo, (err, reply) => {});
@@ -75,7 +75,7 @@ app.post('/changepassword', userMiddleware.isUserLoggedIn, checkIsPasswordEnough
 //Changing E-mail adress
 app.put('/changeemail', chechEMailFormat, userMiddleware.isUserLoggedIn, (req, res, next) => {
 
-    let query = db.query(queries.updateEmail(req.user.username, req.user.password, req.body.email), (err, result) => {
+    let query = db.query(queries.updateEmail, [req.user.username, req.user.password, req.body.email], (err, result) => {
         if(err) throw err;
         const newUserInfo = req.user.username + ' ' + req.body.email + ' ' + req.user.password;
         client.set(req.cookies.loggedInUser, newUserInfo, (err, reply) => {});
@@ -93,7 +93,7 @@ app.post('/changeusername', userMiddleware.isUserLoggedIn, userMiddleware.checkU
         res.status(400).send("Username already exists");
     } else {
 
-        let query = db.query(queries.updateUsername(req.user.username, req.body.username, req.user.password), (err, result) => {
+        let query = db.query(queries.updateUsername, [req.user.username, req.body.username, req.user.password], (err, result) => {
             if (err) throw err;
             const newUserInfo = req.body.username + ' ' + req.user.email + ' ' + req.user.password;
             client.set(req.cookies.loggedInUser, newUserInfo, (err, reply) => {});
