@@ -1,33 +1,22 @@
+/// Routes for:
+//      1. sign up
+//      2. log in
+//      3. log out
+//      4. forgot password
+//      5. recovery password
+//      6. update password
+//      7. change password
+//      8. change email
+//      9. change username
+
 const {client,  db,  express} = require('./global');
 const queries = require('./queries');
 const userMiddleware = require('./user_middleware');
 
 const app = express();
 
-//Checking if password is strong enough. Used in sign up and when changing password. Should this be in the middleware file?
-function checkIsPasswordEnough(req, res,  next) {
-
-    if(req.body.password.length >= 6 && req.body.password.match(/[a-z]/) && req.body.password.match(/[A-Z]/) && req.body.password.match(/[0-9]/)) {
-        next();
-    } else {
-        res.status(400).send("Password is not strong enough");
-    }
-}
-
-//Checking if E-mail format is good. Should this be in the middleware file?
-function chechEMailFormat(req, res, next){
-
-    var EmailRegEx = /^([a-z]|[A-Z]|[0-9]|[.!^#&$%\/\\])+?[@]([a-z]|[A-Z])*?[.]([a-z]|[A-Z])+$/;
-    
-    if(EmailRegEx.test(req.body.email)){
-        next();        
-    }else{
-        res.status(400).send("Bad E-mail format");
-    }   
-}
-
-//Creating account
-app.post('/signup', userMiddleware.isUserPassEmpty, userMiddleware.checkEmail, userMiddleware.checkUsername, checkIsPasswordEnough, (req, res, next) => {
+//Creating account. req.body = {username: ..., password:..., email:...}
+app.post('/signup', userMiddleware.isUserPassEmpty, userMiddleware.chechEMailFormat, userMiddleware.checkEmail, userMiddleware.checkUsername, userMiddleware.checkIsPasswordEnough, (req, res, next) => {
 
     if (req.usernameExists){
         res.status(400).send("Username already exists");
@@ -43,7 +32,7 @@ app.post('/signup', userMiddleware.isUserPassEmpty, userMiddleware.checkEmail, u
 
 }, userMiddleware.saveSession);
 
-//Logging into account
+//Logging into account. req.body = {username: ..., password:...}
 app.post('/login', userMiddleware.isUserPassEmpty, userMiddleware.checkUsername, userMiddleware.checkPassword, userMiddleware.saveSession);
 
 //Logging out
@@ -60,47 +49,67 @@ app.get('/logout', (req, res, next) => {
     });
 });
 
-//Changing password
-app.post('/changepassword', userMiddleware.isUserLoggedIn, checkIsPasswordEnough, (req, res, next) => {
 
-    let query = db.query(queries.updatePassword, [req.user.username, req.user.password, req.body.password], (err, result) => {
+
+/****************************************    NEXT THREE ROUTES NEED TO BE EXECUTED SEQUENTALLY!    ****************************************/
+
+//Forgotten password. req.body = {username: ..., email:...}
+app.post('/forgotpassword', userMiddleware.chechEMailFormat, userMiddleware.checkUsernameAndEmail, userMiddleware.recoveryCode);
+
+//Recovery code for forgotten password. req.body = {username: ..., email:..., recoveryCode:...}
+app.post('/recoverypassword', (req, res, next) => {
+
+    const code = client.get(`User '${req.body.username}' with email '${req.body.email}' forgot password`, (err, result) => {
         if (err) throw err;
-        const newUserInfo = req.user.username + ' ' + req.user.email + ' ' + req.body.password;
-        client.set(req.cookies.loggedInUser, newUserInfo, (err, reply) => {});
-        res.send("Upit uspeo\n");
+        if(result === req.body.recoveryCode) {
+                
+            res.redirect('/updatepassword');
+        } else if (result === null) {
+            res.send(`Redis nije uspeo da nadje kod '${result}'`);
+        } else {
+            res.status(400).send('Pogresan kod!')
+        }
     });
-
 });
 
-//Changing E-mail adress
-app.put('/changeemail', chechEMailFormat, userMiddleware.isUserLoggedIn, (req, res, next) => {
+//Changing password after recovery (when logged out). req.body = {username: ..., password:..., email:...}
+app.post('/updatepassword', userMiddleware.checkIsPasswordEnough, userMiddleware.updatePassword, userMiddleware.saveSession);
 
-    let query = db.query(queries.updateEmail, [req.user.username, req.user.password, req.body.email], (err, result) => {
+/****************************************    ABOVE THREE ROUTES NEED TO BE EXECUTED SEQUENTALLY!    ****************************************/
+
+
+
+//Changing password (when already logged in). req.body = {password:...}
+app.post('/changepassword', userMiddleware.isUserLoggedIn, userMiddleware.checkIsPasswordEnough, userMiddleware.updatePassword, userMiddleware.updateSession);
+
+//Changing E-mail adress. req.body = {email:...}
+app.put('/changeemail', userMiddleware.isUserLoggedIn, userMiddleware.chechEMailFormat, (req, res, next) => {
+
+    let query = db.query(queries.updateEmail, [req.body.email, req.body.currentUsername, req.body.currentPassword], (err, result) => {
         if(err) throw err;
-        const newUserInfo = req.user.username + ' ' + req.body.email + ' ' + req.user.password;
-        client.set(req.cookies.loggedInUser, newUserInfo, (err, reply) => {});
-        res.send('Upit uspeo! Email promenjen!\n');
+        next();
     });
 
-});
+}, userMiddleware.updateSession);
 
-
-//TODO: What if use tries to change username into their own username? Currently it should say "Username already exists"
-//Changing username
+//Changing username. req.body = {username:...}
 app.post('/changeusername', userMiddleware.isUserLoggedIn, userMiddleware.checkUsername, (req, res, next) => {
 
+    console.log(req.body.username);
     if(req.usernameExists) {
-        res.status(400).send("Username already exists");
+        if(req.body.currentUsername === req.body.username) {
+            res.status(400).send("Username is the same")
+        } else {
+            res.status(400).send("Username already exists");
+        }
     } else {
 
-        let query = db.query(queries.updateUsername, [req.user.username, req.body.username, req.user.password], (err, result) => {
+        let query = db.query(queries.updateUsername, [req.body.username, req.body.currentUsername, req.body.currentPassword], (err, result) => {
             if (err) throw err;
-            const newUserInfo = req.body.username + ' ' + req.user.email + ' ' + req.user.password;
-            client.set(req.cookies.loggedInUser, newUserInfo, (err, reply) => {});
-            res.send("Upit uspeo\n");
+            next();
         });
     }
 
-});
+}, userMiddleware.updateSession);
 
 module.exports = app;
