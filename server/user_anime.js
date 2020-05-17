@@ -1,6 +1,6 @@
 const {db,  express} = require('./global');
-const queries = require('./queries');
-const {isUserLoggedIn} = require('./user_middleware');
+const queries = require('./queries/user_queries');
+const {isUserLoggedIn} = require('./middleware/user_session');
 
 const app = express();
 

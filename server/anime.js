@@ -1,9 +1,8 @@
 const {db,  express} = require('./global');
-const queries = require('./queries');
+const queries = require('./queries/anime_queries.js');
 
 
 //ruter sa korenom putanjom '/anime' koji ce se ukljuciti u glavni express fajl 
-//TODO: napraviti glavnu Express aplikaciju i ukljuciti ovaj ruter
 const animeRouter = express.Router();
 
 

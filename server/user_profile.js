@@ -10,30 +10,20 @@
 //      9. change username
 
 const {client,  db,  express} = require('./global');
-const queries = require('./queries');
-const userMiddleware = require('./user_middleware');
+const queries = require('./queries/login_queries');
+const userSession = require('./middleware/user_session');
+const userInputFormatValidation = require('./middleware/user_input_format');
+const userInputDatabaseValidation = require('./middleware/user_input_database_validation')
+const userMiddleware = require('./middleware/user_middleware');
 
 const app = express();
 
 //Creating account. req.body = {username: ..., password:..., email:...}
-app.post('/signup', userMiddleware.isUserPassEmpty, userMiddleware.chechEMailFormat, userMiddleware.checkEmail, userMiddleware.checkUsername, userMiddleware.checkIsPasswordEnough, (req, res, next) => {
-
-    if (req.usernameExists){
-        res.status(400).send("Username already exists");
-    } else if (req.emailExists){
-        res.status(400).send("Email already exists");
-    } else {
-        const {username, password, email} = req.body;
-        let query = db.query(queries.insertUser, [username, password, email], (err, result) => {
-            if (err) throw err;
-            next();
-        });
-    }
-
-}, userMiddleware.saveSession);
+app.post('/signup', userInputFormatValidation.isUserPassEmpty, userInputFormatValidation.checkEMailFormat, userInputDatabaseValidation.checkEmail,
+                    userInputDatabaseValidation.checkUsername, userInputFormatValidation.checkIsPasswordEnough, userMiddleware.inserUser, userSession.saveSession);
 
 //Logging into account. req.body = {username: ..., password:...}
-app.post('/login', userMiddleware.isUserPassEmpty, userMiddleware.checkUsername, userMiddleware.checkPassword, userMiddleware.saveSession);
+app.post('/login', userInputFormatValidation.isUserPassEmpty, userInputDatabaseValidation.checkUsername, userInputDatabaseValidation.checkPassword, userSession.saveSession);
 
 //Logging out
 app.get('/logout', (req, res, next) => {
@@ -49,12 +39,10 @@ app.get('/logout', (req, res, next) => {
     });
 });
 
-
-
 /****************************************    NEXT THREE ROUTES NEED TO BE EXECUTED SEQUENTALLY!    ****************************************/
 
 //Forgotten password. req.body = {username: ..., email:...}
-app.post('/forgotpassword', userMiddleware.chechEMailFormat, userMiddleware.checkUsernameAndEmail, userMiddleware.recoveryCode);
+app.post('/forgotpassword', userInputFormatValidation.checkEMailFormat, userInputDatabaseValidation.checkUsernameAndEmail, userSession.recoveryCode);
 
 //Recovery code for forgotten password. req.body = {username: ..., email:..., recoveryCode:...}
 app.post('/recoverypassword', (req, res, next) => {
@@ -73,27 +61,20 @@ app.post('/recoverypassword', (req, res, next) => {
 });
 
 //Changing password after recovery (when logged out). req.body = {username: ..., password:..., email:...}
-app.post('/updatepassword', userMiddleware.checkIsPasswordEnough, userMiddleware.updatePassword, userMiddleware.saveSession);
+app.put('/updatepassword', userInputFormatValidation.checkIsPasswordEnough, userMiddleware.updatePassword, userSession.saveSession);
 
 /****************************************    ABOVE THREE ROUTES NEED TO BE EXECUTED SEQUENTALLY!    ****************************************/
 
 
 
 //Changing password (when already logged in). req.body = {password:...}
-app.post('/changepassword', userMiddleware.isUserLoggedIn, userMiddleware.checkIsPasswordEnough, userMiddleware.updatePassword, userMiddleware.updateSession);
+app.put('/changepassword', userSession.isUserLoggedIn, userInputFormatValidation.checkIsPasswordEnough, userMiddleware.updatePassword, userSession.updateSession);
 
 //Changing E-mail adress. req.body = {email:...}
-app.put('/changeemail', userMiddleware.isUserLoggedIn, userMiddleware.chechEMailFormat, (req, res, next) => {
-
-    let query = db.query(queries.updateEmail, [req.body.email, req.body.currentUsername, req.body.currentPassword], (err, result) => {
-        if(err) throw err;
-        next();
-    });
-
-}, userMiddleware.updateSession);
+app.put('/changeemail', userSession.isUserLoggedIn, userInputFormatValidation.checkEMailFormat, userInputDatabaseValidation.checkEmail, userMiddleware.updateEmail, userSession.updateSession);
 
 //Changing username. req.body = {username:...}
-app.post('/changeusername', userMiddleware.isUserLoggedIn, userMiddleware.checkUsername, (req, res, next) => {
+app.put('/changeusername', userSession.isUserLoggedIn, userInputDatabaseValidation.checkUsername, (req, res, next) => {
 
     console.log(req.body.username);
     if(req.usernameExists) {
@@ -103,13 +84,9 @@ app.post('/changeusername', userMiddleware.isUserLoggedIn, userMiddleware.checkU
             res.status(400).send("Username already exists");
         }
     } else {
-
-        let query = db.query(queries.updateUsername, [req.body.username, req.body.currentUsername, req.body.currentPassword], (err, result) => {
-            if (err) throw err;
-            next();
-        });
+        next();
     }
 
-}, userMiddleware.updateSession);
+}, userMiddleware.updateUsername, userSession.updateSession);
 
 module.exports = app;
