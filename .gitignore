@@ -44,3 +44,5 @@ yarn-error.log
 baseline.json
 server/node_modules/*
 server/package-lock.json
+server/global.js
+*.rdb

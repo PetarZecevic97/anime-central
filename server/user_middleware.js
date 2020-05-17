@@ -18,7 +18,7 @@ const userMiddleware = {
     //Checking if username exists. Used for both log in and sign up.
     checkUsername(req, res, next){
 
-        let query = db.query(queries.selectUserWithUsername(req.body.username), (err, results, fields) => {
+        let query = db.query(queries.selectUserWithUsername, [req.body.username], (err, results, fields) => {
 
             if (err) throw err;
             
@@ -36,7 +36,7 @@ const userMiddleware = {
 
         if (req.body.email){
 
-            let query = db.query(queries.selectUserWithEmail(req.body.email), (err, results, fields) => {
+            let query = db.query(queries.selectUserWithEmail, [req.body.email], (err, results, fields) => {
 
                 if (err) throw err;
                 
@@ -58,7 +58,7 @@ const userMiddleware = {
     checkPassword(req, res, next){
 
         if(req.usernameExists) {
-            let query = db.query(queries.selectUserWithUsernameAndPassword(req.body.username, req.body.password), (err, results, fields) => {
+            let query = db.query(queries.selectUserWithUsernameAndPassword, [req.body.username, req.body.password], (err, results, fields) => {
                 if (err) throw err;
         
                 if (results.length == 0){
