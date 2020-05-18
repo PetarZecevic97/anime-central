@@ -81,7 +81,23 @@ animeRouter.get('/selectallanimelike/:startswith', (req, res, next) => {
 
 //Get top n anime with best rating
 animeRouter.get('/toplist/:n', (req, res, next) => {
-    db.query(queries.selectNTopRatedAnime, [req.params.n], (err, results, fields) => {
+    db.query(queries.selectNTopRatedAnime, [Number(req.params.n)], (err, results, fields) => {
+        if (err) throw err;
+        res.send(results);
+    })
+});
+
+//Get top n latest anime
+animeRouter.get('/latestlist/:n', (req, res, next) => {
+    db.query(queries.selectNLatestAnime, [Number(req.params.n)], (err, results, fields) => {
+        if (err) throw err;
+        res.send(results);
+    })
+});
+
+//Get top n most popular anime
+animeRouter.get('/popularlist/:n', (req, res, next) => {
+    db.query(queries.selectNMostPopularAnime, [Number(req.params.n)], (err, results, fields) => {
         if (err) throw err;
         res.send(results);
     })
