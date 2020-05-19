@@ -4,7 +4,7 @@ const animeQueries = {
     //TODO: Consider that the user wants to know which anime he rated
 
     //Select info about anime with name that contains provided string
-    selectAllAnimeLike : `SELECT * FROM Anime WHERE name LIKE '?%'`,
+    selectAllAnimeLike : `SELECT * FROM Anime WHERE name LIKE ?`,
     //Select info about all anime
     selectAllAnime : "SELECT * FROM Anime",
 
@@ -34,7 +34,8 @@ const animeQueries = {
             GROUP BY Anime.id
         ),
         comment_concat AS (
-            SELECT Anime.id AS 'id', GROUP_CONCAT(CONCAT(User.username, ': ', UserComment.comment, ': ', UserComment.date, ': ', UserComment.id) SEPARATOR '\\n') AS 'Comments'
+            SELECT Anime.id AS 'id',
+            GROUP_CONCAT(CONCAT(User.username, ': ', UserComment.comment, ': ', UserComment.date, ': ', UserComment.id) SEPARATOR '\\n') AS 'Comments'
             FROM Anime JOIN UserComment ON Anime.id = UserComment.anime_id
             JOIN User on UserComment.user_id = User.id
             WHERE Anime.name = ? 
@@ -127,7 +128,7 @@ const animeQueries = {
                 FROM Anime
                 LEFT JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
                 LEFT JOIN AnimeTotalViews ON Anime.id = AnimeTotalViews.anime_id
-                ORDER BY AnimeTotalScore.total_score
+                ORDER BY AnimeTotalScore.total_score DESC
                 LIMIT ?`,
 
     //Select info about latest anime
@@ -135,7 +136,7 @@ const animeQueries = {
                 FROM Anime
                 LEFT JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
                 LEFT JOIN AnimeTotalViews ON Anime.id = AnimeTotalViews.anime_id
-                ORDER BY Anime.date_aired
+                ORDER BY Anime.date_aired DESC
                 LIMIT ?`,
 
     //Select info about most popular
@@ -143,7 +144,7 @@ const animeQueries = {
                 FROM Anime
                 LEFT JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
                 LEFT JOIN AnimeTotalViews ON Anime.id = AnimeTotalViews.anime_id
-                ORDER BY AnimeTotalViews.total_views
+                ORDER BY AnimeTotalViews.total_views DESC
                 LIMIT ?`,
     /**************************************     Queries for anime info for both logged and unlogged user    **************************************/
 

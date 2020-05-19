@@ -63,7 +63,7 @@ animeRouter.get('/studio/:name', (req, res, next) => {
 animeRouter.get('/licencor/:name', (req, res, next) => {
     
     let licencors = req.params.name.split('-');
-    let query = db.query(queries.selectAllAnimeWithLicencors(licencors.length), licencor, (err, result, fields) => {
+    let query = db.query(queries.selectAllAnimeWithLicencors(licencors.length), licencors, (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });
@@ -71,8 +71,9 @@ animeRouter.get('/licencor/:name', (req, res, next) => {
 });
   
 //Get all anime which name starts with specified string
+//TODO: Can % be put in anime_queries?
 animeRouter.get('/selectallanimelike/:startswith', (req, res, next) => {
-    let query = db.query(queries.selectAllAnimeLike, [req.params.startswith], (err, results, fields) => {
+    let query = db.query(queries.selectAllAnimeLike, [req.params.startswith + '%'], (err, results, fields) => {
       if (err) throw err;
       res.send(results);
     })
