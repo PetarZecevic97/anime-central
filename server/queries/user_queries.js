@@ -1,6 +1,14 @@
 const userQueries = {
 
     /*********************************************     Queries for anime info for specific user    *********************************************/
+    selectAnimeInfoForUser: `SELECT UserWatched.anime_id, -1 AS 'Type or score'
+                            FROM UserWatched WHERE EXISTS (SELECT * FROM User WHERE User.username = ? AND UserWatched.user_id = User.id)
+                            UNION
+                            SELECT UserWish.anime_id, -2 AS 'Type or score'
+                            FROM UserWish WHERE  EXISTS (SELECT * FROM User WHERE User.username = ? AND UserWish.user_id = User.id)
+                            UNION
+                            SELECT UserScore.anime_id, UserScore.score AS 'Type or score'
+                            FROM UserScore WHERE  EXISTS (SELECT * FROM User WHERE User.username = ? AND UserScore.user_id = User.id)`,
     selectAllWatchedAnimeByUser : `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score
         FROM Anime 
         LEFT JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id

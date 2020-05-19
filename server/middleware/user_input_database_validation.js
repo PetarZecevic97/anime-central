@@ -5,7 +5,7 @@ const userInputDatabaseValidation = {
     //Checking if username exists in database. Used for both log in, sign up and change username.
     checkUsername(req, res, next){
 
-        let query = db.query(queries.selectUserWithUsername, [req.body.username], (err, results, fields) => {
+        db.query(queries.selectUserWithUsername, [req.body.username], (err, results, fields) => {
 
             if (err) throw err;
             
@@ -13,7 +13,6 @@ const userInputDatabaseValidation = {
                 req.usernameExists = false;
             } else {
                 req.usernameExists = true;
-                console.log(results);
             }
             next();
         });
@@ -24,7 +23,7 @@ const userInputDatabaseValidation = {
 
         if (req.body.email){
 
-            let query = db.query(queries.selectUserWithEmail, [req.body.email], (err, results, fields) => {
+            db.query(queries.selectUserWithEmail, [req.body.email], (err, results, fields) => {
 
                 if (err) throw err;
                 
@@ -45,7 +44,7 @@ const userInputDatabaseValidation = {
     checkPassword(req, res, next){
 
         if(req.usernameExists) {
-            let query = db.query(queries.selectUserWithUsernameAndPassword, [req.body.username, req.body.password], (err, results, fields) => {
+            db.query(queries.selectUserWithUsernameAndPassword, [req.body.username, req.body.password], (err, results, fields) => {
                 if (err) throw err;
         
                 if (results.length == 0){

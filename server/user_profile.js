@@ -9,8 +9,7 @@
 //      8. change email
 //      9. change username
 
-const {client,  db,  express} = require('./global');
-const queries = require('./queries/login_queries');
+const {client, express} = require('./global');
 const userSession = require('./middleware/user_session');
 const userInputFormatValidation = require('./middleware/user_input_format');
 const userInputDatabaseValidation = require('./middleware/user_input_database_validation')
