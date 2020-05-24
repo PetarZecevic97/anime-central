@@ -1,26 +1,32 @@
 const {db,  express} = require('./global');
-const queries = require('./queries');
+const queries = require('./queries/anime_queries.js');
 
 
 //ruter sa korenom putanjom '/anime' koji ce se ukljuciti u glavni express fajl 
-//TODO: napraviti glavnu Express aplikaciju i ukljuciti ovaj ruter
 const animeRouter = express.Router();
 
 
 // Get all anime:  /anime
 animeRouter.get('/', (req, res, next) => {
 
-    let query = db.query(queries.selectAllAnime, (err, result, fields) => {
+    db.query(queries.selectAllAnime, (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });
 
 });
 
+// Get image of the anime with specified name: /anime/:name
+animeRouter.get('/picture/:name', (req, res, next) => {
+
+    res.sendFile("/home/aleksandra/Documents/faks/8.semestar/PzV/projekat/12-animecentral/database/anime_pictures/" + req.params.name + ".png");
+
+});
+
 // Get anime with specified name:  /anime/:name  
 animeRouter.get('/:name', (req, res, next) => {
 
-    let query = db.query(queries.selectAnimeWithName, [req.params.name, req.params.name, req.params.name, req.params.name, req.params.name], (err, result, fields) => {
+    db.query(queries.selectAnimeWithName, [req.params.name, req.params.name, req.params.name, req.params.name, req.params.name], (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });
@@ -31,7 +37,7 @@ animeRouter.get('/:name', (req, res, next) => {
 animeRouter.get('/genre/:name', (req, res, next) => {
     
     let genres = req.params.name.split('-');
-    let query = db.query(queries.selectAllAnimeWithGenres(genres.length), genres, (err, result, fields) => {
+    db.query(queries.selectAllAnimeWithGenres(genres.length), genres, (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });
@@ -42,7 +48,7 @@ animeRouter.get('/genre/:name', (req, res, next) => {
 animeRouter.get('/producer/:name', (req, res, next) => {
     
     let producers = req.params.name.split('-');
-    let query = db.query(queries.selectAllAnimeWithProducers(producers.length), producers, (err, result, fields) => {
+    db.query(queries.selectAllAnimeWithProducers(producers.length), producers, (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });
@@ -53,7 +59,7 @@ animeRouter.get('/producer/:name', (req, res, next) => {
 animeRouter.get('/studio/:name', (req, res, next) => {
     
     let studios = req.params.name.split('-');
-    let query = db.query(queries.selectAllAnimeWithStudios(studios.length), studios, (err, result, fields) => {
+    db.query(queries.selectAllAnimeWithStudios(studios.length), studios, (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });
@@ -64,7 +70,7 @@ animeRouter.get('/studio/:name', (req, res, next) => {
 animeRouter.get('/licencor/:name', (req, res, next) => {
     
     let licencors = req.params.name.split('-');
-    let query = db.query(queries.selectAllAnimeWithLicencors(licencors.length), licencor, (err, result, fields) => {
+    db.query(queries.selectAllAnimeWithLicencors(licencors.length), licencors, (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });
@@ -72,8 +78,9 @@ animeRouter.get('/licencor/:name', (req, res, next) => {
 });
   
 //Get all anime which name starts with specified string
+//TODO: Can % be put in anime_queries?
 animeRouter.get('/selectallanimelike/:startswith', (req, res, next) => {
-    let query = db.query(queries.selectAllAnimeLike, [req.params.startswith], (err, results, fields) => {
+    db.query(queries.selectAllAnimeLike, [req.params.startswith + '%'], (err, results, fields) => {
       if (err) throw err;
       res.send(results);
     })
@@ -82,7 +89,23 @@ animeRouter.get('/selectallanimelike/:startswith', (req, res, next) => {
 
 //Get top n anime with best rating
 animeRouter.get('/toplist/:n', (req, res, next) => {
-    db.query(queries.selectNTopRatedAnime, [req.params.n], (err, results, fields) => {
+    db.query(queries.selectNTopRatedAnime, [Number(req.params.n)], (err, results, fields) => {
+        if (err) throw err;
+        res.send(results);
+    })
+});
+
+//Get top n latest anime
+animeRouter.get('/latestlist/:n', (req, res, next) => {
+    db.query(queries.selectNLatestAnime, [Number(req.params.n)], (err, results, fields) => {
+        if (err) throw err;
+        res.send(results);
+    })
+});
+
+//Get top n most popular anime
+animeRouter.get('/popularlist/:n', (req, res, next) => {
+    db.query(queries.selectNMostPopularAnime, [Number(req.params.n)], (err, results, fields) => {
         if (err) throw err;
         res.send(results);
     })

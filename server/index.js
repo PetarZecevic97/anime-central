@@ -1,9 +1,9 @@
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const {client,  db,  express} = require('./global');
+
+const {db, express} = require('./global');
 const user = require('./user_profile');
 const user_related = require('./user_anime');
-const queries = require('./queries');
 const anime = require('./anime');
 
 
