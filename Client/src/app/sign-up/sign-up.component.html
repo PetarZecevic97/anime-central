@@ -1,0 +1,40 @@
+<div class="container my-2">
+    
+    <h1>Create Your Account</h1>
+    <hr>
+
+    <form class="form-horizontal" [formGroup]="SignUpForm" (ngSubmit)="submitSignUpForm(SignUpForm.value)">
+        
+        <div class="form-group">
+            <label for="email">Email address:</label>
+            <input type="email" id="email" class="form-control" formControlName="email">
+        </div>
+        <p class="text-danger" *ngIf="email.errors?.required">Email address is required.</p>
+        <p class="text-danger" *ngIf="email.errors?.email">Email address is not valid.</p>
+
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="username" id="username" class="form-control" formControlName="username">
+        </div>
+        <p class="text-danger" *ngIf="username.errors?.required">Username is required.</p>
+        
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" class="form-control" formControlName="password">
+        </div>
+        <p class="text-danger" *ngIf="password.errors?.required">Password is required.</p>
+
+        <div class="checkbox">
+            <label><input type="checkbox"> Remember me</label>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" [disabled]="!SignUpForm.valid">Sign Up</button>
+    
+    </form> 
+
+    <hr *ngIf="SignUpSuccessful">
+    <div class="alert alert-success" *ngIf="SignUpSuccessful">
+        <h3>Sign Up Successful!</h3>
+    </div>
+    
+</div>
