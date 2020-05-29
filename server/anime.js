@@ -1,4 +1,4 @@
-const {db,  express} = require('./global');
+const {db,  express, imageFolder} = require('./global');
 const queries = require('./queries/anime_queries.js');
 
 
@@ -9,17 +9,24 @@ const animeRouter = express.Router();
 // Get all anime:  /anime
 animeRouter.get('/', (req, res, next) => {
 
-    let query = db.query(queries.selectAllAnime, (err, result, fields) => {
+    db.query(queries.selectAllAnime, (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });
 
 });
 
+// Get image of the anime with specified name: /anime/:name
+animeRouter.get('/picture/:name', (req, res, next) => {
+
+    res.sendFile(imageFolder + req.params.name + ".png");
+
+});
+
 // Get anime with specified name:  /anime/:name  
 animeRouter.get('/:name', (req, res, next) => {
 
-    let query = db.query(queries.selectAnimeWithName, [req.params.name, req.params.name, req.params.name, req.params.name, req.params.name], (err, result, fields) => {
+    db.query(queries.selectAnimeWithName, [req.params.name, req.params.name, req.params.name, req.params.name, req.params.name], (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });
@@ -30,7 +37,7 @@ animeRouter.get('/:name', (req, res, next) => {
 animeRouter.get('/genre/:name', (req, res, next) => {
     
     let genres = req.params.name.split('-');
-    let query = db.query(queries.selectAllAnimeWithGenres(genres.length), genres, (err, result, fields) => {
+    db.query(queries.selectAllAnimeWithGenres(genres.length), genres, (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });
@@ -41,7 +48,7 @@ animeRouter.get('/genre/:name', (req, res, next) => {
 animeRouter.get('/producer/:name', (req, res, next) => {
     
     let producers = req.params.name.split('-');
-    let query = db.query(queries.selectAllAnimeWithProducers(producers.length), producers, (err, result, fields) => {
+    db.query(queries.selectAllAnimeWithProducers(producers.length), producers, (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });
@@ -52,7 +59,7 @@ animeRouter.get('/producer/:name', (req, res, next) => {
 animeRouter.get('/studio/:name', (req, res, next) => {
     
     let studios = req.params.name.split('-');
-    let query = db.query(queries.selectAllAnimeWithStudios(studios.length), studios, (err, result, fields) => {
+    db.query(queries.selectAllAnimeWithStudios(studios.length), studios, (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });
@@ -63,7 +70,7 @@ animeRouter.get('/studio/:name', (req, res, next) => {
 animeRouter.get('/licencor/:name', (req, res, next) => {
     
     let licencors = req.params.name.split('-');
-    let query = db.query(queries.selectAllAnimeWithLicencors(licencors.length), licencor, (err, result, fields) => {
+    db.query(queries.selectAllAnimeWithLicencors(licencors.length), licencors, (err, result, fields) => {
         if (err) throw err;
         res.send(result);
     });
@@ -71,8 +78,9 @@ animeRouter.get('/licencor/:name', (req, res, next) => {
 });
   
 //Get all anime which name starts with specified string
+//TODO: Can % be put in anime_queries?
 animeRouter.get('/selectallanimelike/:startswith', (req, res, next) => {
-    let query = db.query(queries.selectAllAnimeLike, [req.params.startswith], (err, results, fields) => {
+    db.query(queries.selectAllAnimeLike, [req.params.startswith + '%'], (err, results, fields) => {
       if (err) throw err;
       res.send(results);
     })
