@@ -10,7 +10,17 @@ const db = mysql.createConnection({
     //password: "mysql25",
 	password: "Zimovrel9",
     database: "anime_central_db"
+/*
+    host: "localhost",
+    user: "PetarZecevic",
+    password: "mi16169",
+    database: "anime_central_db",
+
+*/
   });
+
+//const imageFolder = "C:\\Users\\Petar Zecevic\\Desktop\\12-AnimeCentral\\database\\anime_pictures\\"
+const imageFolder = "C:/Users/Lexxigar/Desktop/AnimePlanet/AnimeGit/12-animecentral/database/anime_pictures/"
 
   
 //function for hashing
@@ -20,4 +30,4 @@ const hashCode = function(s){
   return s.split("").reduce((a,b) => {a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
 }
 
-module.exports = {'client': client, 'db': db, 'express': express, 'hashCode': hashCode};
+module.exports = {'client': client, 'db': db, 'express': express, 'hashCode': hashCode, 'imageFolder': imageFolder};

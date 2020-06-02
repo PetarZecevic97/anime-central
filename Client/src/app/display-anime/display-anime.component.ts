@@ -20,8 +20,6 @@ export class DisplayAnimeComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.anime.picture = 'http://localhost:3000/anime/picture/bleach'; 
-       
 }
     
 

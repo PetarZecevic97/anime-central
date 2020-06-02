@@ -41,7 +41,7 @@ const animeQueries = {
             WHERE Anime.name = ? 
             GROUP BY Anime.id
         )
-        SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views, 
+        SELECT Anime.id, Anime.name, Anime.description, Anime.picture_URL, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views, 
         genre_concat.Genres, studio_concat.Studios, producer_concat.Producers, licencor_concat.Licencors, comment_concat.Comments
         FROM Anime JOIN genre_concat ON Anime.id = genre_concat.id
         JOIN studio_concat ON Anime.id = studio_concat.id
@@ -53,7 +53,7 @@ const animeQueries = {
 
     //Select info about anime with some/all of genres
     selectAllAnimeWithGenres (numOfGenres) {
-        let sql = `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views, COUNT(*) as 'Count'
+        let sql = `SELECT Anime.id, Anime.name, Anime.description, Anime.picture_URL, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views, COUNT(*) as 'Count'
                         FROM Anime JOIN AnimeGenre ON Anime.id = AnimeGenre.anime_id 
                         JOIN Genre ON AnimeGenre.genre_id = Genre.id
                         LEFT JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
@@ -62,7 +62,7 @@ const animeQueries = {
         for (let i = 0; i < numOfGenres-1; i++){
             sql += ` OR Genre.name = ? `;
         }
-        sql += `GROUP BY Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views
+        sql += `GROUP BY Anime.id, Anime.name, Anime.description, Anime.picture_URL, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views
                       HAVING Count > 0
                       ORDER BY Count DESC
                       LIMIT 10`;
@@ -71,7 +71,7 @@ const animeQueries = {
 
     //Select info about anime made by some/all producers
     selectAllAnimeWithProducers (numOfProducers) {
-        let sql = `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views, COUNT(*) as 'Count'
+        let sql = `SELECT Anime.id, Anime.name, Anime.description, Anime.picture_URL, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views, COUNT(*) as 'Count'
                         FROM Anime JOIN AnimeProducer ON Anime.id = AnimeProducer.anime_id 
                         JOIN Producer ON AnimeProducer.producer_id = Producer.id
                         LEFT JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
@@ -80,7 +80,7 @@ const animeQueries = {
         for (let i = 0; i < numOfProducers-1; i++){
             sql += ` OR Producer.name = ? `;
         }
-        sql += `GROUP BY Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views
+        sql += `GROUP BY Anime.id, Anime.name, Anime.description, Anime.picture_URL, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views
                       HAVING Count > 0
                       ORDER BY Count DESC
                       LIMIT 10`;
@@ -89,7 +89,7 @@ const animeQueries = {
 
     //Select info about anime made by some/all studios
     selectAllAnimeWithStudios (numOfStudios) {
-        let sql = `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views, COUNT(*) as 'Count'
+        let sql = `SELECT Anime.id, Anime.name, Anime.description, Anime.picture_URL, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views, COUNT(*) as 'Count'
                         FROM Anime JOIN AnimeStudio ON Anime.id = AnimeStudio.anime_id 
                         JOIN Studio ON AnimeStudio.studio_id = Studio.id
                         LEFT JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
@@ -98,7 +98,7 @@ const animeQueries = {
         for (let i = 0; i < numOfStudios-1; i++){
             sql += ` OR Studio.name = ? `;
         }
-        sql += `GROUP BY Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views
+        sql += `GROUP BY Anime.id, Anime.name, Anime.description, Anime.picture_URL, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views
                       HAVING Count > 0
                       ORDER BY Count DESC
                       LIMIT 10`;
@@ -107,7 +107,7 @@ const animeQueries = {
 
     //Select info about anime made by some/all licencors
     selectAllAnimeWithLicencors (numOfLicencors) {
-        let sql = `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views, COUNT(*) as 'Count'
+        let sql = `SELECT Anime.id, Anime.name, Anime.description, Anime.picture_URL, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views, COUNT(*) as 'Count'
                         FROM Anime JOIN AnimeLicencor ON Anime.id = AnimeLicencor.anime_id 
                         JOIN Licencor ON AnimeLicencor.licencor_id = Licencor.id
                         LEFT JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
@@ -116,7 +116,7 @@ const animeQueries = {
         for (let i = 0; i < numOfLicencors-1; i++){
             sql += ` OR Licencor.name = ? `;
         }
-        sql += `GROUP BY Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views
+        sql += `GROUP BY Anime.id, Anime.name, Anime.description, Anime.picture_URL, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views
                       HAVING Count > 0
                       ORDER BY Count DESC
                       LIMIT 10`;
@@ -124,7 +124,7 @@ const animeQueries = {
     },
 
     //Select info about anime with best ratings
-    selectNTopRatedAnime : `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views 
+    selectNTopRatedAnime : `SELECT Anime.id, Anime.name, Anime.description, Anime.picture_URL, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views 
                 FROM Anime
                 LEFT JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
                 LEFT JOIN AnimeTotalViews ON Anime.id = AnimeTotalViews.anime_id
@@ -132,7 +132,7 @@ const animeQueries = {
                 LIMIT ?`,
 
     //Select info about latest anime
-    selectNLatestAnime : `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views 
+    selectNLatestAnime : `SELECT Anime.id, Anime.name, Anime.description, Anime.picture_URL, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views 
                 FROM Anime
                 LEFT JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
                 LEFT JOIN AnimeTotalViews ON Anime.id = AnimeTotalViews.anime_id
@@ -140,7 +140,7 @@ const animeQueries = {
                 LIMIT ?`,
 
     //Select info about most popular
-    selectNMostPopularAnime : `SELECT Anime.id, Anime.name, Anime.description, Anime.picture, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views
+    selectNMostPopularAnime : `SELECT Anime.id, Anime.name, Anime.description, Anime.picture_URL, Anime.date_aired, AnimeTotalScore.total_score, AnimeTotalViews.total_views
                 FROM Anime
                 LEFT JOIN AnimeTotalScore ON Anime.id = AnimeTotalScore.anime_id
                 LEFT JOIN AnimeTotalViews ON Anime.id = AnimeTotalViews.anime_id

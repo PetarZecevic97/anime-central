@@ -1,14 +1,13 @@
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const cors = require('cors')
 
 const {db, express} = require('./global');
 const user = require('./user_profile');
 const user_related = require('./user_anime');
 const anime = require('./anime');
 
-const cors = require('cors');
 const app = express();
-app.use(cors());
 
 db.connect((err) => {
     if (err) throw err;
@@ -18,6 +17,7 @@ db.connect((err) => {
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(cors());
 
 app.use('/', user);
 app.use('/', user_related);

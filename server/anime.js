@@ -1,4 +1,4 @@
-const {db,  express} = require('./global');
+const {db,  express, imageFolder} = require('./global');
 const queries = require('./queries/anime_queries.js');
 
 
@@ -19,8 +19,8 @@ animeRouter.get('/', (req, res, next) => {
 // Get image of the anime with specified name: /anime/:name
 animeRouter.get('/picture/:name', (req, res, next) => {
 
-    //res.sendFile("/home/aleksandra/Documents/faks/8.semestar/PzV/projekat/12-animecentral/database/anime_pictures/" + req.params.name + ".png");
-	res.sendFile("C:/Users/Lexxigar/Desktop/AnimePlanet/AnimeGit/12-animecentral/database/anime_pictures/" + req.params.name + ".png");
+    res.sendFile(imageFolder + req.params.name + ".png");
+
 });
 
 // Get anime with specified name:  /anime/:name  
