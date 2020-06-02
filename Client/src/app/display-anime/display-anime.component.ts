@@ -13,12 +13,14 @@ export class DisplayAnimeComponent implements OnInit {
   public anime: Anime;
 
 
-  constructor(private sanitizer:DomSanitizer) { 
+  constructor(private sanitizer:DomSanitizer) {
+    
     
   }
 
 
   ngOnInit(): void {
+    this.anime.picture = 'http://localhost:3000/anime/picture/bleach'; 
        
 }
     

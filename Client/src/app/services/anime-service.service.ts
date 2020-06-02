@@ -10,9 +10,23 @@ export class AnimeServiceService {
 
   private readonly animeUrl = 'http://localhost:3000/anime/';
   private animeList: Observable<Anime[]>;
+  private animePics: string[] = [];
 
   constructor(private http: HttpClient) { 
       this.refreshAnime();
+
+      this.animePics = [
+        'http://localhost:3000/anime/picture/bleach',
+        'http://localhost:3000/anime/picture/bleach',
+        'http://localhost:3000/anime/picture/bleach',
+        'http://localhost:3000/anime/picture/bleach',
+        'http://localhost:3000/anime/picture/bleach',
+        'http://localhost:3000/anime/picture/bleach',
+        'http://localhost:3000/anime/picture/bleach',
+        'http://localhost:3000/anime/picture/bleach',
+        'http://localhost:3000/anime/picture/bleach',
+        'http://localhost:3000/anime/picture/bleach'
+      ]
   }
 
   refreshAnime(){
@@ -22,5 +36,9 @@ export class AnimeServiceService {
 
   public getAnimeList() {
     return this.animeList;
+  }
+
+  public getAnimePics() {
+    return this.animePics;
   }
 }
