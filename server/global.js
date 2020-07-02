@@ -10,7 +10,7 @@ const db = mysql.createConnection({
     user: "root",
     //password: "mysql25",
     // password: "marsovac96"  // andja password
-	password: "marsovac96",
+	  password: "marsovac96",
     database: "anime_central_db"
 /*
     host: "localhost",
@@ -33,4 +33,4 @@ const hashCode = function(s){
   return s.split("").reduce((a,b) => {a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
 }
 
-module.exports = {'client': client, 'db': db, 'express': express, 'hashCode': hashCode, 'imageFolder': imageFolder};
+module.exports = {'client': client, 'db': db, 'express': express, 'path': path, 'hashCode': hashCode, 'imageFolder': imageFolder};
