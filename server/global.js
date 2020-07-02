@@ -10,7 +10,8 @@ const db = mysql.createConnection({
     user: "root",
     //password: "mysql25",
     // password: "marsovac96"  // andja password
-	password: "marsovac96",
+	//password: "marsovac96",
+	password: "Zimovrel9",
     database: "anime_central_db"
 /*
     host: "localhost",
