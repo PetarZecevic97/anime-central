@@ -11,7 +11,7 @@ const userSessions = {
         client.set(hashedUser, loginInfo, (err, reply) => {});
         client.expireat(hashedUser, parseInt((+new Date)/1000) + 86400);
         res.cookie('loggedInUser', hashedUser);
-        res.redirect('/homepage');
+        res.send(true);
     },
 
     //Updating info in redis. Used in change password, change email and change username.
@@ -19,7 +19,7 @@ const userSessions = {
         
         const newUserInfo = req.body.username + ' ' + req.body.email + ' ' + req.body.password;
         client.set(req.cookies.loggedInUser, newUserInfo, (err, reply) => {});
-        res.redirect('/homepage');
+        res.send(true);
     },
     
     //Checking if user is logged in. Used in user_anime file and user_profile file (change username, change password, change email).
@@ -43,7 +43,8 @@ const userSessions = {
         });
 
         } else {
-            res.redirect('/login');
+            res.userLoggedIn = false;
+            res.send(false);
         }
     },
 
@@ -66,7 +67,7 @@ const userSessions = {
           console.log(body);
         });
 
-        res.redirect('/recoverycode');
+        res.send(true);
     }
 }
 
