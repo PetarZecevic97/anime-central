@@ -10,11 +10,10 @@ import { LogInService } from '../services/log-in.service';
 export class LogInComponent implements OnInit {
 
   public LogInForm: FormGroup;
-  public LogInSuccessful: boolean = false;
-  public _username : string;
+
 
   constructor(private formBuilder: FormBuilder,
-              private logService: LogInService) {
+              private logInService: LogInService) {
     this.LogInForm = formBuilder.group({      
       username: ['', [Validators.required]],
       password: ['', [Validators.required]]
@@ -27,12 +26,9 @@ export class LogInComponent implements OnInit {
 
   public submitLogInForm(formValue: any){
     
-    //TODO:
-    //izbrisati ovo jer necu poruku o uspesnom logovanju nego redirekciju na Homepage ako je logovanje proslo kako treba
-    this.LogInSuccessful = true;
-    
-    this.logService.logIn(this.LogInForm.get("username").value, this.LogInForm.get("password").value);
-    
+
+    this.logInService.logIn(this.LogInForm.get("username").value, this.LogInForm.get("password").value);
+
   }
 
   public get username(){
@@ -40,6 +36,17 @@ export class LogInComponent implements OnInit {
   }
   public get password(){
     return this.LogInForm.get('password');
+  }
+
+
+  //logInService je privatan, pa informacije koje on sadrzi dohvatamo ovim metodama koje su javne
+  //da bismo u pogledu mogli da koristimo informacije iz servisa
+  public checkLogIn(){
+    return this.logInService.isUserLoggedIn();
+  }
+
+  public userUsername(){
+    return this.logInService.loggedInUserUsername();
   }
 
 }
