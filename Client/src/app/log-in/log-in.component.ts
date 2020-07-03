@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { LogInService } from '../services/log-in.service';
 
 @Component({
   selector: 'app-log-in',
@@ -10,23 +11,28 @@ export class LogInComponent implements OnInit {
 
   public LogInForm: FormGroup;
   public LogInSuccessful: boolean = false;
+  public _username : string;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+              private logService: LogInService) {
     this.LogInForm = formBuilder.group({      
       username: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
     
-   }
+  }
 
   ngOnInit(): void {
   }
 
   public submitLogInForm(formValue: any){
+    
+    //TODO:
+    //izbrisati ovo jer necu poruku o uspesnom logovanju nego redirekciju na Homepage ako je logovanje proslo kako treba
     this.LogInSuccessful = true;
-
-    //TODO: send request to server!
-    return
+    
+    this.logService.logIn(this.LogInForm.get("username").value, this.LogInForm.get("password").value);
+    
   }
 
   public get username(){

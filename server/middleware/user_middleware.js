@@ -1,15 +1,17 @@
 const {db} = require('../global');
 const queries = require('../queries/user_queries');
+const loggingQuerries = require('../queries/login_queries');
 
 const userMiddleware = {
 
     //Update password. Used in update password and change password.
-    inserUser(req, res, next) {
+    insertUser(req, res, next) {
         if (req.usernameExists){
+            res.userExists = true; //<<-- Dodato zarad lakse detekcije ovakve greske, autor: Nikola (to sam ja :DD)
             res.status(400).send("Username already exists");
         } else {
             const {username, password, email} = req.body;
-            db.query(queries.insertUser, [username, password, email], (err, result) => {
+            db.query(loggingQuerries.insertUser, [username, password, email], (err, result) => {
                 if (err) throw err;
                 next();
             });

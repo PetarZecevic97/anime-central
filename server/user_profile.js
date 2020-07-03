@@ -19,7 +19,7 @@ const app = express();
 
 //Creating account. req.body = {username: ..., password:..., email:...}
 app.post('/signup', userInputFormatValidation.isUserPassEmpty, userInputFormatValidation.checkEMailFormat, userInputDatabaseValidation.checkEmail,
-                    userInputDatabaseValidation.checkUsername, userInputFormatValidation.checkIsPasswordEnough, userMiddleware.inserUser, userSession.saveSession);
+                    userInputDatabaseValidation.checkUsername, userInputFormatValidation.checkIsPasswordEnough, userMiddleware.insertUser, userSession.saveSession);
 
 //Logging into account. req.body = {username: ..., password:...}
 app.post('/login', userInputFormatValidation.isUserPassEmpty, userInputDatabaseValidation.checkUsername, userInputDatabaseValidation.checkPassword, userSession.saveSession);
