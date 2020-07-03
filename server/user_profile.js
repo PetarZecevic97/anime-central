@@ -30,9 +30,10 @@ app.get('/logout', (req, res, next) => {
     client.del(hashedCode, (err, response) => {
         if (err) throw err;
         if (response === 1){
-            res.send('uspeo');
+            res.send(true);
         } else {
-            res.send('nije uspeo');
+            res.sessionExpired = true
+            res.send(false);
         }
 
     });
