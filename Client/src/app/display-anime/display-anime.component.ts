@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Anime } from '../models/model.anime';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-display-anime',
@@ -13,11 +14,13 @@ export class DisplayAnimeComponent implements OnInit {
   public anime: Anime;
 
 
-  constructor(private sanitizer:DomSanitizer) {
+  constructor(private route: ActivatedRoute) {
     
-    
-  }
-
+    this.route.paramMap.subscribe(params => {
+      const pId: number = Number(params.get('id'));
+      console.log(pId);      
+  });
+}
 
   ngOnInit(): void {
 }

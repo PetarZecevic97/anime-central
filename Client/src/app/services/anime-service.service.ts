@@ -38,6 +38,10 @@ export class AnimeServiceService {
     return this.animeList;
   }
 
+  /*public getAnimeById(id : number) {
+    return this.animeList.((anime) => if(anime.id === id) return 0;)[0];
+  }*/
+
   public getAnimePics() {
     return this.animePics;
   }
