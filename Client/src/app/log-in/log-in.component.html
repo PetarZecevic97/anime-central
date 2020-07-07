@@ -22,11 +22,11 @@
         </div>
         
         <button type="submit" class="btn btn-primary" [disabled]="!LogInForm.valid">Log In</button>
-    
+     
     </form> 
 
-    <hr *ngIf="LogInSuccessful">
-    <div class="alert alert-success" *ngIf="LogInSuccessful">
-        <h3>Log In Successful!</h3>
+    <hr *ngIf="checkLogIn()">
+    <div class="alert alert-success" *ngIf="checkLogIn()">
+        <h3>{{ userUsername() }}</h3>
     </div>
 </div>

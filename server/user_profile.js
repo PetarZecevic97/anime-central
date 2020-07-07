@@ -19,7 +19,7 @@ const app = express();
 
 //Creating account. req.body = {username: ..., password:..., email:...}
 app.post('/signup', userInputFormatValidation.isUserPassEmpty, userInputFormatValidation.checkEMailFormat, userInputDatabaseValidation.checkEmail,
-                    userInputDatabaseValidation.checkUsername, userInputFormatValidation.checkIsPasswordEnough, userMiddleware.inserUser, userSession.saveSession);
+                    userInputDatabaseValidation.checkUsername, userInputFormatValidation.checkIsPasswordEnough, userMiddleware.insertUser, userSession.saveSession);
 
 //Logging into account. req.body = {username: ..., password:...}
 app.post('/login', userInputFormatValidation.isUserPassEmpty, userInputDatabaseValidation.checkUsername, userInputDatabaseValidation.checkPassword, userSession.saveSession);
@@ -30,9 +30,10 @@ app.get('/logout', (req, res, next) => {
     client.del(hashedCode, (err, response) => {
         if (err) throw err;
         if (response === 1){
-            res.send('uspeo');
+            res.send(true);
         } else {
-            res.send('nije uspeo');
+            res.sessionExpired = true
+            res.send(false);
         }
 
     });
