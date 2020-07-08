@@ -30,11 +30,11 @@ app.get('/logout', (req, res, next) => {
     client.del(hashedCode, (err, response) => {
         if (err) throw err;
         if (response === 1){
-            const response = {loggedOut = true}
+            const response = {loggedOut : true}
             res.send(response);
         } else {
             //res.sessionExpired = true
-            const response = {loggedOut = false, sessionExpired = true}
+            const response = {loggedOut : false, sessionExpired : true}
             res.send(response);
         }
 
