@@ -1,6 +1,5 @@
 const {db} = require('../global');
-const queries = require('../queries/user_queries');
-const loggingQuerries = require('../queries/login_queries');
+const queries = require('../queries/login_queries');
 
 const userMiddleware = {
 
@@ -11,7 +10,7 @@ const userMiddleware = {
             res.status(400).send("Username already exists");
         } else {
             const {username, password, email} = req.body;
-            db.query(loggingQuerries.insertUser, [username, password, email], (err, result) => {
+            db.query(queries.insertUser, [username, password, email], (err, result) => {
                 if (err) throw err;
                 next();
             });

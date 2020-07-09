@@ -13,7 +13,7 @@ const userInputFormat = {
     //Checking if email format is good. Used for sign up and change email.
     checkEMailFormat(req, res, next){
 
-        var EmailRegEx = /^([a-z]|[A-Z]|[0-9]|[.!^#&$%\/\\])+?[@]([a-z]|[A-Z])*?[.]([a-z]|[A-Z])+$/;
+        var EmailRegEx = /^([a-z]|[A-Z]|[0-9]|[.!^#&$%\/\\])+?[@]([a-z]|[A-Z])*?[.](.)+$/;
         
         if(EmailRegEx.test(req.body.email)){
             next();        

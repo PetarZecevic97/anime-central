@@ -1,5 +1,9 @@
 const mailgun = require('mailgun-js')({apiKey: '136bacece10628e885b4ee39eddf5545-3e51f8d2-39464d1a', domain: 'sandboxd5f756e39d1d4c1eab8c239126ba1cc8.mailgun.org'});
 const {client, hashCode} = require('../global');
+const nodemailer = require('nodemailer');
+const sendmail = require('sendmail')({
+    smtpPort: 2525, // Default: 25
+    smtpHost : 'localhost'});
 
 const userSessions = {
 
@@ -51,6 +55,7 @@ const userSessions = {
         }
     },
 
+    
      //Creating a recovery code for forgotten password, sending it to user's mail and saving it in redis. Used in forgot password.
      recoveryCode(req, res, next) {
 
@@ -60,15 +65,57 @@ const userSessions = {
         client.expireat(key, parseInt((+new Date)/1000) + 600);
 
         const data = {
-            from: 'AnimeCentral <ruzic.aleksandra@gmail.com>',
+            from: 'ruzic.aleksandra@gmail.com',
             to: req.body.email,
             subject: 'Recovery code for forgotten password',
+            html: 'Mail of test sendmail ',
             text: `You seem to have forgotten your password. Here's your recovery code: ${code}. It will expire in ten minutes so hurry up!`
         };
-        mailgun.messages().send(data, function (error, body) {
-            if (error) throw error;
-          console.log(body);
-        });
+ 
+        // sendmail(data, function(err, reply) {
+        //     console.log(err && err.stack);
+        //     console.dir(reply);
+        // });
+
+        // myCustomMethod = async function (ctx){
+        //     let cmd = await ctx.sendCommand(
+        //         'AUTH PLAIN ' +
+        //             Buffer.from(
+        //                 '\u0000' + ctx.auth.credentials.user + '\u0000' + ctx.auth.credentials.pass,
+        //                 'utf-8'
+        //             ).toString('base64')
+        //     );
+    
+        //     if(cmd.status < 200 || cmd.status >=300){
+        //         throw new Error('Failed to authenticate user: ' + cmd.text);
+        //     }
+        // }
+
+
+        // let transporter = nodemailer.createTransport({
+        //     // pool : true,
+        //     //  host: 'localhost',
+        //     //   port: 4200,
+        //       tls : { rejectUnauthorized: false },
+        //     // secure: true,
+        //      auth: {
+        //     //      type: 'custom',
+        //     //      method: 'MY-CUSTOM-METHOD', // forces Nodemailer to use your custom handler
+        //           user: 'username',
+        //           pass: 'verysecret'
+        //       }
+        //     // , customAuth: {
+        //     //      'MY-CUSTOM-METHOD': myCustomMethod
+        //     // }
+        //     // sendmail: true,
+        //     // newline: 'unix'
+        // });
+
+        // transporter.sendMail(data);
+         mailgun.messages().send(data, function (error, body) {
+             if (error) throw error;
+           console.log(body);
+         });
 
         const result = {codeRecovered : true}
         res.send(result);
