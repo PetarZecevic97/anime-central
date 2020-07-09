@@ -18,7 +18,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
  
 import { CarouselModule, WavesModule } from 'angular-bootstrap-md';
-import { DatePipe } from './pipes/date.pipe'
+import { DatePipe } from './pipes/date.pipe';
+import { DisplayUserComponent } from './display-user/display-user.component'
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { DatePipe } from './pipes/date.pipe'
     NavBarComponent,
     SignUpComponent,
     LogInComponent,
-    DatePipe
+    DatePipe,
+    DisplayUserComponent
   ],
   imports: [
     BrowserModule,
