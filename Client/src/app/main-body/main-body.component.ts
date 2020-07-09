@@ -18,18 +18,7 @@ export class MainBodyComponent implements OnInit {
 
   public AnimeList: Observable<Anime[]>;
   public animeList: Anime[] = [];
-
-  constructor(private animeService: AnimeServiceService) { 
-    this.AnimeList = animeService.getAnimeList();
-    animeService.getAnimeList().subscribe( animes => { 
-      this.animeList = animes;
-      console.log(this.animeList);
-      this.slides = this.chunk(this.animeList, 3);
-    }
-  );
-    
-
-  }
+  public array : number[] = [1, 2, 3, 4];
 
   slides: any = [[]];
   chunk(arr, chunkSize) {
@@ -39,6 +28,19 @@ export class MainBodyComponent implements OnInit {
     }
     return R;
   }
+  
+  constructor(private animeService: AnimeServiceService) { 
+    this.AnimeList = animeService.getAnimeList();
+    animeService.getAnimeList().subscribe( animes => { 
+      this.animeList = animes;
+      this.slides = this.chunk(this.animeList, 4);
+    }
+  );
+    
+
+  }
+
+  
 
   ngOnInit() {
     if (window.innerWidth <= this.CAROUSEL_BREAKPOINT) {

@@ -17,7 +17,8 @@ import { LogInComponent } from './log-in/log-in.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
  
-import { CarouselModule, WavesModule } from 'angular-bootstrap-md'
+import { CarouselModule, WavesModule } from 'angular-bootstrap-md';
+import { DatePipe } from './pipes/date.pipe'
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { CarouselModule, WavesModule } from 'angular-bootstrap-md'
     DisplayAnimeComponent,
     NavBarComponent,
     SignUpComponent,
-    LogInComponent
+    LogInComponent,
+    DatePipe
   ],
   imports: [
     BrowserModule,

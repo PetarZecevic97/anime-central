@@ -1,31 +1,30 @@
-<div class="container my-2">
-    <div class="row">
-        <div class="col-12">
-            <nav class="navbar navbar-expand navbar-dark bg-primary">
-                <form class="form-inline ml-auto">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
-                  </form>
-            </nav>
-            
-        </div>
+<div class="container">
+  
+  
+  <nav class="navbar navbar-expand navbar-dark bg-dark row full">
+      <form class="form-inline ml-auto">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+  </nav>
 
-    </div>
+  <br/>
+                   
+<div class="row" style="background-color: #262626; display:block; border-radius: 20px;">
+<mdb-carousel  [animation]="'slide'">
+  <mdb-carousel-item *ngFor="let s of slides">
 
-    <mdb-carousel  [isControls]="true" class="carousel-multi-item multi-animation" [type]="'carousel-multi-item'"
-    [animation]="'slide'">
-  <mdb-carousel-item *ngFor="let item of slides; let i = index" >
-    <div class="col-md-4" *ngFor="let card of item; let cardIndex = index" style="width:20%; height:10%;" [routerLink]="['anime/', card.name]">
-      <mdb-card class="my-1" >
-        <mdb-card-img style="height: auto; width: 250px" [src]="card.picture_URL" alt="Card image cap"></mdb-card-img>
-        <mdb-card-body>
-          <mdb-card-title>
-            <h4>{{card.name}}</h4>
-          </mdb-card-title>
-        </mdb-card-body>
-      </mdb-card>
+    <div class="col-3" style="width:100%; height:100%" *ngFor="let o of s" [routerLink]="['/anime/', o.name]">
+      <h4 style="color:#999999; font-size: 16px;"> Date aired: {{ o.date_aired | date}}</h4>
+      <img  class="w-100 img-fluid" style="width:100%; height:200px" [src]="o.picture_URL" alt="Third slide">
+      <mdb-card-body>
+        <mdb-card-title>
+          <h4 class="bangers">{{ o.name }}</h4>
+        </mdb-card-title>
+      </mdb-card-body>
     </div>
   </mdb-carousel-item>
 </mdb-carousel>
+</div>
 
 </div>
