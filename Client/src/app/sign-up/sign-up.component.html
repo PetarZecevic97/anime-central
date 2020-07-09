@@ -32,9 +32,9 @@
     
     </form> 
 
-    <hr *ngIf="SignUpSuccessful">
-    <div class="alert alert-success" *ngIf="SignUpSuccessful">
-        <h3>Sign Up Successful!</h3>
+    <hr *ngIf="areThereErrors">
+    <div class="alert alert-danger" *ngIf="areThereErrors">
+        <h3>{{ errorMsg }}</h3>
     </div>
     
 </div>

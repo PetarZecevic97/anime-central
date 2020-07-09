@@ -67,7 +67,7 @@ export class LogInService {
                       this.router.navigate(['/']);
 
                     }else{                                          
-                      this.loggedinUserUsername = ":(((";
+                      this.loggedinUserUsername = undefined;
                       this.userLoggedIn = false;
                     }
 
