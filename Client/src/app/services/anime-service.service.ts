@@ -37,7 +37,7 @@ export class AnimeServiceService {
   }
 
   public AnimeWatchlist(cur_user : string) {
-    return this.http.get('http://localhost:3000/mywishlistanime' + '?currentUsername=DatabaseAdministrator', {withCredentials : true});
+    return this.http.get('http://localhost:3000/mywishlistanime' + '?currentUsername=' + cur_user, {withCredentials : true});
 }
 
 }
