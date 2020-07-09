@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { LogInService } from '../services/log-in.service';
+import { inflateRawSync } from 'zlib';
 
 @Component({
   selector: 'app-sign-up',
@@ -16,7 +17,6 @@ export class SignUpComponent implements OnInit {
   public SignUpSuccessful: boolean = false;
   public errorMsg : string;
   public areThereErrors = false;
-
 
 
   constructor(private formBuilder: FormBuilder,
@@ -34,6 +34,8 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
+  //-----------HTTP Zahtev za pravljenje novog naloga------------------//
   public submitSignUpForm(formValue: any){
     
     var email = this.SignUpForm.get("email").value;
@@ -44,9 +46,13 @@ export class SignUpComponent implements OnInit {
                   {email, username, password},
                   {observe: "response", responseType: "json"})
                   .subscribe( (res) => {
+                    
+                    if(res.body.hasOwnProperty("insertUser")){
+                      
+                      this.logInSevice.logIn(username, password);
 
-                    //TODO..
-                    //pozvati logIn ako je sve u redu
+                    }
+
 
                   }, errorObj => {
                       this.areThereErrors = true;
@@ -54,6 +60,7 @@ export class SignUpComponent implements OnInit {
                   });
 
   }
+  //-------------------------------------------------------------------//
 
 
   public get email(){

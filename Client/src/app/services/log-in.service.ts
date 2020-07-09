@@ -87,7 +87,8 @@ export class LogInService {
   //TREBA POSLATI I KOLACICE O LOGAVNOM KORISNIKU!!
   public logOut(){
 
-    this.http.get(this.logOutUrl
+    this.http.get(this.logOutUrl,
+                  {withCredentials : true}
       ).subscribe((res) =>{
       
       if(res){
