@@ -9,11 +9,11 @@
             <div class="navbar-nav ml-auto">
 
                 <a class="nav_link" [routerLink]="['/login']" *ngIf="!logInService.isUserLoggedIn()">
-                    <button class="btn btn btn-success mx-2">Login</button>
+                    <button class="btn btn btn-primary mx-2">Login</button>
                 </a>
                 
                 <a class="nav_link" [routerLink]="['/signup']" *ngIf="!logInService.isUserLoggedIn()">
-                    <button class="btn btn btn-success mx-2">Sign up</button>
+                    <button class="btn btn btn-primary mx-2">Sign up</button>
                 </a>
 
                 
