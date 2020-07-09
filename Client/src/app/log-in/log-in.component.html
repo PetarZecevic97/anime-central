@@ -25,8 +25,8 @@
      
     </form> 
 
-    <hr *ngIf="logInService.isErros()">
-    <div class="alert alert-danger" *ngIf="logInService.isErros()">
+    <hr *ngIf="logInService.isErrors()">
+    <div class="alert alert-danger" *ngIf="logInService.isErrors()">
         <h3>{{ logInService.errorMessage() }}</h3>
     </div>
 </div>
