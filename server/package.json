@@ -23,6 +23,8 @@
     "express": "^4.17.1",
     "mailgun-js": "^0.22.0",
     "mysql": "^2.18.1",
-    "redis": "^3.0.2"
+    "nodemailer": "^6.4.10",
+    "redis": "^3.0.2",
+    "sendmail": "^1.6.1"
   }
 }

@@ -13,7 +13,7 @@ export class LogInComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder,
-              private logInService: LogInService) {
+              public logInService: LogInService) {
     this.LogInForm = formBuilder.group({      
       username: ['', [Validators.required]],
       password: ['', [Validators.required]]
@@ -39,14 +39,5 @@ export class LogInComponent implements OnInit {
   }
 
 
-  //logInService je privatan, pa informacije koje on sadrzi dohvatamo ovim metodama koje su javne
-  //da bismo u pogledu mogli da koristimo informacije iz servisa
-  public checkLogIn(){
-    return this.logInService.isUserLoggedIn();
-  }
-
-  public userUsername(){
-    return this.logInService.loggedInUserUsername();
-  }
 
 }

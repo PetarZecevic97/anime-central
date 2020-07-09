@@ -25,8 +25,8 @@
      
     </form> 
 
-    <hr *ngIf="checkLogIn()">
-    <div class="alert alert-success" *ngIf="checkLogIn()">
-        <h3>{{ userUsername() }}</h3>
+    <hr *ngIf="logInService.isErros()">
+    <div class="alert alert-danger" *ngIf="logInService.isErros()">
+        <h3>{{ logInService.errorMessage() }}</h3>
     </div>
 </div>

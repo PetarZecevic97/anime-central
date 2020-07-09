@@ -19,7 +19,8 @@ const app = express();
 
 //Creating account. req.body = {username: ..., password:..., email:...}
 app.post('/signup', userInputFormatValidation.isUserPassEmpty, userInputFormatValidation.checkEMailFormat, userInputDatabaseValidation.checkEmail,
-                    userInputDatabaseValidation.checkUsername, userInputFormatValidation.checkIsPasswordEnough, userMiddleware.insertUser, userSession.saveSession);
+                    userInputDatabaseValidation.checkUsername, userInputFormatValidation.checkIsPasswordEnough, userMiddleware.insertUser, 
+                    (req, res, next) => { res.send({ insertUser : true })} );
 
 //Logging into account. req.body = {username: ..., password:...}
 app.post('/login', userInputFormatValidation.isUserPassEmpty, userInputDatabaseValidation.checkUsername, userInputDatabaseValidation.checkPassword, userSession.saveSession);
@@ -30,10 +31,12 @@ app.get('/logout', (req, res, next) => {
     client.del(hashedCode, (err, response) => {
         if (err) throw err;
         if (response === 1){
-            res.send(true);
+            const response = {loggedOut : true}
+            res.send(response);
         } else {
-            res.sessionExpired = true
-            res.send(false);
+            //res.sessionExpired = true
+            const response = {loggedOut : false, sessionExpired : true}
+            res.send(response);
         }
 
     });
@@ -75,6 +78,7 @@ app.put('/changeemail', userSession.isUserLoggedIn, userInputFormatValidation.ch
 
 //Changing username. req.body = {username:...}
 app.put('/changeusername', userSession.isUserLoggedIn, userInputDatabaseValidation.checkUsername, (req, res, next) => {
+
 
     console.log(req.body.username);
     if(req.usernameExists) {
