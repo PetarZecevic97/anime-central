@@ -1,1 +1,31 @@
-<p>most-popular-anime works!</p>
+<h1>Most popular anime</h1>
+
+
+<!-- <ol class="list-unstyled">
+
+    <li *ngFor="let anime of mostPopularAnime" class="media">
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="thumbnail">
+
+                    <img [src]="anime.picture_URL" alt="Lights" style="width:100%">
+                    <div class="media-body">
+                        <p>{{ anime.name }}</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </li>
+</ol> -->
+<ul class="list-unstyled">
+    <li class="media my-4" *ngFor="let anime of mostPopularAnime">
+      <img class="mr-3 mx-auto d-block" [src]="anime.picture_URL" alt="Generic placeholder image" height="300">
+      <div class="media-body" >
+        <h3 class="mt-0 mb-1">{{anime.name}}</h3>
+        <p>{{anime.name}}</p>
+      </div>
+    </li>
+</ul>
