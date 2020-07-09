@@ -47,7 +47,7 @@ public addToWish() {
     });
   }*/
 
-  this.animeService.AnimeWatchlist(this.loginService.loggedInUserUsername()).subscribe((res) => {
+  this.animeService.AnimeWatchlist(this.loginService.getLoggedInUserUsername()).subscribe((res) => {
     console.log(res);
   });
 
