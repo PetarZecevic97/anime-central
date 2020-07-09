@@ -7,24 +7,26 @@ const path = require('path')
 const db = mysql.createConnection({
 
     host: "127.0.0.1",
-    //user: "root",
 
-    user: "nikola",
-    password: "bobi1234",
+    //host: "localhost",
+
+    // user: "PetarZecevic",
+    // password: "mi16169",
+
+    //user: "root",
     //password: "mysql25",
+
+    //user: "nikola",
+    //password: "bobi1234",
+
+    // user : "root",
     // password: "marsovac96"  // andja password
 
-	//password: "marsovac96",
-	//password: "Zimovrel9",
+    user : "root",
+    password: "Zimovrel9",  //coa password this is getting out of hand
+
 
     database: "anime_central_db"
-/*
-    host: "localhost",
-    user: "PetarZecevic",
-    password: "mi16169",
-    database: "anime_central_db",
-
-*/
   });
 
 //const imageFolder = "C:\\Users\\Petar Zecevic\\Desktop\\12-AnimeCentral\\database\\anime_pictures\\"

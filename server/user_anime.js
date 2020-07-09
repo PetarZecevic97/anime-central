@@ -27,7 +27,7 @@ app.get('/myratedanime', isUserLoggedIn, (req, res, next) => {
 
 //Get all anime that user has put on the watch list
 app.get('/mywishlistanime', isUserLoggedIn, (req, res, next) => {
-
+	
     db.query(queries.selectAllWishedAnimeByUser, [req.body.currentUsername], (err, result, fields) => {
         if (err) throw err;
         res.send(result);
@@ -68,6 +68,7 @@ app.post('/commentonthisanime', isUserLoggedIn, (req, res, next) => {
 //User is adding anime to watched list. req.body= {animeName:...}
 app.post('/addanimetowatchedlist', isUserLoggedIn, (req, res, next) => {
 
+	console.log(req.body.currentUsername, req.body.animeName);
     db.query(queries.insertAnimeToWatchedList, [req.body.currentUsername, req.body.animeName], (err, result) => {
         if(err){             
             if(err.code == 'ER_DUP_ENTRY'){

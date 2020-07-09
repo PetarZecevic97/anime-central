@@ -8,7 +8,7 @@ const animeRouter = express.Router();
 
 // Get all anime:  /anime
 animeRouter.get('/', (req, res, next) => {
-
+	
     db.query(queries.selectAllAnime, (err, result, fields) => {
         if (err) throw err;
         res.send(result);

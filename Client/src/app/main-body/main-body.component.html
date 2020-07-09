@@ -12,17 +12,16 @@
 
     </div>
 
-    <mdb-carousel [isControls]="true" class="carousel-multi-item multi-animation" [type]="'carousel-multi-item'"
-              [animation]="'slide'">
-  <mdb-carousel-item *ngFor="let item of slides; let i = index">
-    <div class="col-md-4" *ngFor="let card of item; let cardIndex = index">
-      <mdb-card class="my-1">
-        <mdb-card-img [src]="card.picture_URL" alt="Card image cap"></mdb-card-img>
+    <mdb-carousel  [isControls]="true" class="carousel-multi-item multi-animation" [type]="'carousel-multi-item'"
+    [animation]="'slide'">
+  <mdb-carousel-item *ngFor="let item of slides; let i = index" >
+    <div class="col-md-4" *ngFor="let card of item; let cardIndex = index" style="width:20%; height:10%;" [routerLink]="['anime/', card.name]">
+      <mdb-card class="my-1" >
+        <mdb-card-img style="height: auto; width: 250px" [src]="card.picture_URL" alt="Card image cap"></mdb-card-img>
         <mdb-card-body>
           <mdb-card-title>
             <h4>{{card.name}}</h4>
           </mdb-card-title>
-          <p>{{card.description}}</p>
         </mdb-card-body>
       </mdb-card>
     </div>

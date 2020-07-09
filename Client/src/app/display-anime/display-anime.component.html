@@ -1,6 +1,10 @@
-<div>
-<div class="imgSizeContainer">
-<img src="{{anime.picture_URL}}">
-</div>
-<span>{{anime.name}}</span>
-</div>
+<div class="row">
+    <div class="col-3" style="width:30%; height:100%"><img class="img-fluid" style="width:100%; height:40%" src="{{anime.picture_URL}}"></div>
+    <div class="col-9">
+        <h1 class="mr-auto">{{anime.name}}</h1>
+        <p> {{ anime.description }}</p>
+        <div class="row">
+            <button class="btn btn-primary" (click)="addToWish()">Add to my wish list</button>
+        </div>
+    </div>
+  </div>

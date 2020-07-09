@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +18,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
  
 import { CarouselModule, WavesModule } from 'angular-bootstrap-md'
+
 
 @NgModule({
   declarations: [
@@ -40,7 +42,7 @@ import { CarouselModule, WavesModule } from 'angular-bootstrap-md'
     WavesModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
-  providers: [],
+  providers: [ CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

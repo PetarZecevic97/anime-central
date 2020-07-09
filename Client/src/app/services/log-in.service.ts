@@ -20,8 +20,10 @@ export class LogInService {
   private errorMsg : string;             // greska pri logovanju koju server vraca
   private areThereErrors = false;         // da li je server vratio gresku (greska se hvata u anonimnoj fji prilikom pretplate na tok odgovora)
   
+
   constructor(private http: HttpClient,
               private router: Router) {
+
 
   }
   
@@ -59,6 +61,8 @@ export class LogInService {
                       this.loggedinUserUsername = username;
                       this.userLoggedIn = true;
                       
+                      //this.loggedInUserCookies = res.headers;
+                      //this.cookie.set('loggedInUser', res.body['mrs']);
 
                       //this.loggedInUserCookies = res.headers;
                       //this.loggedInUserCookies =  res.headers.get('Set-Cookie');
