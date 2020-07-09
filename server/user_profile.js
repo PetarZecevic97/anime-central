@@ -27,6 +27,7 @@ app.post('/login', userInputFormatValidation.isUserPassEmpty, userInputDatabaseV
 
 //Logging out
 app.get('/logout', (req, res, next) => {
+    console.log("Logout cookie: ", req.cookies.loggedInUser);
     const hashedCode = req.cookies.loggedInUser;
     client.del(hashedCode, (err, response) => {
         if (err) throw err;

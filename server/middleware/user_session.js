@@ -16,7 +16,7 @@ const userSessions = {
         client.expireat(hashedUser, parseInt((+new Date)/1000) + 86400);
         res.cookie('loggedInUser', hashedUser);
         const result = {sessionSaved: true}
-        res.send(result);
+        res.send({"pericTrue": result, "cookieValue": hashedUser});
     },
 
     //Updating info in redis. Used in change password, change email and change username.
@@ -30,7 +30,7 @@ const userSessions = {
     
     //Checking if user is logged in. Used in user_anime file and user_profile file (change username, change password, change email).
     isUserLoggedIn(req, res, next) {
-
+        console.log("Login cookie: ", req.headers);
         const hashedCode = req.cookies.loggedInUser;
         if (hashedCode){
             client.get(hashedCode, function (error, result) {
