@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Injectable({
@@ -18,8 +19,8 @@ export class LogInService {
   private loggedinUserUsername : string;
   private userLoggedIn = false;
   
-  constructor(private http: HttpClient) {
-
+  constructor(private http: HttpClient, private cookie: CookieService) {
+      
   }
   
   public loggedInUserUsername(){
@@ -44,6 +45,7 @@ export class LogInService {
                       this.userLoggedIn = true;
                       
                       //this.loggedInUserCookies = res.headers;
+                      //this.cookie.set('loggedInUser', res.body['mrs']);
 
                       //this.loggedInUserCookies =  res.headers.get('Set-Cookie');
                       //console.log(this.loggedInUserCookies);

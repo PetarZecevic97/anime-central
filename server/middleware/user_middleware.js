@@ -11,6 +11,7 @@ const userMiddleware = {
             res.status(400).send("Username already exists");
         } else {
             const {username, password, email} = req.body;
+			console.log(username);
             db.query(loggingQuerries.insertUser, [username, password, email], (err, result) => {
                 if (err) throw err;
                 next();

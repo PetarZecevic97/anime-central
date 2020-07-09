@@ -24,6 +24,8 @@ const userSessions = {
     
     //Checking if user is logged in. Used in user_anime file and user_profile file (change username, change password, change email).
     isUserLoggedIn(req, res, next) {
+		console.log(req.headers);
+		console.log(req.cookies.loggedInUser);
         const hashedCode = req.cookies.loggedInUser;
         if (hashedCode){
             client.get(hashedCode, function (error, result) {

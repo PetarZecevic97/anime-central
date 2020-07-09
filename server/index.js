@@ -17,7 +17,24 @@ db.connect((err) => {
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors());
+//app.use(cors({credentials : true}));
+
+// Implementacija CORS zastite
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  if (req.method === 'OPTIONS') {
+    res.header(
+      'Access-Control-Allow-Methods',
+      'OPTIONS, GET, POST, PATCH, DELETE'
+    );
+
+    return res.status(200).json({});
+  }
+
+  next();
+});
 
 app.use('/', user);
 app.use('/', user_related);

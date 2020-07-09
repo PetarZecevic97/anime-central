@@ -1,32 +1,20 @@
 import { Injectable } from '@angular/core';
-import { HttpClient} from '@angular/common/http'
+import { HttpClient, HttpHeaders} from '@angular/common/http'
 import { Anime } from '../models/model.anime';
 import { Observable } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnimeServiceService {
 
+  private readonly address = 'http://localhost:3000/'
   private readonly animeUrl = 'http://localhost:3000/anime/';
   private animeList: Observable<Anime[]>;
-  private animePics: string[] = [];
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, private cookie: CookieService) { 
       this.refreshAnime();
-
-      this.animePics = [
-        'http://localhost:3000/anime/picture/bleach',
-        'http://localhost:3000/anime/picture/bleach',
-        'http://localhost:3000/anime/picture/bleach',
-        'http://localhost:3000/anime/picture/bleach',
-        'http://localhost:3000/anime/picture/bleach',
-        'http://localhost:3000/anime/picture/bleach',
-        'http://localhost:3000/anime/picture/bleach',
-        'http://localhost:3000/anime/picture/bleach',
-        'http://localhost:3000/anime/picture/bleach',
-        'http://localhost:3000/anime/picture/bleach'
-      ]
   }
 
   refreshAnime(){
@@ -38,11 +26,18 @@ export class AnimeServiceService {
     return this.animeList;
   }
 
-  /*public getAnimeById(id : number) {
-    return this.animeList.((anime) => if(anime.id === id) return 0;)[0];
-  }*/
-
-  public getAnimePics() {
-    return this.animePics;
+  public getAnimeByName(Name : string) {
+    return this.http.get<Anime>(this.animeUrl + Name);
   }
+  
+  public addAnimeToWatchlist(cur_user : string, animeName : string) {
+      return this.http.post('http://localhost:3000/addanimetowatchedlist',
+       { "currentUsername" : cur_user,
+        "animeName" : animeName}, {withCredentials : true});
+  }
+
+  public AnimeWatchlist(cur_user : string) {
+    return this.http.get('http://localhost:3000/mywishlistanime' + '?currentUsername=aca', {withCredentials : true});
+}
+
 }

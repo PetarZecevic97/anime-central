@@ -10,7 +10,7 @@ const routes: Routes = [
   {path: '', component: HomePageComponent},
   {path: 'signup', component: SignUpComponent},
   {path: 'login', component: LogInComponent},
-  {path: 'anime/:id', component: DisplayAnimeComponent}
+  {path: 'anime/:name', component: DisplayAnimeComponent}
 ];
 
 @NgModule({

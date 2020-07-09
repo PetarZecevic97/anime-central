@@ -7,15 +7,15 @@ const path = require('path')
 const db = mysql.createConnection({
 
     host: "127.0.0.1",
-    //user: "root",
+    user: "root",
 
-    user: "nikola",
-    password: "bobi1234",
+    //user: "nikola",
+    //password: "bobi1234",
     //password: "mysql25",
     // password: "marsovac96"  // andja password
 
 	//password: "marsovac96",
-	//password: "Zimovrel9",
+	password: "Zimovrel9", //coa password this is getting out of hand
 
     database: "anime_central_db"
 /*
