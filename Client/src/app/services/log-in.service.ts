@@ -14,8 +14,6 @@ export class LogInService {
   private readonly logOutUrl = 'http://localhost:3000/logout/';
 
 
-  private loggedInUserCookies;
-
   private loggedinUserUsername : string; // username ulogovanog korisnika
   private userLoggedIn = false;          // da li je korisnik ulogovan
   private errorMsg : string;             // greska pri logovanju koju server vraca
@@ -30,7 +28,7 @@ export class LogInService {
   }
   
   //-------Service API-------------//
-  public loggedInUserUsername(){
+  public getLoggedInUserUsername(){
     return this.loggedinUserUsername;
   }
     
@@ -38,7 +36,7 @@ export class LogInService {
     return this.userLoggedIn;
   }
 
-  public isErros(){
+  public isErrors(){
     return this.areThereErrors;
   }
 
@@ -58,19 +56,12 @@ export class LogInService {
                   {observe: "response", responseType: "json"})
                   .subscribe((res) =>{                    
 
-                    if(res.body['pericTrue']){
+                    if(res.body['pericTrue'].hasOwnProperty("sessionSaved")){
                       
                       this.loggedinUserUsername = username;
                       this.userLoggedIn = true;
                       this.cookieService.set('loggedInUser', res.body['cookieValue']);
                       
-                      //this.loggedInUserCookies = res.headers;
-                      //this.cookie.set('loggedInUser', res.body['mrs']);
-
-                      //this.loggedInUserCookies = res.headers;
-                      //this.loggedInUserCookies =  res.headers.get('Set-Cookie');
-                      //console.log(this.loggedInUserCookies);
-
                       this.router.navigate(['/']);
 
                     }else{                                          
@@ -86,27 +77,32 @@ export class LogInService {
 
   }
 
-  //BUG 
-  //TREBA POSLATI I KOLACICE O LOGAVNOM KORISNIKU!!
+
   public logOut(){
 
     this.http.get(this.logOutUrl,
-                  {withCredentials : true}
+                  {withCredentials : true, observe : "response", responseType : "json"}
       ).subscribe((res) =>{
       
-      if(res){
-        this.loggedInUserUsername = undefined;
-        this.userLoggedIn = false;        
-      }else{
-        //TODO:
-        //mislim da ovde ne treba nista da se radi, ali neka je ova grana u slucaju da zatreba :D
-        //mozda informacija o nekoj gresci
+
+      if(res.body.hasOwnProperty("loggedOut")){
+                
+        this.loggedinUserUsername = undefined;
+        this.userLoggedIn = false;
+
+
+      }else if(res.body.hasOwnProperty("sessionExpired")){
+          //ovde da se stavi neki alert prozor!!!
+          //...
+          this.router.navigate['/login'];          
       }
+    }, errorObj => {
+       window.alert(errorObj.message + "\n" + errorObj.error);
+       this.router.navigate['/login'];
     });
 
-
-
-
   }
+
+  //---------------------------------------------------------//
 
 }

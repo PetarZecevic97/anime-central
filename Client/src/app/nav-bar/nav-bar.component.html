@@ -17,7 +17,7 @@
                 </a>
 
                 
-                <h3 class="navbar-brand" *ngIf="logInService.isUserLoggedIn()">{{ logInService.loggedInUserUsername() }}</h3>
+                <h3 class="navbar-brand" *ngIf="logInService.isUserLoggedIn()">{{ logInService.getLoggedInUserUsername() }}</h3>
 
                 <a class="nav_link" *ngIf="logInService.isUserLoggedIn()">
                     <button (click)="userLogOut()" class="btn btn btn-success mx-2">Log Out</button>
