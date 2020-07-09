@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { LogInService } from '../services/log-in.service';
+import { inflateRawSync } from 'zlib';
 
 @Component({
   selector: 'app-sign-up',
@@ -8,10 +11,17 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class SignUpComponent implements OnInit {
 
+  private readonly signUpUrl = "http://localhost:3000/signup/";
+
   public SignUpForm: FormGroup;
   public SignUpSuccessful: boolean = false;
+  public errorMsg : string;
+  public areThereErrors = false;
 
-  constructor(private formBuilder: FormBuilder){ 
+
+  constructor(private formBuilder: FormBuilder,
+              private http : HttpClient,
+              private logInSevice : LogInService){ 
     
     this.SignUpForm = formBuilder.group({      
       email:    ['', [Validators.required, Validators.email]],
@@ -24,12 +34,33 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public submitSignUpForm(formValue: any){
-    this.SignUpSuccessful = true;
 
-    //TODO: send request to server!
-    return
+  //-----------HTTP Zahtev za pravljenje novog naloga------------------//
+  public submitSignUpForm(formValue: any){
+    
+    var email = this.SignUpForm.get("email").value;
+    var username = this.SignUpForm.get("username").value;
+    var password = this.SignUpForm.get("password").value;
+
+    this.http.post(this.signUpUrl,
+                  {email, username, password},
+                  {observe: "response", responseType: "json"})
+                  .subscribe( (res) => {
+                    
+                    if(res.body.hasOwnProperty("insertUser")){
+                      
+                      this.logInSevice.logIn(username, password);
+
+                    }
+
+
+                  }, errorObj => {
+                      this.areThereErrors = true;
+                      this.errorMsg = errorObj.message + "\n" + errorObj.error;                      
+                  });
+
   }
+  //-------------------------------------------------------------------//
 
 
   public get email(){

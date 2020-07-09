@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { strict } from 'assert';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,7 @@ export class LogInService {
   
 
   constructor(private http: HttpClient,
+              private cookieService: CookieService,
               private router: Router) {
 
 
@@ -56,10 +58,11 @@ export class LogInService {
                   {observe: "response", responseType: "json"})
                   .subscribe((res) =>{                    
 
-                    if(res.body){
+                    if(res.body['pericTrue']){
                       
                       this.loggedinUserUsername = username;
                       this.userLoggedIn = true;
+                      this.cookieService.set('loggedInUser', res.body['cookieValue']);
                       
                       //this.loggedInUserCookies = res.headers;
                       //this.cookie.set('loggedInUser', res.body['mrs']);
@@ -71,7 +74,7 @@ export class LogInService {
                       this.router.navigate(['/']);
 
                     }else{                                          
-                      this.loggedinUserUsername = ":(((";
+                      this.loggedinUserUsername = undefined;
                       this.userLoggedIn = false;
                     }
 
@@ -87,7 +90,8 @@ export class LogInService {
   //TREBA POSLATI I KOLACICE O LOGAVNOM KORISNIKU!!
   public logOut(){
 
-    this.http.get(this.logOutUrl
+    this.http.get(this.logOutUrl,
+                  {withCredentials : true}
       ).subscribe((res) =>{
       
       if(res){
