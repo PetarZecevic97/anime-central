@@ -19,7 +19,7 @@ export class DisplayUserComponent implements OnInit {
 
   onClick() {
     const username = this.logInService.getLoggedInUserUsername();
-    console.log(this.animeService.AnimeWatchlist(username).subscribe((res) =>{
+    console.log(this.animeService.AnimeWatchedlist(username).subscribe((res) =>{
       if(res){
           console.log(res);    
       }else{
