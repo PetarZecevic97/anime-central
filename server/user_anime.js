@@ -110,8 +110,6 @@ app.delete('/removeanimefromwatchedlist/:animeName', isUserLoggedIn, (req, res, 
 
 //User is removing anime from wish list. req.body= {animeName:...}
 app.delete('/removeanimefromwishlist/:animeName', isUserLoggedIn, (req, res, next) => {
-    console.log("Params", req.params.animeName);
-
     db.query(queries.removeAnimeFromWishList, [req.body.currentUsername, req.params.animeName], (err, result) => {
         if(err) throw err;
         res.send({ msg : 'Anime uklonjen iz Wish Lise!'});
