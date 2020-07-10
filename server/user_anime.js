@@ -27,7 +27,7 @@ app.get('/myratedanime', isUserLoggedIn, (req, res, next) => {
 
 //Get all anime that user has put on the watch list
 app.get('/mywishlistanime', isUserLoggedIn, (req, res, next) => {
-	consol.log(req.body.currentUsername);
+	
     db.query(queries.selectAllWishedAnimeByUser, [req.body.currentUsername], (err, result, fields) => {
         if (err) throw err;
         res.send(result);
