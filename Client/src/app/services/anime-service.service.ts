@@ -20,7 +20,7 @@ export class AnimeServiceService {
   refreshAnime(){
       this.animeList = this.http.get<Anime[]>(this.animeUrl);
       return this.animeList;
-     }
+  }
 
   public getAnimeList() {
     return this.animeList;
@@ -45,7 +45,14 @@ export class AnimeServiceService {
 
   public AnimeWishlist(cur_user : string) {
     return this.http.get('http://localhost:3000/mywishlistanime' + '?currentUsername=' + cur_user, {withCredentials : true});
-}
+  }
+
+  public getMostPopularAnime(n : number){
+    var topNAnimeUrl = 'http://localhost:3000/anime/popularlist/' + n;
+    return this.http.get<Anime[]>(topNAnimeUrl);
+  }
+
+
 
 //mywatchedanime
 public AnimeWatchedlist(cur_user : string) {

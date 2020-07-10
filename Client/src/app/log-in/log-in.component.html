@@ -1,24 +1,24 @@
 <div class="container my-2" style="color:white">
     
-    <h1>Log Into Your Account</h1>
+    <h1 style="color:#999999; font-size: 35px;">Log Into Your Account</h1>
     <hr>
 
     <form class="form-horizontal" [formGroup]="LogInForm" (ngSubmit)="submitLogInForm(LogInForm.value)">    
         
         <div class="form-group">
-            <label for="username">Username:</label>
+            <label style="color:#999999; font-size: 16px;" for="username">Username:</label>
             <input type="username" id="username" class="form-control" formControlName="username">
         </div>
         <p class="text-danger" *ngIf="username.errors?.required">Username is required.</p>
         
         <div class="form-group">
-            <label for="password">Password:</label>
+            <label style="color:#999999; font-size: 16px;" for="password">Password:</label>
             <input type="password" id="password" class="form-control" formControlName="password">
         </div>
         <p class="text-danger" *ngIf="password.errors?.required">Password is required.</p>
 
         <div class="checkbox">
-            <label><input type="checkbox"> Remember me</label>
+            <label style="color:#999999; font-size: 16px;"><input type="checkbox"> Remember me</label>
         </div>
         
         <button type="submit" class="btn btn-primary" [disabled]="!LogInForm.valid">Log In</button>

@@ -16,14 +16,14 @@ const db = mysql.createConnection({
     //user: "root",
     //password: "mysql25",
 
-    //user: "nikola",
-    //password: "bobi1234",
+    user: "nikola",
+    password: "bobi1234",
 
-    // user : "root",
-    // password: "marsovac96"  // andja password
+    //user : "root",
+    //password: "marsovac96"  // andja password
 
-    user : "root",
-    password: "Zimovrel9",  //coa password this is getting out of hand
+    //user : "root",
+    //password: "Zimovrel9",  //coa password this is getting out of hand
 
 
     database: "anime_central_db"
