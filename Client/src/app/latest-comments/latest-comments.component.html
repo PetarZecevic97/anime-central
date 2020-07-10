@@ -1,8 +1,8 @@
 <br>
 <hr>
-<h2 style="color: gray;">Latest Comments Folks!</h2>
+<h2 style="color: gray;" class="bangers">Latest Comments Folks!</h2>
 
-<div class="table-responsive-sm">
+<div class="table-responsive-sm"  style="font-size: 15px;">
     <table class="table table-bordered table-dark" style="width: auto;">
         <tbody>
             <tr *ngFor="let anime of latestComment">                
@@ -14,7 +14,7 @@
                 </td>
 
                 <td style="text-align: center;">
-                    <p class="text-center">{{anime.username}}</p> 
+                    <p class="text-center"> {{anime.username}}</p> 
                     <br>
                     <p class="text-center">{{anime.date | date}}</p> 
                 </td>
