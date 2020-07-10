@@ -16,10 +16,18 @@
                     <button class="btn btn btn-primary mx-2">Sign up</button>
                 </a>
 
-                <a class="nav_link" [routerLink]="['/user/']" *ngIf="logInService.isUserLoggedIn()">
-                    <button class="btn btn btn-success mx-2">User: {{ logInService.getLoggedInUserUsername() }}</button>
-                </a>
-                
+                <div class="dropdown" mdbDropdown *ngIf="logInService.isUserLoggedIn()">
+                    <button mdbDropdownToggle type="button" mdbBtn color="primary" class="dropdown-toggle waves-light"
+                      mdbWavesEffect>
+                      User: {{ logInService.getLoggedInUserUsername() }}
+                    </button>
+                    <div class="dropdown-menu dropdown-primary">
+                        <a class="dropdown-item" [routerLink]="['/user/']">Profile</a>
+                        <div class="divider dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else</a>
+                    </div>
+                  </div>
+
                 <a class="nav_link" *ngIf="logInService.isUserLoggedIn()">
                     <button (click)="userLogOut()" class="btn btn btn-success mx-2">Log Out</button>
                 </a>
