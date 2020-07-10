@@ -9,7 +9,19 @@
     height: auto;
 }
 
-img {
+.imgBor {
     max-width: 100%;
     height: auto;
+    border: 15px solid transparent;
+    padding: 5px;  
+    border-image: url('/assets/shapes.jpg') 13 round;
   }
+
+  .bangers {
+    color:  #006080;
+     font-family: "Bangers";
+      font-size: 45px;
+       font-weight: normal;
+        text-align: center;
+         text-shadow: 0 1px 1px #99e6ff;
+}

@@ -1,10 +1,41 @@
-<div class="row">
-    <div class="col-3" style="width:30%; height:100%"><img class="img-fluid" style="width:100%; height:40%" src="{{anime.picture_URL}}"></div>
+<div class="row" style="color:white">
+    <div class="col-3" style="width:30%; height:1200px">
+        <img class="img-fluid imgBor" style="width:100%; height:40%" src="{{anime.picture_URL}}">
+    
+    </div>
     <div class="col-9">
-        <h1 class="mr-auto">{{anime.name}}</h1>
+        <h1 class="mr-auto bangers" style="text-align: left;">{{anime.name}}</h1>
         <p> {{ anime.description }}</p>
         <div class="row">
-            <button class="btn btn-primary" (click)="addToWish()">Add to my wish list</button>
+            <button class="btn btn-primary bangers" style="font-size: 20px;" (click)="addToWish()">Add to my wish list</button>
+            <button class="btn btn-primary bangers" style="margin-left: 10px; font-size: 20px;" (click)="addToWatched()">Add to my watched list</button>
         </div>
-    </div>
+
+        <br/>
+
+        <!-- <div class="row">
+            <button class="btn btn-primary" (click)="rate()">Add to my wish list</button>
+        </div> -->
+
+        <form *ngIf="loginService.isUserLoggedIn() && !thisUserRated" [formGroup]="rateForm" (submit)="rate(rateForm.value)">
+            <div class="container">
+            <input type="radio" value='1' formControlName="rating"> 1
+            <input type="radio" value='2' formControlName="rating"> 2
+            <input type="radio" value='3' formControlName="rating"> 3
+            <input type="radio" value='4' formControlName="rating"> 4
+            <input type="radio" value='5' formControlName="rating"> 5
+            <input type="radio" value='6' formControlName="rating"> 6
+            <input type="radio" value='7' formControlName="rating"> 7
+            <input type="radio" value='8' formControlName="rating"> 8
+            <input type="radio" value='9' formControlName="rating"> 9
+            <input type="radio" value='10' formControlName="rating"> 10
+
+            <button class='btn btn-primary' [disabled]="!rateForm.valid">Rate ME!</button>
+            </div>
+        </form>
+        <span class="row" *ngIf="!loginService.isUserLoggedIn() || thisUserRated">
+        <p class="bangers"> Anime Rating: {{ anime.total_score }}/10</p>
+        <img style="width: 45px; height: 45px; margin-top: 10px;"src="/assets/ah.png">
+        </span>
+
   </div>

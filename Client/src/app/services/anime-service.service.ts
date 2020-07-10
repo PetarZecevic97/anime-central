@@ -32,12 +32,29 @@ export class AnimeServiceService {
   
   public addAnimeToWatchlist(cur_user : string, animeName : string) {
       return this.http.post('http://localhost:3000/addanimetowatchedlist',
-       { "currentUsername" : cur_user,
-        "animeName" : animeName}, {withCredentials : true});
+       { currentUsername : cur_user,
+        animeName : animeName, withCredentials : true});
   }
 
-  public AnimeWatchlist(cur_user : string) {
+  public addAnimeToWishlist(cur_user : string, animeName : string) {
+    return this.http.post('http://localhost:3000/addanimetowishlist',
+     { currentUsername : cur_user,
+      animeName : animeName, withCredentials : true},
+      {observe: "response", responseType: "json"});
+}
+
+  public AnimeWishlist(cur_user : string) {
     return this.http.get('http://localhost:3000/mywishlistanime' + '?currentUsername=' + cur_user, {withCredentials : true});
 }
+
+//mywatchedanime
+public AnimeWatchedlist(cur_user : string) {
+  return this.http.get('http://localhost:3000/mywatchedanime' + '?currentUsername=' + cur_user, {withCredentials : true});
+}
+///ratethisanime req.body.currentUsername, req.body.animeName, req.body.score
+public rateThisAnime(cur_user : string, anime : string, scor : string){
+  return this.http.post(this.address + 'ratethisanime', { currentUsername : cur_user, animeName : anime, score : scor}, {withCredentials : true});
+}
+
 
 }

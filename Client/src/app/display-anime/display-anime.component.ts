@@ -4,6 +4,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { AnimeServiceService } from '../services/anime-service.service';
 import { LogInService } from '../services/log-in.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
   selector: 'app-display-anime',
@@ -21,11 +23,20 @@ export class DisplayAnimeComponent implements OnInit {
     date_aired: '',
     total_score: 0
   };
+  public rateForm : FormGroup;
+  public thisUserRated : boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private animeService : AnimeServiceService,
-    private loginService : LogInService) { }
+    public loginService : LogInService,
+    private formbuilder : FormBuilder) {
+
+        this.rateForm = this.formbuilder.group({
+          rating: ['', [Validators.required]]
+        });
+
+     }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -39,18 +50,36 @@ export class DisplayAnimeComponent implements OnInit {
 
 public addToWish() {
 
-  /*if(this.loginService.isUserLoggedIn()){
-    return this.animeService
-    .addAnimeToWatchlist(this.loginService.loggedInUserUsername(), this.anime.name)
-    .subscribe((msg) => {
-      
+  if(this.loginService.isUserLoggedIn()){
+    this.animeService
+    .addAnimeToWishlist(this.loginService.getLoggedInUserUsername(), this.anime.name).subscribe((res) => {
+      console.log(res);
     });
-  }*/
+  }
 
-  this.animeService.AnimeWatchlist(this.loginService.getLoggedInUserUsername()).subscribe((res) => {
+  this.animeService.AnimeWishlist(this.loginService.getLoggedInUserUsername()).subscribe((res) => {
     console.log(res);
   });
 
+}
+
+public addToWatched() {
+
+  if(this.loginService.isUserLoggedIn()){
+    this.animeService
+    .addAnimeToWatchlist(this.loginService.getLoggedInUserUsername(), this.anime.name).subscribe();
+  }
+
+  this.animeService.AnimeWatchedlist(this.loginService.getLoggedInUserUsername()).subscribe((res) => {
+    console.log(res);
+  });
+
+}
+
+public rate(data) {
+    console.log(data);
+    this.thisUserRated = true;
+    this.animeService.rateThisAnime(this.loginService.getLoggedInUserUsername(), this.anime.name, data['score']).subscribe();
 }
     
 
