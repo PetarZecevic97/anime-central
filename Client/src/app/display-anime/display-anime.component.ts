@@ -54,6 +54,7 @@ public addToWish() {
     this.animeService
     .addAnimeToWishlist(this.loginService.getLoggedInUserUsername(), this.anime.name).subscribe((res) => {
       console.log(res);
+      
     });
   }
 
@@ -79,7 +80,16 @@ public addToWatched() {
 public rate(data) {
     console.log(data);
     this.thisUserRated = true;
-    this.animeService.rateThisAnime(this.loginService.getLoggedInUserUsername(), this.anime.name, data['score']).subscribe();
+    this.animeService.rateThisAnime(this.loginService.getLoggedInUserUsername(), this.anime.name, data['score']).subscribe(
+      () => {
+         this.animeService.getAnimeByName(this.anime.name).subscribe((data) => {
+          console.log(this.anime)
+          this.anime = data;
+          console.log(data);
+          console.log(this.anime);
+         })
+      }
+    );
 }
     
 

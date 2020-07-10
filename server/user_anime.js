@@ -50,7 +50,7 @@ app.post('/ratethisanime', isUserLoggedIn, (req, res, next) => {
 
     db.query(queries.insertRating, [req.body.currentUsername, req.body.animeName, req.body.score], (err, result) => {
         if (err) throw err;
-        res.send("Upit uspeo\n");
+        res.send({ msg : "Upit uspeo\n" });
     });
 
 });
@@ -60,7 +60,7 @@ app.post('/commentonthisanime', isUserLoggedIn, (req, res, next) => {
 
     db.query(queries.insertComment, [req.body.currentUsername, req.body.animeName, req.body.comment], (err, result) => {
         if (err) throw err;
-        res.send("Upit uspeo\n");
+        res.send({ msg : "Upit uspeo\n"});
     });
 
 });
@@ -72,13 +72,13 @@ app.post('/addanimetowatchedlist', isUserLoggedIn, (req, res, next) => {
     db.query(queries.insertAnimeToWatchedList, [req.body.currentUsername, req.body.animeName], (err, result) => {
         if(err){             
             if(err.code == 'ER_DUP_ENTRY'){
-                res.status(400).send('Anime vec postoji u Watched listi!');
+                res.status(400).send({ msg : 'Anime vec postoji u Watched listi!'});
                 return;
             }
             else throw err;
         };
 		
-        res.send('Anime dodat u Watched Listu!');
+        res.send({ msg : 'Anime dodat u Watched Listu!'});
     });
 
 });
@@ -89,12 +89,12 @@ app.post('/addanimetowishlist', isUserLoggedIn, (req, res, next) => {
     db.query(queries.insertAnimeToWishList, [req.body.currentUsername, req.body.animeName], (err, result) => {
         if(err){             
             if(err.code == 'ER_DUP_ENTRY'){
-                res.status(400).send('Anime vec postoji u Wish listi!');
+                res.status(400).send({ msg : 'Anime vec postoji u Wish listi!' });
                 return;
             }
             else throw err;
         };
-        res.send('Anime dodat u Wish Listu!');
+        res.send({ msg : 'Anime dodat u Wish Listu!' });
     });
 
 });
