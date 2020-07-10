@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders} from '@angular/common/http'
 import { Anime } from '../models/model.anime';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { LatestComments } from '../models/model.latest.comment';
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +51,11 @@ export class AnimeServiceService {
   public getMostPopularAnime(n : number){
     var topNAnimeUrl = 'http://localhost:3000/anime/popularlist/' + n;
     return this.http.get<Anime[]>(topNAnimeUrl);
+  }
+  
+  public getLatestComments(n : number){
+    var latestCommentsUrl = 'http://localhost:3000/anime/latestcomments/' + n;
+    return this.http.get<LatestComments[]>(latestCommentsUrl);
   }
 
 //mywatchedanime
