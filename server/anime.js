@@ -16,6 +16,14 @@ animeRouter.get('/', (req, res, next) => {
 
 });
 
+animeRouter.get('/latestcomments/:n', (req, res, next) => {
+	
+    db.query(queries.selectTopNLatestComments, [Number(req.params.n)], (err, result, fields) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
 // Get image of the anime with specified name: /anime/:name
 animeRouter.get('/picture/:name', (req, res, next) => {
     res.sendFile(path.join(imageFolder, req.params.name + ".png"));

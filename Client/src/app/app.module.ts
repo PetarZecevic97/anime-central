@@ -22,6 +22,7 @@ import { DatePipe } from './pipes/date.pipe';
 import { DisplayUserComponent } from './display-user/display-user.component';
 import { TopAnimesComponent } from './top-animes/top-animes.component';
 import { CommentsPipe } from './pipes/comments.pipe'
+import { LatestCommentsComponent } from './latest-comments/latest-comments.component'
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { CommentsPipe } from './pipes/comments.pipe'
     DatePipe,
     DisplayUserComponent,
     TopAnimesComponent,
-    CommentsPipe
+    CommentsPipe,
+    LatestCommentsComponent
   ],
   imports: [
     BrowserModule,
