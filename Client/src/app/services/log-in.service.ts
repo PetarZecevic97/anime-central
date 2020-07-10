@@ -90,6 +90,10 @@ export class LogInService {
         this.loggedinUserUsername = undefined;
         this.userLoggedIn = false;
 
+        // ovde pitam da li je bio na user page, ako jeste, redirekcija
+        if (this.router.url === '/user') {
+          this.router.navigate(['/']);  
+        }
 
       }else if(res.body.hasOwnProperty("sessionExpired")){
           //ovde da se stavi neki alert prozor!!!
