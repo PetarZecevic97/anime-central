@@ -52,8 +52,6 @@ export class AnimeServiceService {
     return this.http.get<Anime[]>(topNAnimeUrl);
   }
 
-
-
 //mywatchedanime
 public AnimeWatchedlist(cur_user : string) {
   return this.http.get('http://localhost:3000/mywatchedanime' + '?currentUsername=' + cur_user, {withCredentials : true});
@@ -63,5 +61,9 @@ public rateThisAnime(cur_user : string, anime : string, scor : string){
   return this.http.post(this.address + 'ratethisanime', { currentUsername : cur_user, animeName : anime, score : scor}, {withCredentials : true});
 }
 
+//myratedanime
+public AnimeRatedList(cur_user : string) {
+  return this.http.get('http://localhost:3000/myratedanime' + '?currentUsername=' + cur_user, {withCredentials : true});
+}
 
 }
