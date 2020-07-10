@@ -22,7 +22,8 @@ import { DatePipe } from './pipes/date.pipe';
 import { DisplayUserComponent } from './display-user/display-user.component';
 import { TopAnimesComponent } from './top-animes/top-animes.component';
 import { CommentsPipe } from './pipes/comments.pipe'
-import { LatestCommentsComponent } from './latest-comments/latest-comments.component'
+import { LatestCommentsComponent } from './latest-comments/latest-comments.component';
+import { NamesPipe } from './pipes/names.pipe'
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { LatestCommentsComponent } from './latest-comments/latest-comments.compo
     DisplayUserComponent,
     TopAnimesComponent,
     CommentsPipe,
-    LatestCommentsComponent
+    LatestCommentsComponent,
+    NamesPipe
   ],
   imports: [
     BrowserModule,
