@@ -100,21 +100,21 @@ app.post('/addanimetowishlist', isUserLoggedIn, (req, res, next) => {
 });
 
 //User is removing anime from watched list. req.body= {animeName:...}
-app.delete('/removeanimefromwatchedlist', isUserLoggedIn, (req, res, next) => {
-
-    db.query(queries.removeAnimeFromWatchedList, [req.body.currentUsername, req.body.animeName], (err, result) => {
+app.delete('/removeanimefromwatchedlist/:animeName', isUserLoggedIn, (req, res, next) => {
+    db.query(queries.removeAnimeFromWatchedList, [req.body.currentUsername, req.params.animeName], (err, result) => {
         if(err) throw err;
-        res.send('Anime uklonjen iz Watched Lise!');
+        res.send({ msg : 'Anime uklonjen iz Watched Lise!'});
     });
 
 });
 
 //User is removing anime from wish list. req.body= {animeName:...}
-app.delete('/removeanimefromwishlist', isUserLoggedIn, (req, res, next) => {
+app.delete('/removeanimefromwishlist/:animeName', isUserLoggedIn, (req, res, next) => {
+    console.log("Params", req.params.animeName);
 
-    db.query(queries.removeAnimeFromWishList, [req.body.currentUsername, req.body.animeName], (err, result) => {
+    db.query(queries.removeAnimeFromWishList, [req.body.currentUsername, req.params.animeName], (err, result) => {
         if(err) throw err;
-        res.send('Anime uklonjen iz Wish Lise!');
+        res.send({ msg : 'Anime uklonjen iz Wish Lise!'});
     });
 
 });
@@ -150,11 +150,11 @@ app.delete('/deletecomment', isUserLoggedIn, (req, res, next) => {
 });
 
 //Delete user score. req.body= {animeName:...}
-app.delete('/deletescore', isUserLoggedIn, (req, res, next) => {
+app.delete('/deletescore/:animeName', isUserLoggedIn, (req, res, next) => {
     
-    db.query(queries.deleteAnimeScore, [req.body.currentUsername, req.body.animeName], (err, result) => {
+    db.query(queries.deleteAnimeScore, [req.body.currentUsername, req.params.animeName], (err, result) => {
         if(err) throw err;
-        res.send('Ocena je obrisana!');
+        res.send({ msg : 'Ocena je obrisana!'});
     });
 
 });
