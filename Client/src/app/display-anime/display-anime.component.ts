@@ -87,6 +87,8 @@ export class DisplayAnimeComponent implements OnInit {
           });
   
           this.animeService.AnimeWishlist(this.currentUser).subscribe((res) => {
+            console.log(typeof res);
+            console.log(res);
             res.forEach((wiAnime) => {
               this.wishListAnime.push(wiAnime);
               if(wiAnime.name == this.anime.name){
@@ -96,8 +98,6 @@ export class DisplayAnimeComponent implements OnInit {
             
           });
   
-        }else{
-          
         }
 
       });
@@ -138,7 +138,7 @@ public onComment(data){
     this.animeService.commentThisAnime(this.currentUser, this.anime.name, data['comment']).subscribe(
       () => {
          this.animeService.getAnimeByName(this.anime.name).subscribe((data) => {
-          //this.anime = data;
+          this.anime = data[0];
          })
       }
     );
@@ -150,7 +150,7 @@ public rate(data) {
     this.animeService.rateThisAnime(this.loginService.getLoggedInUserUsername(), this.anime.name, data['score']).subscribe(
       () => {
          this.animeService.getAnimeByName(this.anime.name).subscribe((data) => {
-          //this.anime = data;
+            this.anime = data[0];
          })
       }
     );

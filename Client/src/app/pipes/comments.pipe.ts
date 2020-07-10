@@ -8,12 +8,13 @@ export class CommentsPipe implements PipeTransform {
   transform(value: string): [string[]] {
 
     console.log("val", value);
+    if(value != ''){
 
-    let res : string[] = value.split(/\r\n|\r|\n/);
+    var res : string[] = value.split(/\r\n|\r|\n/);
     
 
-    res.forEach((res) => {
-      console.log("res", res);
+    res.forEach((res1) => {
+      console.log("res", res1);
     });
     
     var tmp : string[] = [];
@@ -25,6 +26,9 @@ export class CommentsPipe implements PipeTransform {
     });
     
     return haha;
+  }else
+  return [[]];
   }
+
 
 }
