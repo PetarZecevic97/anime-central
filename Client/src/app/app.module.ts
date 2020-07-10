@@ -20,7 +20,8 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { CarouselModule, WavesModule } from 'angular-bootstrap-md';
 import { DatePipe } from './pipes/date.pipe';
 import { DisplayUserComponent } from './display-user/display-user.component';
-import { TopAnimesComponent } from './top-animes/top-animes.component'
+import { TopAnimesComponent } from './top-animes/top-animes.component';
+import { CommentsPipe } from './pipes/comments.pipe'
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { TopAnimesComponent } from './top-animes/top-animes.component'
     LogInComponent,
     DatePipe,
     DisplayUserComponent,
-    TopAnimesComponent
+    TopAnimesComponent,
+    CommentsPipe
   ],
   imports: [
     BrowserModule,

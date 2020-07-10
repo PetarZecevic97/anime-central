@@ -21,7 +21,13 @@ export class DisplayAnimeComponent implements OnInit {
     picture_URL: '',
     date_aired: '',
     total_score: 0,
-    score: 0
+    total_views: 0,
+    Genres: '',
+    Studios: '',
+    Producers: '',
+    Licencors: '',
+    score: 0,
+    Comments: '',
   };
   public rateForm : FormGroup;
   public commentForm : FormGroup;
@@ -57,9 +63,9 @@ export class DisplayAnimeComponent implements OnInit {
     this.currentUser = this.loginService.getLoggedInUserUsername();
     this.route.paramMap.subscribe(params => {
       const animeName: string = params.get('name');
-      this.animeService.getAnimeByName(animeName).subscribe((anime) => {
-        this.anime = anime[0];
-
+      this.animeService.getAnimeByName(animeName).subscribe((animez) => {
+        this.anime = animez[0];
+        
         if(this.currentUser != undefined){
 
           this.animeService.AnimeRatedList(this.currentUser).subscribe((res) => {
@@ -87,6 +93,7 @@ export class DisplayAnimeComponent implements OnInit {
                 this.onWishList = true;
               }
             });
+            
           });
   
         }else{
@@ -131,7 +138,7 @@ public onComment(data){
     this.animeService.commentThisAnime(this.currentUser, this.anime.name, data['comment']).subscribe(
       () => {
          this.animeService.getAnimeByName(this.anime.name).subscribe((data) => {
-          this.anime = data;
+          //this.anime = data;
          })
       }
     );
@@ -143,7 +150,7 @@ public rate(data) {
     this.animeService.rateThisAnime(this.loginService.getLoggedInUserUsername(), this.anime.name, data['score']).subscribe(
       () => {
          this.animeService.getAnimeByName(this.anime.name).subscribe((data) => {
-          this.anime = data;
+          //this.anime = data;
          })
       }
     );

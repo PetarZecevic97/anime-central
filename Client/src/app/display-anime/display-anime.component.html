@@ -1,16 +1,16 @@
 <div class="row" style="color:white">
-    <div class="col-3" style="width:30%; height:1200px">
-        <img class="img-fluid imgBor" style="width:100%; height:40%" src="{{anime.picture_URL}}">
+    <div class="col-3" style="width:30%; height:1200px;">
+        <img class="img-fluid imgBor" style="width:100%; height:40%;" src="{{anime.picture_URL}}">
     
     </div>
     <div class="col-9">
         <h1 class="mr-auto bangers" style="text-align: left;">{{anime.name}}</h1>
         <p> {{ anime.description }}</p>
 
-        <span class="row" *ngIf="this.anime.total_score">
-            <p class="bangers"> Anime Rating: {{ anime.total_score }}/10</p>
+        <div class="mr-auto row" *ngIf="this.anime.total_score">
+            <h1 class="bangers" style="margin-left: 12px;"> Anime Rating: {{ anime.total_score }}/10</h1>
             <img style="width: 45px; height: 45px; margin-top: 10px;"src="/assets/ah.png">
-        </span>
+        </div>
 
         <div *ngIf="loginService.isUserLoggedIn()">
 
@@ -52,8 +52,55 @@
 
 
         </div>
+
+        <div>
+
+            <h1 class="bangers" style="text-align : left">Most Awesome Comments Ever!</h1>
         
+            <div class="table-responsive-sm">
         
+                <table class="table table-bordered table-dark" style="width: auto;">
+        
+                    <thead class="thead-dark">
+                        <tr>
+                          <th scope="col"><h3 class="text-center">User</h3></th>
+                          <th scope="col"><h3 class="text-center">Comment</h3></th>
+                          <th scope="col"><h3 class="text-center">Date</h3></th>
+                        </tr>
+                      </thead>
+                    
+        
+                    <tbody>
+                        <tr *ngFor="let com of anime.Comments | comments; let i = index" class="table-active">
+        
+                            
+                            <th scope="row"><p class="text-center">{{com[0]}}</p></th>
+                            
+        
+                            <td>
+                                <p>
+                                    {{com[1]}} 
+                                    
+                                </p>
+                            </td>
+        
+                            
+                            <td>
+                                <p class="text-center">{{com[2]}}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+        
+            </div>
+        
+        </div>
+
+       
 
   </div>
+
+  
+        
+        
 
