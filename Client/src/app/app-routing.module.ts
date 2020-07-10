@@ -5,6 +5,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { LogInComponent } from './log-in/log-in.component';
 import { DisplayAnimeComponent } from './display-anime/display-anime.component';
 import { DisplayUserComponent } from './display-user/display-user.component';
+import { TopAnimesComponent } from './top-animes/top-animes.component';
 
 
 const routes: Routes = [
@@ -12,7 +13,8 @@ const routes: Routes = [
   {path: 'signup', component: SignUpComponent},
   {path: 'login', component: LogInComponent},
   {path: 'anime/:name', component: DisplayAnimeComponent},
-  {path: 'user', component: DisplayUserComponent}
+  {path: 'user', component: DisplayUserComponent},
+  {path: 'topAnimes', component : TopAnimesComponent}
 ];
 
 @NgModule({

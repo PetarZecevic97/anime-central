@@ -1,0 +1,45 @@
+<div class="container">
+
+    <h1 style="color: white;">Most Awesome Animes Ever!</h1>
+
+    <div class="table-responsive-sm">
+
+        <table class="table table-bordered table-dark" style="width: auto;">
+
+            <thead class="thead-dark">
+                <tr>
+                  <th scope="col"><h3 class="text-center">Rank</h3></th>
+                  <th scope="col"><h3 class="text-center">Title</h3></th>
+                  <th scope="col"><h3 class="text-center">Score</h3></th>
+                </tr>
+              </thead>
+            
+
+            <tbody>
+                <tr *ngFor="let anime of topAnimes; let i = index" class="table-active">
+
+                    
+                    <th scope="row"><h1 class="text-center">{{i+1}}</h1></th>
+                    
+
+                    <td>
+                        <img [src]="anime.picture_URL" class="pull-left" height="200">
+                        <h2>{{anime.name}}</h2>
+                        <hr style="background-color: white;">
+                        <p>
+                            {{shortDesc(anime.description)}} 
+                            <a class="nav_link" [routerLink]="['/anime', anime.name]" > Read more </a>
+                        </p>
+                    </td>
+
+                    
+                    <td>
+                        <h3 class="text-center">{{anime.total_score}}</h3>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>

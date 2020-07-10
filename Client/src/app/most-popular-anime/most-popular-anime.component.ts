@@ -15,13 +15,13 @@ export class MostPopularAnimeComponent implements OnInit {
 
   constructor(private animeService : AnimeServiceService) {
 
-    animeService.getMostPopularAnime(10).subscribe((res) => {            
+    animeService.getMostPopularAnime(20).subscribe((res) => {            
       res.forEach( anime => {
         this.mostPopularAnime.push(anime);
       }) 
     });
 
-    console.log(this.mostPopularAnime);
+    
 
   }
 
