@@ -33,7 +33,6 @@ const db = mysql.createConnection({
  //const imageFolder = "C:/Users/Lexxigar/Desktop/AnimePlanet/AnimeGit/12-animecentral/database/anime_pictures/"
 const endIndex = __dirname.lastIndexOf(path.sep);
 const imageFolder = path.join(path.join(__dirname.slice(0, endIndex), 'database'), 'anime_pictures');
-console.log(__dirname.slice(0, endIndex));
 //function for hashing
 //Moved the hashedCode func to global in order to use it both in queries for unique ids and in user.
 //TODO: Consider moving it back in user after a solution is found for ids in queries.

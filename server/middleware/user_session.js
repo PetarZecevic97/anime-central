@@ -40,7 +40,10 @@ const userSessions = {
                 if (error) throw error;
 				
                 if(result === null) {
-                    res.redirect('/login');
+					const response = {
+						isLoggedIn : false
+					}
+                    res.send(response);
 					
 					
                 } else {

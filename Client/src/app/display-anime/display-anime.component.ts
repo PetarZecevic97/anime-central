@@ -1,11 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Anime } from '../models/model.anime';
-import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { AnimeServiceService } from '../services/anime-service.service';
 import { LogInService } from '../services/log-in.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-display-anime',
@@ -24,7 +23,15 @@ export class DisplayAnimeComponent implements OnInit {
     total_score: 0
   };
   public rateForm : FormGroup;
-  public thisUserRated : boolean = false;
+  public commentForm : FormGroup;
+  public ratedAnime : Anime[] = [];
+  public ratedObser : Observable<Anime[]>;
+  public wishListAnime : Anime[] = [];
+  public watchedListAnime : Anime[] = [];
+  public currentUser : string = '';
+  public onWishList : boolean = false;
+  public onWatchList : boolean = false;
+  public onRateList : boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,16 +43,57 @@ export class DisplayAnimeComponent implements OnInit {
           rating: ['', [Validators.required]]
         });
 
+        this.commentForm = this.formbuilder.group({
+          comment: ['', [Validators.required]]
+        });
+
      }
 
+
   ngOnInit(): void {
+    console.log(this.loginService.getLoggedInUserUsername());
+
+    this.currentUser = this.loginService.getLoggedInUserUsername();
     this.route.paramMap.subscribe(params => {
       const animeName: string = params.get('name');
       this.animeService.getAnimeByName(animeName).subscribe((anime) => {
         this.anime = anime[0];
+
+        if(this.currentUser != undefined){
+
+          this.animeService.AnimeRatedList(this.currentUser).subscribe((res) => {
+            res.forEach((rAnime) => {
+              this.ratedAnime.push(rAnime);
+              if(rAnime.name == this.anime.name){
+                this.onRateList = true;             
+              }
+            });
+          });
+  
+          this.animeService.AnimeWatchedlist(this.currentUser).subscribe((res) => {         
+            res.forEach((wAnime) => {
+              this.watchedListAnime.push(wAnime);
+              if(wAnime.name == this.anime.name){
+                this.onWatchList = true;
+              }
+            });
+          });
+  
+          this.animeService.AnimeWishlist(this.currentUser).subscribe((res) => {
+            res.forEach((wiAnime) => {
+              this.wishListAnime.push(wiAnime);
+              if(wiAnime.name == this.anime.name){
+                this.onWishList = true;
+              }
+            });
+          });
+  
+        }else{
+          
+        }
+
       });
   });
-  
 }
 
 public addToWish() {
@@ -77,16 +125,24 @@ public addToWatched() {
 
 }
 
+public onComment(data){
+    console.log(data);
+    this.animeService.commentThisAnime(this.currentUser, this.anime.name, data['comment']).subscribe(
+      () => {
+         this.animeService.getAnimeByName(this.anime.name).subscribe((data) => {
+          this.anime = data;
+         })
+      }
+    );
+}
+
 public rate(data) {
     console.log(data);
-    this.thisUserRated = true;
+    this.onRateList = true;
     this.animeService.rateThisAnime(this.loginService.getLoggedInUserUsername(), this.anime.name, data['score']).subscribe(
       () => {
          this.animeService.getAnimeByName(this.anime.name).subscribe((data) => {
-          console.log(this.anime)
           this.anime = data;
-          console.log(data);
-          console.log(this.anime);
          })
       }
     );
