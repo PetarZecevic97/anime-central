@@ -16,7 +16,7 @@
   <mdb-carousel-item *ngFor="let s of slides">
 
     <div class="col-3" style="width:100%; height:100%" *ngFor="let o of s" [routerLink]="['/anime/', o.name]">
-      <h4 style="color:#999999; font-size: 16px;"> Date aired: {{ o.date_aired | date}}</h4>
+      <h4 style="color:#999999; font-size: 14px;"> Date aired: {{ o.date_aired | date}}</h4>
       <img  class="w-100 img-fluid" style="width:100%; height:200px" [src]="o.picture_URL" alt="Third slide">
       <mdb-card-body>
         <mdb-card-title>
