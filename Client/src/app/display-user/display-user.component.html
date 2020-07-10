@@ -41,7 +41,7 @@
 </div>
 <br/>
 
-<div *ngIf="showWish" class="row" style="background-color: #262626; display:block; border-radius: 20px;">
+<div *ngIf="showWish" class="row" style="background-color: #262626; display:block;">
   <mdb-carousel  [animation]="'slide'">
     <h1 style="margin-left: 45%; color:#999999; font-size: 30px;">Wish List</h1>
     <mdb-carousel-item *ngFor="let s of wishSlides">
@@ -49,15 +49,15 @@
         <div>
           <h4 style="color:#999999; font-size: 16px;"> {{ o.name }}</h4>
           <div class="test" id="test">
-            <img  class="w-100 img-fluid" style="width:100%; height:200px; border-radius: 0%;" [src]="o.picture_URL" alt="Third slide">
+            <img class="w-100 img-fluid" style="width:100%; height:200px; border-radius: 0%;" [src]="o.picture_URL" alt="Third slide">
             <a class="remImage" (click)="deleteWishAnime(o.name)" id="delete">
-              <img src="https://image.flaticon.com/icons/svg/261/261935.svg" style="width:40px;height:40px;">
+              <img style="position: relative; z-index: 10;" src="https://image.flaticon.com/icons/svg/261/261935.svg" style="width:40px;height:40px;">
             </a>
           </div> 
           <mdb-card-body>
             <mdb-card-title>
-              <div style="position: relative; height: 110%; z-index: 10;" [routerLink]="['/anime/', o.name]" class="bangers">
-                <h4> See more... </h4>
+              <div style="position: relative; z-index: 10; height: 110%;" [routerLink]="['/anime/', o.name]" class="bangers">
+                <h4> See more </h4>
               </div>
             </mdb-card-title>
           </mdb-card-body>
@@ -69,7 +69,7 @@
   </div>
   <br/>
 
-  <div *ngIf="showWatched" class="row" style="background-color: #262626; display:block; border-radius: 20px">
+  <div *ngIf="showWatched" class="row" style="background-color: #262626; display:block;">
     <h1 style="margin-left: 45%; color:#999999; font-size: 30px;">Watched List</h1>
     <mdb-carousel  [animation]="'slide'">
       <mdb-carousel-item *ngFor="let s of watchedSlides">
@@ -96,7 +96,7 @@
     </div>
     <br/>
 
-    <div *ngIf="showRated" class="row" style="background-color: #262626; display:block; border-radius: 20px;">
+    <div *ngIf="showRated" class="row" style="background-color: #262626; display:block;">
       <h1 style="margin-left: 45%; color:#999999; font-size: 30px;">Rated Animes</h1>
       <mdb-carousel  [animation]="'slide'">
         <mdb-carousel-item *ngFor="let s of ratedSlides">
@@ -113,6 +113,10 @@
                 <mdb-card-title>
                   <div style="position: relative; height: 110%; z-index: 10;" [routerLink]="['/anime/', o.name]" class="bangers">
                     <h4> See more... </h4>
+                  </div>
+                  <br/>
+                  <div (click)="updateRating(o.name)" style="border: white solid 1px; position: relative; z-index: 10; height: 110%;" class="bangers">
+                    <h4> Update rating </h4>
                   </div>
                 </mdb-card-title>
               </mdb-card-body>

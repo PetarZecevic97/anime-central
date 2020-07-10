@@ -140,4 +140,8 @@ export class DisplayUserComponent implements OnInit {
       });
     });  
   }
+
+  public updateRating(animeName: string){
+    console.log("anime name: ", animeName);
+  }
 }
