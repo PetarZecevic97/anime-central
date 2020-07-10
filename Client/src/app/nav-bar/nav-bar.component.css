@@ -1,3 +1,10 @@
 .bangers {
     color:  #006080; font-family: "Bangers"; font-size: 45px; font-weight: normal; text-align: center; text-shadow: 0 1px 1px #99e6ff;
 }
+
+.dropdown-toggle {
+    font-family: "Bangers";
+    color: #ebe9e9;
+    font-size: 20px;
+    display: inline-block;
+}

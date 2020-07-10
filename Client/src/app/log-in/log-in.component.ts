@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LogInService } from '../services/log-in.service';
+import { Observable } from 'rxjs';
+import { share } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-log-in',
@@ -18,13 +21,13 @@ export class LogInComponent implements OnInit {
       username: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
-    
-  }
+}
 
   ngOnInit(): void {
   }
 
   public submitLogInForm(formValue: any){
+    
     
 
     this.logInService.logIn(this.LogInForm.get("username").value, this.LogInForm.get("password").value);

@@ -42,3 +42,17 @@ img {
 #fileInput{
   display: none;
 }
+
+* {
+  font-family: "Bangers";
+}
+
+.bangers {
+  color:  #006080;    
+  font-family: "Bangers";
+  font-size: 20px;
+  font-weight: normal;
+  text-align: center;
+  text-shadow: 0 1px 1px #99e6ff;
+  background-color: black;
+}

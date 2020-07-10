@@ -3,8 +3,8 @@
     https://stackblitz.com/edit/angular-file-upload-preview-61ntka?file=app%2Fapp.component.html 
 -->
 
-<div class="row" *ngIf="logInService.isUserLoggedIn()">
-    <div class="col-1"></div>
+<div class="row" *ngIf="logInService.isUserLoggedIn()" >
+    <div class="col-1" ></div>
     <div class="col-3" style="width:100%; height:100%">
         <label class="hoverable" for="fileInput">
             <img [src]="url ? url : 'https://www.w3schools.com/howto/img_avatar.png'"> 
@@ -15,25 +15,87 @@
         <input id="fileInput" type='file' (change)="onSelectFile($event)">     
     </div>
 
-    <div class="row" style="background-color: #262626; display:block; border-radius: 20px;">
-        <mdb-carousel>
-          <mdb-carousel-item>
-            <div class="col-3" style="width:100%; height:100%" [routerLink]="['/anime/Monster']">
-              <h4 style="color:#999999; font-size: 16px;"> Date aired: </h4>
-              <mdb-card-body>
-                <mdb-card-title>
-                  <h4 class="bangers"></h4>
-                </mdb-card-title>
-              </mdb-card-body>
-            </div>
-          </mdb-carousel-item>
-        </mdb-carousel>
-    </div>
-
-    <div class="col-5">
+    <!-- <div class="col-5">
         <h1 class="mr-auto"></h1>
         <div class="row">
             <button (click) = "onClick()">BLA!</button>    
         </div>
+    </div> -->
+
+  <div class="col">
+      <br/>
+      <br/>
+      <div class="row-1">      
+      <div style="display: inline-block;" class="row-1">
+        <button class="btn btn-primary bangers" style="color: #ebe9e9; display: inline-block; font-size: 30px;" (click)="showWish=!showWish">Wish anime</button>
+      </div>
+      <div style="display: inline-block;" class="row-3">
+        <button class="btn btn-primary bangers" style="color: #ebe9e9; margin-left: 10px; font-size: 30px;" (click)="showWatched=!showWatched">Watched anime</button>
+      </div>
+      <div style="display: inline-block;" class="row-5"> 
+        <button class="btn btn-primary bangers" style="color: #ebe9e9; margin-left: 10px; font-size: 30px;" (click)="showRated=!showRated">Rated anime</button>
+      </div>    
+      <br/>
+      </div>
     </div>
+</div>
+<br/>
+
+<div *ngIf="showWish" class="row" style="background-color: #262626; display:block; border-radius: 20px;">
+  <mdb-carousel  [animation]="'slide'">
+    <mdb-carousel-item *ngFor="let s of wishSlides">
+      <div *ngFor="let o of s" class="col-3" style="width:100%; height:100%; color: #ebe9e9; justify-content: center; align-items: center;">
+        <div [routerLink]="['/anime/', o.name]">
+          <h4 style="color:#999999; font-size: 16px;"> Date aired: {{ o.date_aired | date}}</h4>
+          <img  class="w-100 img-fluid" style="width:100%; height:200px; border-radius: 0%;" [src]="o.picture_URL" alt="Third slide">
+          <mdb-card-body>
+            <mdb-card-title>
+              <h4 class="bangers">{{ o.name }}</h4>
+            </mdb-card-title>
+          </mdb-card-body>
+        </div>
+        <button class="btn bg-transparent btn-sm" 
+                style="position: relative; color:#ebe9e9; 
+                       margin-left: 38%; margin-top: 0; border: rgb(133, 21, 21) solid"
+                (click)="deleteAnime(o.name)"> - 
+        </button>
+      </div>
+    </mdb-carousel-item>
+  </mdb-carousel>
+  
   </div>
+  <br/>
+
+  <div *ngIf="showWatched" class="row" style="background-color: #262626; display:block; border-radius: 20px">
+    <mdb-carousel  [animation]="'slide'">
+      <mdb-carousel-item *ngFor="let s of watchedSlides">
+    
+        <div class="col-3" style="width:100%; height:100%" *ngFor="let o of s" [routerLink]="['/anime/', o.name]">
+          <h4 style="color:#999999; font-size: 16px;"> Date aired: {{ o.date_aired | date}}</h4>
+          <img  class="w-100 img-fluid" style="width:100%; height:200px; border-radius: 0%;" [src]="o.picture_URL" alt="Third slide">
+          <mdb-card-body>
+            <mdb-card-title>
+              <h4 class="bangers">{{ o.name }}</h4>
+            </mdb-card-title>
+          </mdb-card-body>
+        </div>
+      </mdb-carousel-item>
+    </mdb-carousel>
+    </div>
+    <br/>
+
+    <div *ngIf="showRated" class="row" style="background-color: #262626; display:block; border-radius: 20px;">
+      <mdb-carousel  [animation]="'slide'">
+        <mdb-carousel-item *ngFor="let s of ratedSlides">
+          <div class="col-3" style="width:100%; height:100%" *ngFor="let o of s" [routerLink]="['/anime/', o.name]">
+            <h4 style="color:#999999; font-size: 16px;"> Rate: {{ o.score }}</h4>
+            <img  class="w-100 img-fluid" style="width:100%; height:200px; border-radius: 0%;" [src]="o.picture_URL" alt="Third slide">
+            <mdb-card-body>
+              <mdb-card-title>
+                <h4 class="bangers">{{ o.name }}</h4>
+              </mdb-card-title>
+            </mdb-card-body>
+          </div>
+        </mdb-carousel-item>
+      </mdb-carousel>
+      </div>

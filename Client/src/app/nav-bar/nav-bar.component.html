@@ -9,11 +9,11 @@
             <div class="navbar-nav ml-auto">
 
                 <a class="nav_link" [routerLink]="['/login']" *ngIf="!logInService.isUserLoggedIn()">
-                    <button class="btn btn btn-primary mx-2">Login</button>
+                    <button style="font-family: 'Bangers'; color: #ebe9e9; font-size: 20px;" class="btn btn btn-primary mx-2">Login</button>
                 </a>
                 
                 <a class="nav_link" [routerLink]="['/signup']" *ngIf="!logInService.isUserLoggedIn()">
-                    <button class="btn btn btn-primary mx-2">Sign up</button>
+                    <button style="font-family: 'Bangers'; color: #ebe9e9; font-size: 20px;" class="btn btn btn-primary mx-2">Sign up</button>
                 </a>
 
                 <div class="dropdown" mdbDropdown *ngIf="logInService.isUserLoggedIn()">
@@ -29,7 +29,7 @@
                   </div>
 
                 <a class="nav_link" *ngIf="logInService.isUserLoggedIn()">
-                    <button (click)="userLogOut()" class="btn btn btn-success mx-2">Log Out</button>
+                    <button style="font-family: 'Bangers'; color: #ebe9e9; font-size: 20px;" (click)="userLogOut()" class="btn btn btn-success mx-2">Log Out</button>
                 </a>
                 
 

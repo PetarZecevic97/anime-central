@@ -18,12 +18,10 @@ export class LogInService {
   private userLoggedIn = false;          // da li je korisnik ulogovan
   private errorMsg : string;             // greska pri logovanju koju server vraca
   private areThereErrors = false;         // da li je server vratio gresku (greska se hvata u anonimnoj fji prilikom pretplate na tok odgovora)
-  
 
   constructor(private http: HttpClient,
               private cookieService: CookieService,
               private router: Router) {
-
 
   }
   
@@ -43,7 +41,9 @@ export class LogInService {
   public errorMessage(){
     return this.errorMsg;
   }
+
   //-----------------------------//
+
 
 
 
