@@ -77,6 +77,7 @@ app.post('/addanimetowatchedlist', isUserLoggedIn, (req, res, next) => {
             }
             else throw err;
         };
+		
         res.send('Anime dodat u Watched Listu!');
     });
 

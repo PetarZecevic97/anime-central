@@ -33,14 +33,14 @@ export class AnimeServiceService {
   public addAnimeToWatchlist(cur_user : string, animeName : string) {
       return this.http.post('http://localhost:3000/addanimetowatchedlist',
        { currentUsername : cur_user,
-        animeName : animeName, withCredentials : true});
+        animeName : animeName}, {withCredentials : true});
   }
 
   public addAnimeToWishlist(cur_user : string, animeName : string) {
     return this.http.post('http://localhost:3000/addanimetowishlist',
      { currentUsername : cur_user,
-      animeName : animeName, withCredentials : true},
-      {observe: "response", responseType: "json"});
+      animeName : animeName},
+      {withCredentials : true, observe: "response", responseType: "json"});
 }
 
   public AnimeWishlist(cur_user : string) {
