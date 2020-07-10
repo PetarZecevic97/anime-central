@@ -44,7 +44,7 @@ export class AnimeServiceService {
 }
 
   public AnimeWishlist(cur_user : string) {
-    return this.http.get('http://localhost:3000/mywishlistanime' + '?currentUsername=' + cur_user, {withCredentials : true});
+    return this.http.get<Anime[]>('http://localhost:3000/mywishlistanime' + '?currentUsername=' + cur_user, {withCredentials : true});
   }
 
   public getMostPopularAnime(n : number){
@@ -54,7 +54,7 @@ export class AnimeServiceService {
 
 //mywatchedanime
 public AnimeWatchedlist(cur_user : string) {
-  return this.http.get('http://localhost:3000/mywatchedanime' + '?currentUsername=' + cur_user, {withCredentials : true});
+  return this.http.get<Anime[]>('http://localhost:3000/mywatchedanime' + '?currentUsername=' + cur_user, {withCredentials : true});
 }
 ///ratethisanime req.body.currentUsername, req.body.animeName, req.body.score
 public rateThisAnime(cur_user : string, anime : string, scor : string){
@@ -63,7 +63,7 @@ public rateThisAnime(cur_user : string, anime : string, scor : string){
 
 //myratedanime
 public AnimeRatedList(cur_user : string) {
-  return this.http.get('http://localhost:3000/myratedanime' + '?currentUsername=' + cur_user, {withCredentials : true});
+  return this.http.get<Anime[]>('http://localhost:3000/myratedanime' + '?currentUsername=' + cur_user, {withCredentials : true});
 }
 
 }
