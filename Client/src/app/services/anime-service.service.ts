@@ -78,4 +78,22 @@ public commentThisAnime(cur_user : string, anime : string, comm : string){
   return this.http.post(this.address + 'commentonthisanime', { currentUsername : cur_user, animeName : anime, comment : comm}, {withCredentials : true});
 }
 
+  //User is removing anime from wish list. req.body= {animeName:...}
+  public deleteFromWish(cur_user : string, anime_name : string) {
+    console.log("anime in wish delete: ", anime_name);
+
+    return this.http.delete('http://localhost:3000/removeanimefromwishlist/' + anime_name, {withCredentials : true});
+  }
+
+  //User is removing anime from watched list. req.body= {animeName:...}
+  public deleteFromWatched(cur_user : string, anime_name : string) {
+    return this.http.delete('http://localhost:3000/removeanimefromwatchedlist/' + anime_name, {withCredentials : true});
+  }
+
+  //Delete user score. req.body= {animeName:...}
+  public deleteRating(cur_user : string, anime_name : string) {
+    console.log(anime_name);
+    return this.http.delete('http://localhost:3000/deletescore/' + anime_name, {withCredentials : true});
+}
+
 }

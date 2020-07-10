@@ -43,22 +43,25 @@
 
 <div *ngIf="showWish" class="row" style="background-color: #262626; display:block; border-radius: 20px;">
   <mdb-carousel  [animation]="'slide'">
+    <h1 style="margin-left: 45%; color:#999999; font-size: 30px;">Wish List</h1>
     <mdb-carousel-item *ngFor="let s of wishSlides">
       <div *ngFor="let o of s" class="col-3" style="width:100%; height:100%; color: #ebe9e9; justify-content: center; align-items: center;">
-        <div [routerLink]="['/anime/', o.name]">
-          <h4 style="color:#999999; font-size: 16px;"> Date aired: {{ o.date_aired | date}}</h4>
-          <img  class="w-100 img-fluid" style="width:100%; height:200px; border-radius: 0%;" [src]="o.picture_URL" alt="Third slide">
+        <div>
+          <h4 style="color:#999999; font-size: 16px;"> {{ o.name }}</h4>
+          <div class="test" id="test">
+            <img  class="w-100 img-fluid" style="width:100%; height:200px; border-radius: 0%;" [src]="o.picture_URL" alt="Third slide">
+            <a class="remImage" (click)="deleteWishAnime(o.name)" id="delete">
+              <img src="https://image.flaticon.com/icons/svg/261/261935.svg" style="width:40px;height:40px;">
+            </a>
+          </div> 
           <mdb-card-body>
             <mdb-card-title>
-              <h4 class="bangers">{{ o.name }}</h4>
+              <div style="position: relative; height: 110%; z-index: 10;" [routerLink]="['/anime/', o.name]" class="bangers">
+                <h4> See more... </h4>
+              </div>
             </mdb-card-title>
           </mdb-card-body>
         </div>
-        <button class="btn bg-transparent btn-sm" 
-                style="position: relative; color:#ebe9e9; 
-                       margin-left: 38%; margin-top: 0; border: rgb(133, 21, 21) solid"
-                (click)="deleteAnime(o.name)"> - 
-        </button>
       </div>
     </mdb-carousel-item>
   </mdb-carousel>
@@ -67,17 +70,26 @@
   <br/>
 
   <div *ngIf="showWatched" class="row" style="background-color: #262626; display:block; border-radius: 20px">
+    <h1 style="margin-left: 45%; color:#999999; font-size: 30px;">Watched List</h1>
     <mdb-carousel  [animation]="'slide'">
       <mdb-carousel-item *ngFor="let s of watchedSlides">
-    
-        <div class="col-3" style="width:100%; height:100%" *ngFor="let o of s" [routerLink]="['/anime/', o.name]">
-          <h4 style="color:#999999; font-size: 16px;"> Date aired: {{ o.date_aired | date}}</h4>
-          <img  class="w-100 img-fluid" style="width:100%; height:200px; border-radius: 0%;" [src]="o.picture_URL" alt="Third slide">
-          <mdb-card-body>
-            <mdb-card-title>
-              <h4 class="bangers">{{ o.name }}</h4>
-            </mdb-card-title>
-          </mdb-card-body>
+        <div *ngFor="let o of s" class="col-3" style="width:100%; height:100%; color: #ebe9e9; justify-content: center; align-items: center;">
+          <div>
+            <h4 style="color:#999999; font-size: 16px;"> {{ o.name }}</h4>
+            <div class="test" id="test">
+              <img  class="w-100 img-fluid" style="width:100%; height:200px; border-radius: 0%;" [src]="o.picture_URL" alt="Third slide">
+              <a class="remImage" (click)="deleteWatchedAnime(o.name)" id="delete">
+                <img src="https://image.flaticon.com/icons/svg/261/261935.svg" style="width:40px;height:40px;">
+              </a>
+            </div>
+            <mdb-card-body>
+              <mdb-card-title>
+                <div style="position: relative; height: 110%; z-index: 10;" [routerLink]="['/anime/', o.name]" class="bangers">
+                <h4> See more... </h4>
+                </div>
+              </mdb-card-title>
+            </mdb-card-body>
+          </div>
         </div>
       </mdb-carousel-item>
     </mdb-carousel>
@@ -85,16 +97,26 @@
     <br/>
 
     <div *ngIf="showRated" class="row" style="background-color: #262626; display:block; border-radius: 20px;">
+      <h1 style="margin-left: 45%; color:#999999; font-size: 30px;">Rated Animes</h1>
       <mdb-carousel  [animation]="'slide'">
         <mdb-carousel-item *ngFor="let s of ratedSlides">
-          <div class="col-3" style="width:100%; height:100%" *ngFor="let o of s" [routerLink]="['/anime/', o.name]">
-            <h4 style="color:#999999; font-size: 16px;"> Rate: {{ o.score }}</h4>
-            <img  class="w-100 img-fluid" style="width:100%; height:200px; border-radius: 0%;" [src]="o.picture_URL" alt="Third slide">
-            <mdb-card-body>
-              <mdb-card-title>
-                <h4 class="bangers">{{ o.name }}</h4>
-              </mdb-card-title>
-            </mdb-card-body>
+          <div *ngFor="let o of s" class="col-3" style="width:100%; height:100%; color: #ebe9e9; justify-content: center; align-items: center;">
+            <div>
+              <h4 style="color:#999999; font-size: 16px;"> Rate: {{ o.score }}</h4>
+              <div class="test" id="test">
+                <img  class="w-100 img-fluid" style="width:100%; height:200px; border-radius: 0%;" [src]="o.picture_URL" alt="Third slide">
+                <a class="remImage" (click)="deleteRating(o.name)" id="delete">
+                  <img src="https://image.flaticon.com/icons/svg/261/261935.svg" style="width:40px;height:40px;">
+                </a>
+              </div>
+              <mdb-card-body>
+                <mdb-card-title>
+                  <div style="position: relative; height: 110%; z-index: 10;" [routerLink]="['/anime/', o.name]" class="bangers">
+                    <h4> See more... </h4>
+                  </div>
+                </mdb-card-title>
+              </mdb-card-body>
+            </div>
           </div>
         </mdb-carousel-item>
       </mdb-carousel>
