@@ -20,7 +20,8 @@ export class DisplayAnimeComponent implements OnInit {
     picture: '',
     picture_URL: '',
     date_aired: '',
-    total_score: 0
+    total_score: 0,
+    score: 0
   };
   public rateForm : FormGroup;
   public commentForm : FormGroup;

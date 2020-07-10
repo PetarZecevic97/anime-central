@@ -6,4 +6,5 @@ export interface Anime{
     picture_URL: string;
     date_aired: string;
     total_score: number;
+    score: number;
 }

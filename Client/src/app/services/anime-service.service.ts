@@ -72,7 +72,4 @@ public commentThisAnime(cur_user : string, anime : string, comm : string){
   return this.http.post(this.address + 'commentonthisanime', { currentUsername : cur_user, animeName : anime, comment : comm}, {withCredentials : true});
 }
 
-
-
-
 }
