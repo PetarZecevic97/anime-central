@@ -92,7 +92,52 @@ export class DisplayUserComponent implements OnInit {
     }
   }
 
-  public deleteAnime(animeName:String){
+  public deleteWishAnime(animeName: string){
+      this.animeService.deleteFromWish(this.logInService.getLoggedInUserUsername(), animeName).subscribe((res) => {
+        console.log(res);
+        
+        this.wishanime = [];
+        this.animeService.AnimeWishlist(this.logInService.getLoggedInUserUsername()).subscribe((res) => {            
+          res.forEach( anime => {
+            this.wishanime.push(anime);
+          }) 
+          this.wishSlides = [[]];
+          this.wishSlides = this.chunk(this.wishanime, 4);
+          console.log("Wished: ", this.wishanime);
+        });
+      });
+  }
+
+  public deleteWatchedAnime(animeName: string){
+    this.animeService.deleteFromWatched(this.logInService.getLoggedInUserUsername(), animeName).subscribe((res) => {
+      console.log(res);
       
+      this.watchedanime = [];
+      this.animeService.AnimeWatchedlist(this.logInService.getLoggedInUserUsername()).subscribe((res) => {            
+        res.forEach( anime => {
+          this.watchedanime.push(anime);
+        }) 
+        this.watchedSlides = [[]];
+        this.watchedSlides = this.chunk(this.watchedanime, 4);
+        console.log("Watched: ", this.watchedanime);
+      });
+    });    
+  }
+
+  public deleteRating(animeName: string){
+    this.animeService.deleteRating(this.logInService.getLoggedInUserUsername(), animeName).subscribe((res) => {
+      console.log(res);
+      
+      this.ratedanime = [];
+
+      this.animeService.AnimeRatedList(this.logInService.getLoggedInUserUsername()).subscribe((res) => {            
+        res.forEach( anime => {
+          this.ratedanime.push(anime);
+        }) 
+        this.ratedSlides = [[]];
+        this.ratedSlides = this.chunk(this.ratedanime, 4);
+        console.log("Rated: ", this.ratedanime);
+      });
+    });  
   }
 }
