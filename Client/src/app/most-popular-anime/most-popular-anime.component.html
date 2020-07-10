@@ -1,4 +1,4 @@
-<h1>Most popular anime</h1>
+<h1>Most Popular Anime</h1>
 
 
 <!-- <ol class="list-unstyled">
@@ -20,7 +20,8 @@
 
     </li>
 </ol> -->
-<ul class="list-unstyled">
+
+<!-- <ul class="list-unstyled">
     <li class="media my-4" *ngFor="let anime of mostPopularAnime">
       <img class="mr-3 mx-auto d-block" [src]="anime.picture_URL" alt="Generic placeholder image" height="300">
       <div class="media-body" >
@@ -28,4 +29,35 @@
         <p>{{anime.name}}</p>
       </div>
     </li>
-</ul>
+</ul> -->
+<!-- <div class="container" *ngFor="let anime of mostPopularAnime">    
+    <div class="panel-group" >
+        <div class="panel panel-default">
+            <div class="panel-heading">{{anime.name}}</div>
+            <div class="panel-body">
+                <img class="mr-3 mx-auto d-block" [src]="anime.picture_URL" alt="Generic placeholder image" height="300">
+            </div>
+        </div>
+    </div> -->
+
+<div class="table-responsive-sm">
+<table class="table table-striped">
+    <tbody>
+        <tr *ngFor="let anime of mostPopularAnime; let i = index" class="table-active">
+
+            <th scope="row">{{i+1}}</th>
+
+            <td>
+                <img [src]="anime.picture_URL" class="figure-img img-fluid rounded" height="270">
+                <hr>
+                <p>{{anime.date_aired | date}}</p>
+            </td>
+
+            <td>
+                <h3>{{anime.name}}</h3>                
+                <p>{{anime.description}}</p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
