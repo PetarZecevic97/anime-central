@@ -146,6 +146,12 @@ const animeQueries = {
                 LEFT JOIN AnimeTotalViews ON Anime.id = AnimeTotalViews.anime_id
                 ORDER BY AnimeTotalViews.total_views DESC
                 LIMIT ?`,
+
+    selectTopNLatestComments : `SELECT Anime.id, Anime.name AS 'animeName', User.username, UserComment.comment, UserComment.date
+                                FROM Anime JOIN UserComment ON Anime.id = UserComment.anime_id JOIN
+                                User on UserComment.user_id = User.id
+                                ORDER BY UserComment.date DESC
+                                LIMIT ?`
     /**************************************     Queries for anime info for both logged and unlogged user    **************************************/
 
 };
