@@ -54,11 +54,12 @@ img {
   text-align: center;
   text-shadow: 0 1px 1px #99e6ff;
   background-color: black;
+  opacity : 0.95;
 }
 
 .bangers:hover{
   color:  #999999;   
-  background-color: #0000006e; 
+  background-color: black; 
   font-size: 25px;
 }
 
@@ -77,7 +78,7 @@ a.remImage img {
   transition: all .5s ease-in-out;
 }
 .test:hover a.remImage img {
-  opacity: 1;
+  opacity: 0;
   z-index: 99;
   position: absolute;
   top: 5px;
