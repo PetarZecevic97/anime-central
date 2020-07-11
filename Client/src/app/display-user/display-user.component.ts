@@ -22,6 +22,8 @@ export class DisplayUserComponent implements OnInit {
   public showWish: boolean = false;
   public showRated: boolean = false;
 
+  public showRange: boolean = false;
+
   watchedSlides: any = [[]];
   wishSlides: any = [[]];
   ratedSlides: any = [[]];
@@ -143,5 +145,15 @@ export class DisplayUserComponent implements OnInit {
 
   public updateRating(animeName: string){
     console.log("anime name: ", animeName);
+  }
+  
+  public changeShowRange(){
+    this.showRange = !this.showRange;
+    console.log("Eh");
+  }
+
+  public changeShowRangeAndUpdate(){
+    this.showRange = !this.showRange;
+    console.log("pozovi update zahtev sa vrednoscu!");
   }
 }

@@ -54,12 +54,10 @@ img {
   text-align: center;
   text-shadow: 0 1px 1px #99e6ff;
   background-color: black;
-  opacity : 0.95;
 }
 
 .bangers:hover{
   color:  #999999;   
-  background-color: black; 
   font-size: 25px;
 }
 
@@ -71,14 +69,14 @@ a.remImage img {
   box-shadow: none;
   position: absolute;
   right: 7px;
-  top: 5x;
+  top: -5px;
   margin-top: 4px;
   opacity: 0;
   display: block;
   transition: all .5s ease-in-out;
 }
 .test:hover a.remImage img {
-  opacity: 0.5;
+  opacity: 1;
   z-index: 99;
   position: absolute;
   top: 5px;
@@ -90,11 +88,11 @@ a.remImage img {
   position: absolute;
   display: block;
   background: rgba(0, 0, 0, 0.6);
-  top: 5px;
+  top: 0px;
   z-index: 0;
   opacity: 0;
   transition: all .5s ease-in-out;
 }
 .test:hover:after{
-  opacity: 0;
+  opacity: 1;
 }
