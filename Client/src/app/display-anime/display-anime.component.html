@@ -1,22 +1,35 @@
 <div class="row" style="color:white">
     <div class="col-3" style="width:30%; height:1200px;">
-        <img class="img-fluid imgBor" style="width:100%; height:40%;" src="{{anime.picture_URL}}">
+        <img class="img-fluid imgBor" style="width:100%; height:46.6%;" src="{{anime.picture_URL}}">
     
     </div>
     <div class="col-9">
         <h1 class="mr-auto bangers" style="text-align: left;">{{anime.name}}</h1>
-        <p> {{ anime.description }}</p>
+        
 
         <div class="mr-auto row" *ngIf="this.anime.total_score">
             <h1 class="bangers" style="margin-left: 12px;"> Anime Rating: {{ anime.total_score | number }}/10</h1>
-            <img style="width: 45px; height: 45px; margin-top: 10px;"src="/assets/ah.png">
+            <img style="width: 45px; height: 45px; margin-top: 1px;"src="/assets/ah.png">
         </div>
-
+        <div class="container bg-dark" style="opacity: 0.95; border-radius: 10px; font-weight: bold; padding: 10px 10px 10px 10px">
+        <div class="column">
+        <h1 class="bangers" style="text-align: left;">description</h1>
+        <p> {{ anime.description }}</p>
+        </div>
+        <div class="column" >
+        <h4 class="bangers" style="font-size: 25px; text-align: left;">Licencors: {{ anime.Licencors }}</h4>
+        <h4 class="bangers" style="font-size: 25px; text-align: left;">Producers: {{ anime.Producers }}</h4>
+        <h4 class="bangers" style="font-size: 25px; text-align: left;">Studios: {{ anime.Studios }}</h4>
+        <h4 class="bangers" style="font-size: 25px; text-align: left;">Genres: {{ anime.Genres }}</h4>
+        <h4 class="bangers" style="font-size: 25px; text-align: left;">total_views: {{ anime.total_views }}</h4>
+        </div>
+        </div>
+        <br/>
         <div *ngIf="loginService.isUserLoggedIn()">
 
             <div class="row">
                 <div class="column" *ngIf="!onWishList">
-                <button class="btn btn-primary bangers" style="font-size: 20px;" (click)="addToWish()">Add to my wish list</button>
+                <button class="btn btn-primary bangers" style="font-size: 20px; margin-left: 10px;" (click)="addToWish()">Add to my wish list</button>
                 </div>
                 <div class="column" *ngIf="!onWatchList">
                 <button class="btn btn-primary bangers" style="margin-left: 10px; font-size: 20px;" (click)="addToWatched()">Add to my watched list</button>
@@ -27,37 +40,43 @@
             <br/>
 
             <form *ngIf="!onRateList" [formGroup]="rateForm" (submit)="rate(rateForm.value)">
-                <div class="container">
-                <input type="radio" value='1' formControlName="rating"> 1
-                <input type="radio" value='2' formControlName="rating"> 2
-                <input type="radio" value='3' formControlName="rating"> 3
-                <input type="radio" value='4' formControlName="rating"> 4
-                <input type="radio" value='5' formControlName="rating"> 5
-                <input type="radio" value='6' formControlName="rating"> 6
-                <input type="radio" value='7' formControlName="rating"> 7
-                <input type="radio" value='8' formControlName="rating"> 8
-                <input type="radio" value='9' formControlName="rating"> 9
-                <input type="radio" value='10' formControlName="rating"> 10
+                <div class="container bangers" style="font-size: 26px; text-align: left;">
+                <button class='btn btn-primary' [disabled]="!rateForm.valid" style="margin-right: 10px;">Rate ME!</button>
+                <input type="radio" value='1' formControlName="rating" style="width: 15px; height: 15px;"> 1
+                <input type="radio" value='2' formControlName="rating" style="width: 15px; height: 15px;"> 2
+                <input type="radio" value='3' formControlName="rating" style="width: 15px; height: 15px;"> 3
+                <input type="radio" value='4' formControlName="rating" style="width: 15px; height: 15px;"> 4
+                <input type="radio" value='5' formControlName="rating" style="width: 15px; height: 15px;"> 5
+                <input type="radio" value='6' formControlName="rating" style="width: 15px; height: 15px;"> 6
+                <input type="radio" value='7' formControlName="rating" style="width: 15px; height: 15px;"> 7
+                <input type="radio" value='8' formControlName="rating" style="width: 15px; height: 15px;"> 8
+                <input type="radio" value='9' formControlName="rating" style="width: 15px; height: 15px;"> 9
+                <input type="radio" value='10' formControlName="rating" style="width: 15px; height: 15px;"> 10
     
-                <button class='btn btn-primary' [disabled]="!rateForm.valid">Rate ME!</button>
+                
                 </div>
             </form>
+            <br/>
 
             <form [formGroup]="commentForm" (submit)="onComment(commentForm.value)">
-                <div class="container">
-                <input type="text-area" formControlName="comment"> 
-                <button class='btn btn-primary' style="border-radius: 20px;" [disabled]="!commentForm.valid">Comment ME!</button>
+                <div class="row">
+                    <button class='btn btn-primary' style="border-radius: 10px; margin-right: 10px; margin-left: 10px; height: 30%; margin-top: 12px;" [disabled]="!commentForm.valid">Comment ME!</button>
+                    <input type="text" style="width: 72%;
+                    padding: 12px 20px;
+                    margin: 8px 0;
+                    box-sizing: border-box; border: none; border-bottom: 2px solid blue;" formControlName="comment"> 
+                
                 </div>
             </form>
 
 
         </div>
 
-        <div>
+        <div *ngIf="anime.Comments">
 
             <h1 class="bangers" style="text-align : left">Most Awesome Comments Ever!</h1>
         
-            <div class="table-responsive-sm">
+            <div class="table-responsive-sm"  style="opacity: 0.95;">
         
                 <table class="table table-bordered table-dark" style="width: auto;">
         

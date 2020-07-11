@@ -148,7 +148,7 @@ public onComment(data){
 public rate(data) {
     console.log(data);
     this.onRateList = true;
-    this.animeService.rateThisAnime(this.loginService.getLoggedInUserUsername(), this.anime.name, data['score']).subscribe(
+    this.animeService.rateThisAnime(this.loginService.getLoggedInUserUsername(), this.anime.name, data["rating"]).subscribe(
       () => {
          this.animeService.getAnimeByName(this.anime.name).subscribe((data) => {
             this.anime = data[0];
