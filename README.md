@@ -15,6 +15,7 @@ su Redis server i Node.js. Za klijentsku stranu korišćen je Angular9.
 
     1. Potrebno je preuzeti ceo projekat!
 2. Nakon toga potrebno je učitati skript sa putanje `./database/anime_central_db.sql` u servis MySQLWorkbench i pokrenuti ga, čime će se napraviti relaciona baza podataka sa odgovarajućim podacima.
+3. U fajlu na putanji `./server/global.js` potrebno je izmeniti informacije za username i password korisnika koji pravi bazu podataka
 3. Za potrebe serverske strane neophodno je instalirati Redis i pokrenuti ga da radi u pozadini
 4. Pozicionirati se u direktorijum `./server` i u njemu izvršiti komande `npm install` i `node index.js`
 5. Pozicionirati se u direktorijum `./Client` i u njemu izvršiti komande `npm install` i `ng serve`
