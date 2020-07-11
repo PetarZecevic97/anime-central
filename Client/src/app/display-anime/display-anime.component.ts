@@ -64,6 +64,7 @@ export class DisplayAnimeComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const animeName: string = params.get('name');
       this.animeService.getAnimeByName(animeName).subscribe((animez) => {
+        console.log(animez)
         this.anime = animez[0];
         
         if(this.currentUser != undefined){

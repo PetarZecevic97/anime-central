@@ -1,9 +1,18 @@
 <div class="container">
   <nav class="navbar navbar-expand navbar-dark bg-dark row full">
-      <form class="form-inline">
-          <button class="btn btn-primary my-2 my-sm-0" type="submit" style="margin-right: 10px;">Search</button>
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      </form>
+      <form class="form-inline" [formGroup]="searchForm" (submit)="onSearch(searchForm.value)">
+        <div mdbDropdown>
+        <button mdbDropdownToggle class="btn btn-primary my-2 my-sm-0" type="submit" style="margin-right: 10px;">Search</button>
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" formControlName="input">
+          <div class="dropdown-menu dropdown-primary">
+            <div *ngFor="let searchling of searchList">
+              <a class="dropdown-item" [routerLink]="['/anime/', searchling.name]">{{ searchling.name }}</a>
+              <div class="divider dropdown-divider"></div>
+            </div>
+            
+          </div>
+        </div>  
+        </form>
   </nav>
   <br/>
                    

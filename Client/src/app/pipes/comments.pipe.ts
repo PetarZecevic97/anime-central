@@ -7,7 +7,7 @@ export class CommentsPipe implements PipeTransform {
 
   transform(value: string): [string[]] {
 
-    if(value != ''){
+    if(value){
 
     var res : string[] = value.split(/\r\n|\r|\n/);
     

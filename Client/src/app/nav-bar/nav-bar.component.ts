@@ -8,7 +8,11 @@ import { LogInService } from '../services/log-in.service';
 })
 export class NavBarComponent implements OnInit {
 
-  constructor(public logInService : LogInService) { }
+  
+
+  constructor(public logInService : LogInService) { 
+    
+  }
 
   ngOnInit(): void {
   }
@@ -18,6 +22,7 @@ export class NavBarComponent implements OnInit {
   public userLogOut(){
     this.logInService.logOut();
   }
+
 
 
 }

@@ -30,6 +30,12 @@ export class AnimeServiceService {
   public getAnimeByName(Name : string) {
     return this.http.get<Anime>(this.animeUrl + Name);
   }
+
+  //'/selectallanimelike/:startswith'
+  public getAllAnimeStart(start : string){
+      return this.http.get<Anime[]>(this.animeUrl + 'selectallanimelike/' + start);
+  }
+
   
   public addAnimeToWatchlist(cur_user : string, animeName : string) {
       return this.http.post('http://localhost:3000/addanimetowatchedlist',

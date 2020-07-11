@@ -8,7 +8,7 @@
         <p> {{ anime.description }}</p>
 
         <div class="mr-auto row" *ngIf="this.anime.total_score">
-            <h1 class="bangers" style="margin-left: 12px;"> Anime Rating: {{ anime.total_score }}/10</h1>
+            <h1 class="bangers" style="margin-left: 12px;"> Anime Rating: {{ anime.total_score | number }}/10</h1>
             <img style="width: 45px; height: 45px; margin-top: 10px;"src="/assets/ah.png">
         </div>
 

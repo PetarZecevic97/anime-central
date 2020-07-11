@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class NamesPipe implements PipeTransform {
 
   transform(value: string): string {
-    console.log(value.length);
+    
     if(value == ''){
       return '';
     }else if(value.length > 15){

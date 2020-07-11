@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener} from '@angular/core';
 import { AnimeServiceService } from '../services/anime-service.service';
 import { Anime } from '../models/model.anime';
 import { Observable } from 'rxjs';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-main-body',
@@ -19,6 +20,9 @@ export class MainBodyComponent implements OnInit {
   public AnimeList: Observable<Anime[]>;
   public animeList: Anime[] = [];
   public array : number[] = [1, 2, 3, 4];
+  public searchForm : FormGroup;
+  public searchList : Anime[] = [];
+
 
   slides: any = [[]];
   chunk(arr, chunkSize) {
@@ -29,14 +33,17 @@ export class MainBodyComponent implements OnInit {
     return R;
   }
   
-  constructor(private animeService: AnimeServiceService) { 
+  constructor(private animeService: AnimeServiceService, private formBuilder : FormBuilder) { 
     this.AnimeList = animeService.getAnimeList();
     animeService.getAnimeList().subscribe( animes => { 
       this.animeList = animes;
       this.slides = this.chunk(this.animeList, 4);
-    }
-  );
-    
+    });
+
+    this.searchForm = formBuilder.group({
+      input : ['', [Validators.required]]
+    });
+
 
   }
 
@@ -57,6 +64,21 @@ export class MainBodyComponent implements OnInit {
     } else {
       this.carouselDisplayMode = 'multiple';
     }
+  }
+
+  onSearch(data){
+      
+      this.searchList = [];
+      if(data["input"] == ''){
+          this.searchList = this.animeList;
+      }   
+      else{
+        this.animeService.getAllAnimeStart(data["input"]).subscribe((animes) => {
+          animes.forEach((Sanime) => {
+            this.searchList.push(Sanime);
+          });
+        } )
+      }
   }
 
 }
