@@ -58,13 +58,10 @@ export class DisplayAnimeComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log(this.loginService.getLoggedInUserUsername());
-
     this.currentUser = this.loginService.getLoggedInUserUsername();
     this.route.paramMap.subscribe(params => {
       const animeName: string = params.get('name');
       this.animeService.getAnimeByName(animeName).subscribe((animez) => {
-        console.log(animez)
         this.anime = animez[0];
         
         if(this.currentUser != undefined){
@@ -88,8 +85,6 @@ export class DisplayAnimeComponent implements OnInit {
           });
   
           this.animeService.AnimeWishlist(this.currentUser).subscribe((res) => {
-            console.log(typeof res);
-            console.log(res);
             res.forEach((wiAnime) => {
               this.wishListAnime.push(wiAnime);
               if(wiAnime.name == this.anime.name){
@@ -110,13 +105,11 @@ public addToWish() {
   if(this.loginService.isUserLoggedIn()){
     this.animeService
     .addAnimeToWishlist(this.loginService.getLoggedInUserUsername(), this.anime.name).subscribe((res) => {
-      console.log(res);
       
     });
   }
 
   this.animeService.AnimeWishlist(this.loginService.getLoggedInUserUsername()).subscribe((res) => {
-    console.log(res);
   });
 
 }
@@ -129,13 +122,11 @@ public addToWatched() {
   }
 
   this.animeService.AnimeWatchedlist(this.loginService.getLoggedInUserUsername()).subscribe((res) => {
-    console.log(res);
   });
 
 }
 
 public onComment(data){
-    console.log(data);
     this.animeService.commentThisAnime(this.currentUser, this.anime.name, data['comment']).subscribe(
       () => {
          this.animeService.getAnimeByName(this.anime.name).subscribe((data) => {
@@ -147,7 +138,6 @@ public onComment(data){
 }
 
 public rate(data) {
-    console.log(data);
     this.onRateList = true;
     this.animeService.rateThisAnime(this.loginService.getLoggedInUserUsername(), this.anime.name, data["rating"]).subscribe(
       () => {

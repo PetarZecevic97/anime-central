@@ -86,8 +86,6 @@ public commentThisAnime(cur_user : string, anime : string, comm : string){
 
   //User is removing anime from wish list. req.body= {animeName:...}
   public deleteFromWish(cur_user : string, anime_name : string) {
-    console.log("anime in wish delete: ", anime_name);
-
     return this.http.delete('http://localhost:3000/removeanimefromwishlist/' + anime_name, {withCredentials : true});
   }
 
@@ -98,8 +96,15 @@ public commentThisAnime(cur_user : string, anime : string, comm : string){
 
   //Delete user score. req.body= {animeName:...}
   public deleteRating(cur_user : string, anime_name : string) {
-    console.log(anime_name);
     return this.http.delete('http://localhost:3000/deletescore/' + anime_name, {withCredentials : true});
-}
+  }
 
+  //Change given score to anime. req.body= {animeName:..., newScore:...}
+  public updateRating(cur_user : string, anime_name : string, new_rate : string) {
+    return this.http.put("http://localhost:3000/updatescore", {
+      newScore : new_rate,
+      currentUsername : cur_user,
+      animeName : anime_name
+    }, {withCredentials : true});
+  } 
 }
