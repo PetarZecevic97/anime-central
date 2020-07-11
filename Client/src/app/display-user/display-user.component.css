@@ -71,14 +71,14 @@ a.remImage img {
   box-shadow: none;
   position: absolute;
   right: 7px;
-  top: -5px;
+  top: 5x;
   margin-top: 4px;
   opacity: 0;
   display: block;
   transition: all .5s ease-in-out;
 }
 .test:hover a.remImage img {
-  opacity: 0;
+  opacity: 0.5;
   z-index: 99;
   position: absolute;
   top: 5px;
@@ -90,11 +90,11 @@ a.remImage img {
   position: absolute;
   display: block;
   background: rgba(0, 0, 0, 0.6);
-  top: 0px;
+  top: 5px;
   z-index: 0;
   opacity: 0;
   transition: all .5s ease-in-out;
 }
 .test:hover:after{
-  opacity: 1;
+  opacity: 0;
 }
