@@ -140,6 +140,7 @@ public onComment(data){
       () => {
          this.animeService.getAnimeByName(this.anime.name).subscribe((data) => {
           this.anime = data[0];
+          this.commentForm.reset();
          })
       }
     );
