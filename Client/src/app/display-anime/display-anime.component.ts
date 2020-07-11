@@ -102,27 +102,27 @@ export class DisplayAnimeComponent implements OnInit {
 
 public addToWish() {
 
+  this.onWishList=true;
   if(this.loginService.isUserLoggedIn()){
     this.animeService
     .addAnimeToWishlist(this.loginService.getLoggedInUserUsername(), this.anime.name).subscribe((res) => {
-      
+        
     });
   }
-
-  this.animeService.AnimeWishlist(this.loginService.getLoggedInUserUsername()).subscribe((res) => {
-  });
 
 }
 
 public addToWatched() {
 
+  this.onWatchList = true;
   if(this.loginService.isUserLoggedIn()){
     this.animeService
-    .addAnimeToWatchlist(this.loginService.getLoggedInUserUsername(), this.anime.name).subscribe();
+    .addAnimeToWatchlist(this.loginService.getLoggedInUserUsername(), this.anime.name).subscribe(() => {
+      
+    });
   }
 
-  this.animeService.AnimeWatchedlist(this.loginService.getLoggedInUserUsername()).subscribe((res) => {
-  });
+  
 
 }
 

@@ -29,10 +29,10 @@
 
             <div class="row">
                 <div class="column" *ngIf="!onWishList">
-                <button class="btn btn-primary bangers" style="font-size: 20px; margin-left: 10px;" (click)="addToWish()">Add to my wish list</button>
+                <button class="btn btn-primary bangers" style="font-size: 20px; margin-left: 10px;" (click)="addToWish()" [disabled]="onWishList">Add to my wish list</button>
                 </div>
                 <div class="column" *ngIf="!onWatchList">
-                <button class="btn btn-primary bangers" style="margin-left: 10px; font-size: 20px;" (click)="addToWatched()">Add to my watched list</button>
+                <button class="btn btn-primary bangers" style="margin-left: 10px; font-size: 20px;" (click)="addToWatched()" [disabled]="onWatchList">Add to my watched list</button>
                 </div>
 
             </div>
