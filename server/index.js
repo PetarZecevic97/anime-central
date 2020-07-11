@@ -1,6 +1,5 @@
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const cors = require('cors')
 
 const {db, express} = require('./global');
 const user = require('./user_profile');
@@ -17,7 +16,6 @@ db.connect((err) => {
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
-//app.use(cors({credentials : true}));
 
 // Implementacija CORS zastite
 app.use(function (req, res, next) {
@@ -27,7 +25,7 @@ app.use(function (req, res, next) {
   if (req.method === 'OPTIONS') {
     res.header(
       'Access-Control-Allow-Methods',
-      'OPTIONS, GET, POST, PATCH, DELETE'
+      'OPTIONS, GET, POST, PATCH, DELETE, PUT'
     );
 
     return res.status(200).json({});

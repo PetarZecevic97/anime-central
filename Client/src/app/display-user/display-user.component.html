@@ -57,6 +57,7 @@
         <mdb-card-body>
           <mdb-card-title style="width: 100%; height: 20%;">
             <br/>
+            <br/>
             <div style="border: white solid 1px;"  [routerLink]="['/anime/', o.name]" class="bangers">
               <h4> See more </h4>
             </div>
@@ -85,6 +86,7 @@
           </div>
           <mdb-card-body>
             <mdb-card-title style="width: 100%; height: 20%;">
+              <br/>
               <br/>
               <div style="border: white solid 1px;"  [routerLink]="['/anime/', o.name]" class="bangers">
               <h4> See more... </h4>
@@ -118,8 +120,21 @@
                   <h4> See more... </h4>
                 </div>
                 <br/>
-                <div (click)="updateRating(o.name)" style="border: white solid 1px; position: relative; z-index: 10; height: 110%;" class="bangers">
+                <div *ngIf="!showRange" (click)="changeShowRange()" style="border: white solid 1px;" class="bangers">
                   <h4> Update rating </h4>
+                </div>
+                <div *ngIf="showRange" 
+                style="border: white solid 1px; color:#006080; font-family: Bangers;
+                       font-size: 20px;
+                       font-weight: normal;
+                       text-align: center;
+                       text-shadow: 0 1px 1px #99e6ff;
+                       background-color: black;">
+                  <form [formGroup]="rateForm" (ngSubmit)="updateRating(rateForm.value, o.name)">
+                    <label for="vol">[1..10]</label>
+                    <input type="range" id="vol" name="vol" min="1" max="10" value="5" formControlName="newRating">
+                    <input type="submit" value="OK">
+                  </form>
                 </div>
               </mdb-card-title>
             </mdb-card-body>

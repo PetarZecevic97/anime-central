@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { AnimeServiceService } from '../services/anime-service.service';
 import { LogInService } from '../services/log-in.service';
 import { Anime } from '../models/model.anime';
-import { Observable } from 'rxjs';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-display-user',
@@ -23,6 +23,7 @@ export class DisplayUserComponent implements OnInit {
   public showRated: boolean = false;
 
   public showRange: boolean = false;
+  public rateForm : FormGroup;
 
   watchedSlides: any = [[]];
   wishSlides: any = [[]];
@@ -37,8 +38,11 @@ export class DisplayUserComponent implements OnInit {
   }
 
   constructor(public animeService: AnimeServiceService,
-              public logInService: LogInService) {
-
+              public logInService: LogInService,
+              public formBuilder: FormBuilder) {
+      this.rateForm = formBuilder.group({
+        newRating: ['', [Validators.required, Validators.pattern('[1-10]')]]
+      });
   };
 
   ngOnInit(): void {
@@ -53,7 +57,6 @@ export class DisplayUserComponent implements OnInit {
         this.wishanime.push(anime);
       }) 
       this.wishSlides = this.chunk(this.wishanime, 4);
-      console.log("Wished: ", this.wishanime);
     });
 
     this.animeService.AnimeWatchedlist(this.logInService.getLoggedInUserUsername()).subscribe((res) => {            
@@ -61,7 +64,6 @@ export class DisplayUserComponent implements OnInit {
         this.watchedanime.push(anime);
       })
       this.watchedSlides = this.chunk(this.watchedanime, 4);
-      console.log("Watched: ", this.watchedanime); 
     });
 
     this.animeService.AnimeRatedList(this.logInService.getLoggedInUserUsername()).subscribe((res) => {            
@@ -69,7 +71,6 @@ export class DisplayUserComponent implements OnInit {
         this.ratedanime.push(anime);
       }) 
       this.ratedSlides = this.chunk(this.ratedanime, 4);
-      console.log("Rated: ", this.ratedanime);
     });
   }
 
@@ -96,7 +97,6 @@ export class DisplayUserComponent implements OnInit {
 
   public deleteWishAnime(animeName: string){
       this.animeService.deleteFromWish(this.logInService.getLoggedInUserUsername(), animeName).subscribe((res) => {
-        console.log(res);
         
         this.wishanime = [];
         this.animeService.AnimeWishlist(this.logInService.getLoggedInUserUsername()).subscribe((res) => {            
@@ -105,14 +105,12 @@ export class DisplayUserComponent implements OnInit {
           }) 
           this.wishSlides = [[]];
           this.wishSlides = this.chunk(this.wishanime, 4);
-          console.log("Wished: ", this.wishanime);
         });
       });
   }
 
   public deleteWatchedAnime(animeName: string){
     this.animeService.deleteFromWatched(this.logInService.getLoggedInUserUsername(), animeName).subscribe((res) => {
-      console.log(res);
       
       this.watchedanime = [];
       this.animeService.AnimeWatchedlist(this.logInService.getLoggedInUserUsername()).subscribe((res) => {            
@@ -121,14 +119,12 @@ export class DisplayUserComponent implements OnInit {
         }) 
         this.watchedSlides = [[]];
         this.watchedSlides = this.chunk(this.watchedanime, 4);
-        console.log("Watched: ", this.watchedanime);
       });
     });    
   }
 
   public deleteRating(animeName: string){
     this.animeService.deleteRating(this.logInService.getLoggedInUserUsername(), animeName).subscribe((res) => {
-      console.log(res);
       
       this.ratedanime = [];
 
@@ -138,22 +134,30 @@ export class DisplayUserComponent implements OnInit {
         }) 
         this.ratedSlides = [[]];
         this.ratedSlides = this.chunk(this.ratedanime, 4);
-        console.log("Rated: ", this.ratedanime);
       });
     });  
   }
 
-  public updateRating(animeName: string){
-    console.log("anime name: ", animeName);
-  }
-  
   public changeShowRange(){
     this.showRange = !this.showRange;
-    console.log("Eh");
   }
 
-  public changeShowRangeAndUpdate(){
+  public updateRating(data, animeName: string){
+    if (!data["newRating"]) {
+      data["newRating"] = 5;
+    }
+
+    this.animeService.updateRating(this.logInService.getLoggedInUserUsername(), animeName, data["newRating"]).subscribe((res) => {
+      this.ratedanime = [];
+
+      this.animeService.AnimeRatedList(this.logInService.getLoggedInUserUsername()).subscribe((res) => {            
+        res.forEach( anime => {
+          this.ratedanime.push(anime);
+        }) 
+        this.ratedSlides = [[]];
+        this.ratedSlides = this.chunk(this.ratedanime, 4);
+      });
+    });
     this.showRange = !this.showRange;
-    console.log("pozovi update zahtev sa vrednoscu!");
   }
 }

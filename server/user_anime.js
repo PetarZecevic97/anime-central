@@ -67,8 +67,6 @@ app.post('/commentonthisanime', isUserLoggedIn, (req, res, next) => {
 
 //User is adding anime to watched list. req.body= {animeName:...}
 app.post('/addanimetowatchedlist', isUserLoggedIn, (req, res, next) => {
-
-	console.log(req.body.currentUsername, req.body.animeName);
     db.query(queries.insertAnimeToWatchedList, [req.body.currentUsername, req.body.animeName], (err, result) => {
         if(err){             
             if(err.code == 'ER_DUP_ENTRY'){
@@ -130,10 +128,9 @@ app.put('/editcomment', isUserLoggedIn, (req, res, next) => {
 
 //Change given score to anime. req.body= {animeName:..., newScore:...}
 app.put('/updatescore', isUserLoggedIn, (req, res, next) => {
-    
     db.query(queries.updateAnimeScore, [req.body.newScore, req.body.currentUsername, req.body.animeName], (err, result) => {
         if(err) throw err;
-        res.send('Skor promenjen!');
+        res.send({msg: 'Skor promenjen!'});
     });
 
 });
