@@ -19,7 +19,7 @@ su Redis server i Node.js. Za klijentsku stranu korišćen je Angular9.
 3. Za potrebe serverske strane neophodno je instalirati Redis i pokrenuti ga da radi u pozadini
 4. Pozicionirati se u direktorijum `./server` i u njemu izvršiti komande `npm install` i `node index.js`
 5. Pozicionirati se u direktorijum `./Client` i u njemu izvršiti komande `npm install` i `ng serve`
-6. Pokrenuti aplikaciju na `http://localhost:3000`
+6. Pokrenuti aplikaciju na `http://localhost:4200`
 
 Demo video se može pogledati na adresi: https://youtu.be/4ZbHEmFDY6I
 
