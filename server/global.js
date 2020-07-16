@@ -22,8 +22,8 @@ const db = mysql.createConnection({
     //user : "root",
     //password: "marsovac96",  // andja password
 
-    user : "root",
-    password: "Zimovrel9",  //coa password this is getting out of hand
+    //user : "root",
+    //password: "Zimovrel9",  //coa password this is getting out of hand
 
 
 

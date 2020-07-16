@@ -56,7 +56,7 @@ export class SignUpComponent implements OnInit {
 
                   }, errorObj => {
                       this.areThereErrors = true;
-                      this.errorMsg = errorObj.message + "\n" + errorObj.error;                      
+                      this.errorMsg = errorObj.error;                      
                   });
 
   }

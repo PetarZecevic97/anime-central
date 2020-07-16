@@ -71,7 +71,7 @@ export class LogInService {
 
                   }, errorObj => {
                       //console.log(errorObj.message + "\n" + errorObj.error);
-                      this.errorMsg = errorObj.message + "\n" + errorObj.error;
+                      this.errorMsg = errorObj.error;
                       this.areThereErrors = true;
                   });
 
@@ -101,7 +101,7 @@ export class LogInService {
           this.router.navigate['/login'];          
       }
     }, errorObj => {
-       window.alert(errorObj.message + "\n" + errorObj.error);
+       window.alert(errorObj.error);
        this.router.navigate['/login'];
     });
 
