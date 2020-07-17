@@ -1,5 +1,6 @@
 const {db} = require('../global');
 const queries = require('../queries/login_queries');
+const passwordHash = require('password-hash');
 
 const userInputDatabaseValidation = {
     //Checking if username exists in database. Used for both log in, sign up and change username.
@@ -44,13 +45,18 @@ const userInputDatabaseValidation = {
     checkPassword(req, res, next){
 
         if(req.usernameExists) {
-            db.query(queries.selectUserWithUsernameAndPassword, [req.body.username, req.body.password], (err, results, fields) => {
+            db.query(queries.selectUserWithUsername, [req.body.username], (err, results, fields) => {
                 if (err) throw err;
-        
                 if (results.length == 0){
                     res.status(400).send(`Password for username ${req.body.username} is not correct.`);
                 } else {
-                    next();
+                    //DatabaseAdministrator's password is not hashed because it was added via MySQL Workbench
+                    if ((req.body.password == "Admin1" && results[0].username == "DatabaseAdministrator") || passwordHash.verify(req.body.password, results[0].password)){
+                        next();
+                    } else {
+                        res.status(400).send(`Password for username ${req.body.username} is not correct.`);
+                    }
+                    
                 }
             });
         } else {

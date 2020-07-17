@@ -10,14 +10,14 @@ const db = mysql.createConnection({
 
     //host: "localhost",
 
-    // user: "PetarZecevic",
-    // password: "mi16169",
+    user: "PetarZecevic",
+    password: "mi16169",
 
     //user: "root",
     //password: "mysql25",
 
-    user: "nikola",
-    password: "bobi1234",
+    //user: "nikola",
+    //password: "bobi1234",
 
     //user : "root",
     //password: "marsovac96",  // andja password
