@@ -29,7 +29,8 @@ CREATE TABLE IF NOT EXISTS `anime_central_db`.`Anime` (
   `description` MEDIUMTEXT NULL,
   `picture_URL` VARCHAR(100) NULL,
   `date_aired` DATE NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
 ENGINE = InnoDB;
 
 
@@ -42,7 +43,8 @@ CREATE TABLE IF NOT EXISTS `anime_central_db`.`Genre` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   `description` MEDIUMTEXT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
 ENGINE = InnoDB;
 
 
@@ -78,7 +80,8 @@ DROP TABLE IF EXISTS `anime_central_db`.`Studio` ;
 CREATE TABLE IF NOT EXISTS `anime_central_db`.`Studio` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
 ENGINE = InnoDB;
 
 
@@ -90,7 +93,8 @@ DROP TABLE IF EXISTS `anime_central_db`.`Producer` ;
 CREATE TABLE IF NOT EXISTS `anime_central_db`.`Producer` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
 ENGINE = InnoDB;
 
 
@@ -101,8 +105,9 @@ DROP TABLE IF EXISTS `anime_central_db`.`Licencor` ;
 
 CREATE TABLE IF NOT EXISTS `anime_central_db`.`Licencor` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NULL,
-  PRIMARY KEY (`id`))
+  `name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
 ENGINE = InnoDB;
 
 
