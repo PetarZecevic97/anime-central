@@ -16,7 +16,7 @@ export class LogInComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder,
-              public logInService: LogInService) {
+              private logInService: LogInService) {
     this.LogInForm = formBuilder.group({      
       username: ['', [Validators.required]],
       password: ['', [Validators.required]]
@@ -41,6 +41,12 @@ export class LogInComponent implements OnInit {
     return this.LogInForm.get('password');
   }
 
+  public isErrors(){
+    return this.logInService.isErrors();
+  }
 
+  public errorMessage(){
+    return this.logInService.errorMessage();
+  }
 
 }
