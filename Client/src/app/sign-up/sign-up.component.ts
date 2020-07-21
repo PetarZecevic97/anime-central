@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { LogInService } from '../services/log-in.service';
@@ -9,7 +9,7 @@ import { inflateRawSync } from 'zlib';
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.css']
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, OnDestroy {
 
   private readonly signUpUrl = "http://localhost:3000/signup/";
 
@@ -18,6 +18,7 @@ export class SignUpComponent implements OnInit {
   public errorMsg : string;
   public areThereErrors = false;
 
+  private signUpSub;
 
   constructor(private formBuilder: FormBuilder,
               private http : HttpClient,
@@ -34,6 +35,9 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  ngOnDestroy(): void {
+    this.signUpSub.unsubscribe();
+  }
 
   //-----------HTTP Zahtev za pravljenje novog naloga------------------//
   public submitSignUpForm(formValue: any){
@@ -42,22 +46,22 @@ export class SignUpComponent implements OnInit {
     var username = this.SignUpForm.get("username").value;
     var password = this.SignUpForm.get("password").value;
 
-    this.http.post(this.signUpUrl,
-                  {email, username, password},
-                  {observe: "response", responseType: "json"})
-                  .subscribe( (res) => {
-                    
-                    if(res.body.hasOwnProperty("insertUser")){
-                      
-                      this.logInSevice.logIn(username, password);
+    this.signUpSub = this.http.post(this.signUpUrl,
+      { email, username, password },
+      { observe: "response", responseType: "json" })
+      .subscribe((res) => {
 
-                    }
+        if (res.body.hasOwnProperty("insertUser")) {
+
+          this.logInSevice.logIn(username, password);
+
+        }
 
 
-                  }, errorObj => {
-                      this.areThereErrors = true;
-                      this.errorMsg = errorObj.error;                      
-                  });
+      }, errorObj => {
+        this.areThereErrors = true;
+        this.errorMsg = errorObj.error;
+      });
 
   }
   //-------------------------------------------------------------------//

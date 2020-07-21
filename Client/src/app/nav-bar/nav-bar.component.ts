@@ -10,7 +10,7 @@ export class NavBarComponent implements OnInit {
 
   
 
-  constructor(public logInService : LogInService) { 
+  constructor(private logInService : LogInService) { 
     
   }
 
@@ -23,6 +23,13 @@ export class NavBarComponent implements OnInit {
     this.logInService.logOut();
   }
 
+  
+  public isUserLoggedIn(){
+    return this.logInService.isUserLoggedIn();
+  }
 
+  public getLoggedInUserUsername(){
+    return this.logInService.getLoggedInUserUsername();
+  }
 
 }
