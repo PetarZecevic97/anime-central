@@ -3,10 +3,16 @@ const mysql = require('mysql');
 const queries = require('./queries/insert_queries');
 const { insertAnime } = require('./queries/insert_queries');
 const mysqlPromise = require('promise-mysql');
+
+const KitsuAPIWrapper = require("./kitsu_wrapper");
+
 const readline = require('readline').createInterface({
     input: process.stdin,
     output: process.stdout
   })
+
+
+
 
 
 async function insert(id){
@@ -190,13 +196,30 @@ async function insert(id){
     console.log("Anime successfully inserted!");
 }
 
+function kitsuuu(){
 
+
+    const api = new KitsuAPIWrapper();
+
+    api.getAnime("brotherhood")
+                .then(res => { 
+                    //console.log(res[0].relationships.genres.links.related)
+                    api.getGenres(res[0])
+                })
+                //.then(res => console.log(res))
+                .catch(err => console.error(err));
+    
+    
+
+}
 
 
 
 readline.question(`Enter anime id:`, (id) => {
     
-    insert(Number(id));
+    //insert(Number(id));
+
+    kitsuuu();
 
     /*
     jikanjs.loadAnime(19815).then((response) => {
